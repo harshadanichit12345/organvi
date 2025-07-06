@@ -1,0 +1,96 @@
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.containercontact {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  padding-bottom: 5rem; 
+}
+
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.contact-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  position: relative;
+}
+
+.contact-title::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-green), var(--light-green));
+  border-radius: 2px;
+}
+
+form#product-form {
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  background: #fff;
+  border: 2px solid var(--border-color, #ccc);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.8s ease-out;
+  transition: all 0.3s ease;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: box-shadow 0.3s ease;
+}
+
+form input:focus,
+form textarea:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(107, 142, 90, 0.2);
+  border-color: #a3c59d;
+}
+
+form input[type="file"] {
+  padding: 0.3rem 0;
+}
+
+form button {
+  width: 150px;
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  background-color: #2e7d32;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: block;
+  margin: 1.2rem auto 0;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+form button:hover {
+  background-color: #27692b;
+  transform: translateY(-2px);
+}

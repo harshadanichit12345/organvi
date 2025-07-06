@@ -1,0 +1,34 @@
+.contact-page {
+  padding-top: 80px;
+  animation: fadeIn 1s ease-out;
+}
+
+.contact-hero {
+  background: linear-gradient(135deg, var(--accent-orange) 0%, var(--soft-brown) 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.contact-hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.contact-hero-description {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  animation: slideInRight 0.8s ease-out;
+}
+
+@media (max-width: 768px) {
+  .contact-hero {
+    padding: 3rem 0;
+  }
+
+  .contact-hero-title {
+    font-size: 2.5rem;
+  }
+}
