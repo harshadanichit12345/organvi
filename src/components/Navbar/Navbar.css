@@ -288,3 +288,17 @@
     font-size: 11px;
   }
 }
+@media (max-width: 768px) {
+  .navbar-content {
+    flex-direction: row;
+  }
+
+  .navbar-logo {
+    margin-right: auto;  /* Push other content to the right */
+    margin-left: 0;
+  }
+
+  .navbar-actions {
+    margin-left: auto;
+  }
+}

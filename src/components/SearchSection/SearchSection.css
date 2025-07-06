@@ -115,23 +115,8 @@ input:-webkit-autofill {
   }
 
   .search-icon {
+    top: 18px; 
     left: 16px;
   }
 }
 
-@media (max-width: 480px) {
-  .search-input {
-    padding: 0.9rem 1rem 0.9rem 2.5rem;
-    font-size: 0.95rem;
-  }
-
-  .search-icon {
-    left: 14px;
-  }
-
-  .search-btn,
-  .search-actions .btn-secondary {
-    padding: 0.9rem 1.5rem;
-    font-size: 0.95rem;
-  }
-}
