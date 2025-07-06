@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import banner from '../../assets/heroimg.png'; 
+import banner from '../../assets/heroimg1.png'; 
 import './Hero.css';
 
 const Hero = () => {

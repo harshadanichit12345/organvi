@@ -1,10 +1,10 @@
 .hero {
   position: relative;
-  height: calc(100vh - 5px); /* Adjust based on your navbar height */
+  height: calc(100vh - 5px);
   display: flex;
   align-items: center;
   overflow: hidden;
-  margin-top: 80px; /* Optional: Pushes hero below the fixed navbar */
+  margin-top: 80px;
 }
 
 
