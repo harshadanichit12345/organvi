@@ -74,7 +74,7 @@ const Footer = () => {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <p className="copyright">
-              © 2024 Organvi. All rights reserved.
+              © 2025 Organvi. All rights reserved.
             </p>
             <div className="footer-bottom-links">
               <Link to="/privacy" className="footer-bottom-link">Privacy</Link>
