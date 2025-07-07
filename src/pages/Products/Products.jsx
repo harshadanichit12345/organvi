@@ -46,7 +46,7 @@ const Products = () => {
   const [mirchiImageIndex, setMirchiImageIndex] = useState(0);
   const [jaggeryImageIndex, setJaggeryImageIndex] = useState(0);
   const [turmericImageIndex, setTurmericImageIndex] = useState(0);
-  const [showMessage, setShowMessage] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
 
   useEffect(() => {
     const mirchiInterval = setInterval(() => {
@@ -67,10 +67,11 @@ const Products = () => {
   }, []);
 
   const updateQuantity = (id, delta) => {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: Math.max((prev[id] || 1) + delta, 1),
-    }));
+    setQuantities((prev) => {
+      const currentQty = prev[id] ?? 0;
+      const newQty = Math.max(0, currentQty + delta);
+      return { ...prev, [id]: newQty };
+    });
   };
 
   const getImageById = (product) => {
@@ -81,7 +82,14 @@ const Products = () => {
   };
 
   const handleAddToCart = (product) => {
-    const quantity = quantities[product.id] || 1;
+    const quantity = quantities[product.id] ?? 0;
+
+    if (quantity === 0) {
+      setPopupMessage(`❌ Please select quantity before adding to cart.`);
+      setTimeout(() => setPopupMessage(''), 2000);
+      return;
+    }
+
     const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
 
     const updatedCart = (() => {
@@ -98,16 +106,15 @@ const Products = () => {
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     window.dispatchEvent(new Event('storage'));
 
-    // Show popup message
-    setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 2000);
+    setPopupMessage(`✅ ${quantity} x ${product.name} added to cart!`);
+    setTimeout(() => setPopupMessage(''), 2000);
   };
 
   return (
     <section className="categories">
       <div className="container">
-        {showMessage && (
-          <div className="cart-popup-message">✅ Item added to cart!</div>
+        {popupMessage && (
+          <div className="cart-popup-message">{popupMessage}</div>
         )}
 
         <div className="categories-header">
@@ -142,7 +149,7 @@ const Products = () => {
                     <button className="quantity-btn small" onClick={() => updateQuantity(product.id, -1)}>
                       <Minus size={14} />
                     </button>
-                    <span className="quantity small">{quantities[product.id] || 1}</span>
+                    <span className="quantity small">{quantities[product.id] ?? 0}</span>
                     <button className="quantity-btn small" onClick={() => updateQuantity(product.id, 1)}>
                       <Plus size={14} />
                     </button>

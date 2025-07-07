@@ -117,7 +117,7 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: var(--primary-green);
+  background: limegreen;
   color: white;
   text-decoration: none;
   font-size: 1.2rem;

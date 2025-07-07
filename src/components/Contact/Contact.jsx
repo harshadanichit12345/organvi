@@ -20,7 +20,10 @@ const ProductForm = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit?.(formData); 
+    onSubmit?.(formData);
+    
+     alert('✅ Form submitted successfully!');
+     
     setFormData({
       name: '',
       number: '',
@@ -49,6 +52,7 @@ const ProductForm = ({ onSubmit }) => {
           type="tel"
           name="number"
           placeholder="Phone Number"
+          maxLength={10}
           value={formData.number}
           onChange={handleChange}
           required
