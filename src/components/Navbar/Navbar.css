@@ -180,6 +180,25 @@
   background: #fff7ec;
 }
 
+.notification-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #f3f4f6;
+  color: var(--green);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.notification-btn:hover {
+  background: var(--green);
+  color: white;
+}
+
 .cart {
   position: relative;
   display: grid;
@@ -436,7 +455,7 @@
   width: 320px;
   max-width: 80%;
   height: 100%;
-  background: #f2ebdf; /* beige-like */
+  background: #ffffff; /* white background */
   box-shadow: 2px 0 12px rgba(0,0,0,0.2);
   animation: slideInLeft 0.25s ease-out;
 }
@@ -447,7 +466,7 @@
   align-items: center;
   justify-content: center; /* center the logo */
   padding: 20px 16px;
-  border-bottom: 1px solid #e6dccb;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .drawer-close {
@@ -462,6 +481,113 @@
 
 .drawer-body {
   padding: 8px 0;
+  overflow-y: auto;
+  height: calc(100vh - 80px);
+}
+
+/* Login Section */
+.drawer-login-section {
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.drawer-login-btn {
+  width: 100%;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.drawer-login-btn:hover {
+  background: var(--green-dark);
+  transform: translateY(-1px);
+}
+
+/* Top Row - Notification and Cart */
+.drawer-top-row {
+  display: flex;
+  padding: 16px;
+  gap: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.drawer-icon-btn {
+  flex: 1;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.drawer-icon-btn:hover {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+  transform: translateY(-1px);
+}
+
+/* Account Section */
+.drawer-account-section {
+  padding: 16px 0;
+}
+
+/* Support Section */
+.drawer-support-section {
+  padding: 16px 0;
+}
+
+/* Social Media Section */
+.drawer-social-section {
+  padding: 16px 0;
+}
+
+.drawer-social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+.drawer-social-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.drawer-social-link:hover {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+  transform: translateY(-1px);
+}
+
+.drawer-social-link svg:last-child {
+  margin-left: auto;
+  opacity: 0.7;
 }
 
 /* Bigger centered logo inside drawer */
@@ -470,7 +596,7 @@
 }
 
 .drawer .brand img {
-  height: 120px; /* larger than header logo */
+  height: 160px; /* increased size for better visibility */
   width: auto;
   display: block;
 }
@@ -490,7 +616,7 @@
 
 .drawer-item:hover { background: rgba(0,0,0,0.04); }
 
-.drawer-divider { height: 1px; background: #e6dccb; margin: 8px 0; }
+.drawer-divider { height: 1px; background: #e5e7eb; margin: 8px 0; }
 .drawer-section { padding: 12px 16px; font-weight: 600; }
 .drawer-section.muted { color: #6b7280; font-weight: 700; }
 
@@ -504,4 +630,53 @@
 @keyframes slideInLeft {
   from { transform: translateX(-100%); }
   to { transform: translateX(0); }
+}
+
+/* Enhanced Drawer Responsive Styles */
+@media (max-width: 768px) {
+  .drawer {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .drawer-top-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .drawer-icon-btn {
+    justify-content: center;
+  }
+  
+  .drawer-social-links {
+    padding: 0 8px;
+  }
+  
+  .drawer-social-link {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .drawer-header {
+    padding: 16px 12px;
+  }
+  
+  .drawer .brand img {
+    height: 140px;
+  }
+  
+  .drawer-login-section,
+  .drawer-top-row {
+    padding: 12px;
+  }
+  
+  .drawer-item {
+    padding: 12px 16px;
+  }
+  
+  .drawer-section {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
 }

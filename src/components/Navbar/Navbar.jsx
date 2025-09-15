@@ -25,10 +25,17 @@ import {
   Utensils,
   Leaf,
   Sun,
-  Star
+  Star,
+  Bell,
+  Package,
+  MessageCircle,
+  Instagram,
+  Linkedin,
+  ExternalLink
 } from 'lucide-react';
 import './Navbar.css';
-import logo from '../../assets/organic_logo1.png';
+import logo from '../../assets/organvilogo.jpg';
+import logo1 from '../../assets/organvilogo1.png';
 import LoginModal from '../../pages/LoginModal/LoginModal';
 
 const Navbar = () => {
@@ -36,6 +43,8 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [notificationCount, setNotificationCount] = useState(3);
+  const [wishlistCount, setWishlistCount] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeDropdown, setActiveDropdown] = useState(null);
 
@@ -56,6 +65,16 @@ const Navbar = () => {
     updateCartCount();
     window.addEventListener('storage', updateCartCount);
     return () => window.removeEventListener('storage', updateCartCount);
+  }, []);
+
+  useEffect(() => {
+    const updateWishlistCount = () => {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      setWishlistCount(wishlist.length);
+    };
+    updateWishlistCount();
+    window.addEventListener('storage', updateWishlistCount);
+    return () => window.removeEventListener('storage', updateWishlistCount);
   }, []);
 
   const navItems = [
@@ -162,6 +181,11 @@ const Navbar = () => {
                 Sign up
               </button>
 
+              <button className="notification-btn">
+                <Bell size={18} />
+                {notificationCount > 0 && <span className="badge">{notificationCount}</span>}
+              </button>
+
               <Link to="/cart" className="cart">
                 <ShoppingCart size={18} />
                 {cartCount > 0 && <span className="badge">{cartCount}</span>}
@@ -224,13 +248,13 @@ const Navbar = () => {
 
       {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
 
-      {/* Left Drawer Sidebar */}
+      {/* Enhanced Left Drawer Sidebar */}
       {isMenuOpen && (
         <div className="drawer-overlay" onClick={() => setIsMenuOpen(false)}>
           <aside className="drawer" onClick={(e) => e.stopPropagation()}>
             <div className="drawer-header">
-              <Link to="/" className="brand">
-                <img src={logo} alt="Organvi" />
+              <Link to="/" className="brand" onClick={() => setIsMenuOpen(false)}>
+                <img src={logo1} alt="Organvi" />
               </Link>
               <button className="drawer-close" onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
                 <X size={20} />
@@ -238,29 +262,85 @@ const Navbar = () => {
             </div>
 
             <div className="drawer-body">
-              <button className="drawer-item" onClick={() => { setShowLoginModal(true); setIsMenuOpen(false); }}>
-                <User size={18} />
-                <span>Log In</span>
-              </button>
-              <Link to="/cart" className="drawer-item" onClick={() => setIsMenuOpen(false)}>
-                <ShoppingCart size={18} />
-                <span>Shopping Cart</span>
-                {cartCount > 0 && <span className="badge small">{cartCount}</span>}
-              </Link>
-              <div className="drawer-item">
-                <MapPin size={18} />
-                <span>My Orders Tracking</span>
+              {/* Login Section */}
+              <div className="drawer-login-section">
+                <button className="drawer-login-btn" onClick={() => { setShowLoginModal(true); setIsMenuOpen(false); }}>
+                  <LogIn size={18} />
+                  <span>Log In</span>
+                </button>
               </div>
-              <div className="drawer-item">
-                <User size={18} />
-                <span>My Account</span>
+
+              {/* Top Row - Notification, Cart, Account */}
+              <div className="drawer-top-row">
+                <button className="drawer-icon-btn">
+                  <Bell size={18} />
+                  <span>Notifications</span>
+                  {notificationCount > 0 && <span className="badge small">{notificationCount}</span>}
+                </button>
+                <Link to="/cart" className="drawer-icon-btn" onClick={() => setIsMenuOpen(false)}>
+                  <ShoppingCart size={18} />
+                  <span>Cart</span>
+                  {cartCount > 0 && <span className="badge small">{cartCount}</span>}
+                </Link>
               </div>
+
+              {/* Account Section */}
+              <div className="drawer-account-section">
+                <div className="drawer-item">
+                  <User size={18} />
+                  <span>My Account</span>
+                </div>
+                <div className="drawer-item">
+                  <Package size={18} />
+                  <span>My Orders</span>
+                </div>
+                <div className="drawer-item">
+                  <Heart size={18} />
+                  <span>My Wishlist</span>
+                  {wishlistCount > 0 && <span className="badge small">{wishlistCount}</span>}
+                </div>
+              </div>
+
+              {/* Horizontal Line */}
               <div className="drawer-divider" />
-              <div className="drawer-section">Better By Choice</div>
+
+              {/* Better by Choice Section */}
+              <div className="drawer-section">Better by Choice</div>
+
+              {/* Horizontal Line */}
               <div className="drawer-divider" />
-              <div className="drawer-section muted">MEDIA</div>
-              <div className="drawer-item">
-                <span>Blogs & Articles</span>
+
+              {/* Help & Support Section */}
+              <div className="drawer-support-section">
+                <div className="drawer-item">
+                  <MessageCircle size={18} />
+                  <span>Help & Support</span>
+                </div>
+                <div className="drawer-item">
+                  <span>About Us</span>
+                </div>
+              </div>
+
+              {/* Social Media Section */}
+              <div className="drawer-social-section">
+                <div className="drawer-section">Find Us Here</div>
+                <div className="drawer-social-links">
+                  <a href="https://wa.me/yourwhatsappnumber" target="_blank" rel="noopener noreferrer" className="drawer-social-link">
+                    <MessageCircle size={18} />
+                    <span>WhatsApp</span>
+                    <ExternalLink size={14} />
+                  </a>
+                  <a href="https://linkedin.com/company/organvi" target="_blank" rel="noopener noreferrer" className="drawer-social-link">
+                    <Linkedin size={18} />
+                    <span>LinkedIn</span>
+                    <ExternalLink size={14} />
+                  </a>
+                  <a href="https://instagram.com/organvi" target="_blank" rel="noopener noreferrer" className="drawer-social-link">
+                    <Instagram size={18} />
+                    <span>Instagram</span>
+                    <ExternalLink size={14} />
+                  </a>
+                </div>
               </div>
             </div>
           </aside>

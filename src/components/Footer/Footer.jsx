@@ -1,6 +1,6 @@
 import { Package, Instagram, Facebook, Mail, Phone, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import logo from '../../assets/organic_logo.jpg';
+import logo from '../../assets/organvilogo.jpg';
 import './Footer.css';
 
 const Footer = () => {
