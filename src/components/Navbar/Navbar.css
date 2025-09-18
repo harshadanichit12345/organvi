@@ -45,7 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   padding: 14px 0;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .brand img {
-  height: 100px;
+  height: 150px;
   width: auto;
   display: block;
 }
@@ -80,7 +80,7 @@
   display: flex;
   align-items: center;
   max-width: 560px;
-  margin: 0 12px;
+  margin: 0 6px;
   border: 2px solid #dfe3e6; /* clearer, visible border on all sides */
   border-radius: 12px; /* ensure rounded corners are visible */
   background: #fff;
@@ -125,14 +125,20 @@
 .right-group {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .deliver, .account {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   color: var(--text);
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.account:hover {
+  opacity: 0.8;
 }
 
 /* Colorize the leading icons green */
@@ -148,12 +154,12 @@
 }
 
 .label {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
 }
 
 .value {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -184,8 +190,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   border-radius: 8px;
   background: #f3f4f6;
   color: var(--green);
@@ -203,8 +209,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   border-radius: 8px;
   background: #f3f4f6;
   color: var(--green);
@@ -383,6 +389,11 @@
   color: white;
 }
 
+.cat-emoji {
+  font-size: 18px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
 .cat-item span {
   font-size: 13px;
   color: var(--text);
@@ -452,8 +463,8 @@
 }
 
 .drawer {
-  width: 320px;
-  max-width: 80%;
+  width: 400px;
+  max-width: 85%;
   height: 100%;
   background: #ffffff; /* white background */
   box-shadow: 2px 0 12px rgba(0,0,0,0.2);
@@ -491,24 +502,58 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.drawer-login-btn {
-  width: 100%;
-  padding: 12px 16px;
+.drawer-login-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.drawer-login-item {
+  padding: 12px 0;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--green);
-  color: white;
+  background: transparent;
+  color: var(--text);
   border: none;
-  border-radius: 8px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.drawer-login-btn:hover {
-  background: var(--green-dark);
-  transform: translateY(-1px);
+.drawer-login-item:hover {
+  color: var(--green);
+}
+
+.drawer-icons-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Test Notification Button */
+.drawer-test-section {
+  padding: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.drawer-test-btn {
+  width: 100%;
+  padding: 8px 16px;
+  background: #f3f4f6;
+  color: var(--text);
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.drawer-test-btn:hover {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
 }
 
 /* Top Row - Notification and Cart */
@@ -520,11 +565,34 @@
 }
 
 .drawer-icon-btn {
-  flex: 1;
-  padding: 12px 16px;
+  padding: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: var(--text);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
+
+.drawer-icon-btn:hover {
+  background: transparent;
+  color: var(--green);
+}
+
+/* Icon-only buttons for notification and cart */
+.drawer-icon-only-btn {
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -533,9 +601,11 @@
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
+  min-width: 48px;
+  height: 48px;
 }
 
-.drawer-icon-btn:hover {
+.drawer-icon-only-btn:hover {
   background: var(--green);
   color: white;
   border-color: var(--green);
@@ -625,6 +695,172 @@
   width: 18px;
   height: 18px;
   font-size: 11px;
+}
+
+/* Sidebar specific icon colors */
+.login-icon {
+  color: var(--green) !important;
+}
+
+.notification-icon {
+  color: var(--green) !important;
+}
+
+.cart-icon {
+  color: var(--green) !important;
+}
+
+/* Notification badge in orange */
+.notification-badge {
+  background: #ff6b35 !important;
+  color: white !important;
+}
+
+/* Cart badge in orange */
+.cart-badge {
+  background: #ff6b35 !important;
+  color: white !important;
+}
+
+/* Location Dropdown Styles */
+.location-dropdown-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1300;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 80px;
+}
+
+.location-dropdown {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  min-width: 400px;
+  max-width: 500px;
+  animation: slideInDown 0.3s ease-out;
+}
+
+.location-dropdown-content {
+  text-align: center;
+}
+
+.search-area-btn {
+  background: transparent;
+  border: none;
+  color: var(--green);
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.search-area-btn:hover {
+  color: var(--green-dark);
+}
+
+.search-area-container {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.location-search-input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #000000;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.location-search-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px rgba(74, 124, 89, 0.1);
+}
+
+/* User Dropdown Popup Styles */
+.user-dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 80px;
+}
+
+.user-dropdown {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  min-width: 300px;
+  max-width: 400px;
+  animation: slideInDown 0.3s ease-out;
+}
+
+.user-dropdown-content {
+  text-align: center;
+}
+
+.user-auth-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.signin-btn {
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  min-width: 120px;
+}
+
+.signin-btn:hover {
+  background: var(--green-dark);
+}
+
+.signup-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.new-customer {
+  color: #666;
+}
+
+.signup-link {
+  background: none;
+  border: none;
+  color: var(--green);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.signup-link:hover {
+  color: var(--green-dark);
 }
 
 @keyframes slideInLeft {

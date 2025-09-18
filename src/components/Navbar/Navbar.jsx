@@ -8,24 +8,11 @@ import {
   Search,
   MapPin,
   ChevronDown,
-  LogIn,
   UserPlus,
   Tag,
   ArrowRight,
   Home,
   Heart,
-  Sparkles,
-  Baby,
-  Wheat,
-  Nut,
-  Grape,
-  Candy,
-  ChefHat,
-  Shield,
-  Utensils,
-  Leaf,
-  Sun,
-  Star,
   Bell,
   Package,
   MessageCircle,
@@ -35,7 +22,6 @@ import {
 } from 'lucide-react';
 import './Navbar.css';
 import logo from '../../assets/organvilogo.jpg';
-import logo1 from '../../assets/organvilogo1.png';
 import LoginModal from '../../pages/LoginModal/LoginModal';
 
 const Navbar = () => {
@@ -43,12 +29,28 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [notificationCount, setNotificationCount] = useState(3);
+  const [notificationCount, setNotificationCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const [showSearchArea, setShowSearchArea] = useState(false);
+  const [locationSearchQuery, setLocationSearchQuery] = useState('');
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   const location = useLocation();
+
+  // Function to add a notification (for testing)
+  const addNotification = () => {
+    const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    const newNotification = {
+      id: Date.now(),
+      message: 'New notification',
+      timestamp: new Date().toISOString()
+    };
+    notifications.push(newNotification);
+    localStorage.setItem('notifications', JSON.stringify(notifications));
+    setNotificationCount(notifications.length);
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -59,12 +61,23 @@ const Navbar = () => {
   useEffect(() => {
     const updateCartCount = () => {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const total = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-      setCartCount(total);
+      const uniqueItems = cart.length; // Count unique products, not quantities
+      console.log('Navbar cart count update:', uniqueItems, 'Cart items:', cart);
+      setCartCount(uniqueItems);
     };
+    
+    const handleCartUpdated = (event) => {
+      console.log('Navbar received cartUpdated event:', event.detail);
+      setCartCount(event.detail);
+    };
+    
     updateCartCount();
     window.addEventListener('storage', updateCartCount);
-    return () => window.removeEventListener('storage', updateCartCount);
+    window.addEventListener('cartUpdated', handleCartUpdated);
+    return () => {
+      window.removeEventListener('storage', updateCartCount);
+      window.removeEventListener('cartUpdated', handleCartUpdated);
+    };
   }, []);
 
   useEffect(() => {
@@ -77,58 +90,17 @@ const Navbar = () => {
     return () => window.removeEventListener('storage', updateWishlistCount);
   }, []);
 
-  const navItems = [
-    {
-      label: 'Eat Better',
-      icon: '🍽️',
-      categories: [
-        { name: 'Grains', icon: Wheat },
-        { name: 'Nuts', icon: Nut },
-        { name: 'Fruits', icon: Grape },
-        { name: 'Jaggery', icon: Candy },
-        { name: 'Spices', icon: ChefHat }
-      ]
-    },
-    {
-      label: 'Live Better',
-      icon: '🏡',
-      categories: [
-        { name: 'Immunity', icon: Shield },
-        { name: 'Wellness', icon: Heart },
-        { name: 'Essentials', icon: Utensils }
-      ]
-    },
-    {
-      label: 'Look Better',
-      icon: '💆',
-      categories: [
-        { name: 'Glow', icon: Sun },
-        { name: 'Beauty', icon: Sparkles },
-        { name: 'Care', icon: Star }
-      ]
-    },
-    {
-      label: 'Raise Better',
-      icon: '🌍',
-      categories: [
-        { name: 'Kids', icon: Baby },
-        { name: 'Story', icon: Leaf },
-        { name: 'Eco', icon: Leaf }
-      ]
-    }
-  ];
+  useEffect(() => {
+    const updateNotificationCount = () => {
+      const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+      setNotificationCount(notifications.length);
+    };
+    updateNotificationCount();
+    window.addEventListener('storage', updateNotificationCount);
+    return () => window.removeEventListener('storage', updateNotificationCount);
+  }, []);
 
-  const categories = [
-    { label: 'All Categories' },
-    { label: 'Fruits & Vegetables' },
-    { label: 'Foodgrains, Oils & Masala' },
-    { label: 'Dairy, Bakery, Eggs' },
-    { label: 'Snacks & Branded Food' },
-    { label: 'Beverages' },
-    { label: 'Cleaning & House Hold' },
-    { label: 'Personal Care' },
-    { label: 'Wellness' },
-  ];
+
 
   return (
     <>
@@ -154,40 +126,34 @@ const Navbar = () => {
             </div>
 
             <div className="right-group">
-              <div className="deliver">
-                <MapPin size={22} />
+              <div className="deliver" onClick={() => setShowLocationDropdown(!showLocationDropdown)}>
+                <MapPin size={30} />
                 <div className="deliver-text">
                   <span className="label">Deliver to</span>
-                  <span className="value">Bengaluru 560001</span>
+                  <span className="value">Pune 411057</span>
                 </div>
-                <ChevronDown size={14} />
+                <ChevronDown size={16} />
               </div>
 
-              <div className="account">
-                <User size={22} />
+              <div className="account" onClick={() => setShowUserDropdown(!showUserDropdown)}>
+                <User size={30} />
                 <div className="account-text">
                   <span className="label">Hello, User</span>
                   <span className="value">Account & Lists</span>
                 </div>
-                <ChevronDown size={14} />
               </div>
 
               <button className="btn outline" onClick={() => setShowLoginModal(true)}>
-                <LogIn size={16} />
-                Login
-              </button>
-              <button className="btn outline" onClick={() => setShowLoginModal(true)}>
-                <UserPlus size={16} />
+                <UserPlus size={18} />
                 Sign up
               </button>
 
               <button className="notification-btn">
-                <Bell size={18} />
-                {notificationCount > 0 && <span className="badge">{notificationCount}</span>}
+                <Bell size={25} />
               </button>
 
-              <Link to="/cart" className="cart">
-                <ShoppingCart size={18} />
+              <Link to="/addcart" className="cart">
+                <ShoppingCart size={25} />
                 {cartCount > 0 && <span className="badge">{cartCount}</span>}
               </Link>
 
@@ -198,53 +164,70 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="row-links">
-            {navItems.map((item, index) => (
-              <div 
-                key={item.label} 
-                className="link-item"
-                onMouseEnter={() => setActiveDropdown(index)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <span>{item.label}</span>
-                <ChevronDown size={12} />
-                
-                {activeDropdown === index && (
-                  <div className="dropdown-menu">
-                    <div className="dropdown-content">
-                      {item.categories.map((category, catIndex) => {
-                        const IconComponent = category.icon;
-                        return (
-                          <div key={catIndex} className="dropdown-category">
-                            <IconComponent size={20} />
-                            <span className="category-name">{category.name}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
         </div>
       </header>
 
-      <div className="categories">
-        <div className="container">
-          <div className="cat-scroll">
-            {categories.map((c, index) => (
-              <div key={c.label} className={`cat-item ${index === 0 ? 'active' : ''}`}>
-                <div className="cat-icon" />
-                <span>{c.label}</span>
-              </div>
-            ))}
-            <button className="cat-next">
-              <ArrowRight size={16} />
-            </button>
+      {/* Location Dropdown Popup */}
+      {showLocationDropdown && (
+        <div className="location-dropdown-overlay" onClick={() => setShowLocationDropdown(false)}>
+          <div className="location-dropdown" onClick={(e) => e.stopPropagation()}>
+            <div className="location-dropdown-content">
+              <button 
+                className="search-area-btn" 
+                onClick={() => setShowSearchArea(!showSearchArea)}
+              >
+                + Search new area
+              </button>
+              
+              {showSearchArea && (
+                <div className="search-area-container">
+                  <input
+                    type="text"
+                    placeholder="Search your area/ apartment/ pincode"
+                    value={locationSearchQuery}
+                    onChange={(e) => setLocationSearchQuery(e.target.value)}
+                    className="location-search-input"
+                    autoFocus
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* User Dropdown Popup */}
+      {showUserDropdown && (
+        <div className="user-dropdown-overlay" onClick={() => setShowUserDropdown(false)}>
+          <div className="user-dropdown" onClick={(e) => e.stopPropagation()}>
+            <div className="user-dropdown-content">
+              <div className="user-auth-section">
+                <button 
+                  className="signin-btn"
+                  onClick={() => {
+                    setShowLoginModal(true);
+                    setShowUserDropdown(false);
+                  }}
+                >
+                  Sign in
+                </button>
+                <div className="signup-text">
+                  <span className="new-customer">New Customer? </span>
+                  <button 
+                    className="signup-link"
+                    onClick={() => {
+                      setShowLoginModal(true);
+                      setShowUserDropdown(false);
+                    }}
+                  >
+                    Sign up
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
 
@@ -254,7 +237,7 @@ const Navbar = () => {
           <aside className="drawer" onClick={(e) => e.stopPropagation()}>
             <div className="drawer-header">
               <Link to="/" className="brand" onClick={() => setIsMenuOpen(false)}>
-                <img src={logo1} alt="Organvi" />
+                <img src={logo} alt="Organvi" />
               </Link>
               <button className="drawer-close" onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
                 <X size={20} />
@@ -262,27 +245,28 @@ const Navbar = () => {
             </div>
 
             <div className="drawer-body">
-              {/* Login Section */}
+              {/* Login Section with Icons */}
               <div className="drawer-login-section">
-                <button className="drawer-login-btn" onClick={() => { setShowLoginModal(true); setIsMenuOpen(false); }}>
-                  <LogIn size={18} />
-                  <span>Log In</span>
-                </button>
+                <div className="drawer-login-row">
+                  <div className="drawer-login-item" onClick={() => { setShowLoginModal(true); setIsMenuOpen(false); }}>
+                    <User size={18} className="login-icon" />
+                    <span>Log In</span>
+                  </div>
+                  <div className="drawer-icons-group">
+                    <button className="drawer-icon-btn notification-btn">
+                      <Bell size={24} className="notification-icon" />
+                      {notificationCount > 0 && <span className="badge small notification-badge">{notificationCount}</span>}
+                    </button>
+                    <Link to="/addcart" className="drawer-icon-btn cart-btn" onClick={() => setIsMenuOpen(false)}>
+                      <ShoppingCart size={24} className="cart-icon" />
+                      {cartCount > 0 && <span className="badge small cart-badge">{cartCount}</span>}
+                    </Link>
+                  </div>
+                </div>
               </div>
 
-              {/* Top Row - Notification, Cart, Account */}
-              <div className="drawer-top-row">
-                <button className="drawer-icon-btn">
-                  <Bell size={18} />
-                  <span>Notifications</span>
-                  {notificationCount > 0 && <span className="badge small">{notificationCount}</span>}
-                </button>
-                <Link to="/cart" className="drawer-icon-btn" onClick={() => setIsMenuOpen(false)}>
-                  <ShoppingCart size={18} />
-                  <span>Cart</span>
-                  {cartCount > 0 && <span className="badge small">{cartCount}</span>}
-                </Link>
-              </div>
+             
+              
 
               {/* Account Section */}
               <div className="drawer-account-section">
