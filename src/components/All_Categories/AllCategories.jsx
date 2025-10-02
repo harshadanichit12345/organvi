@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Filter from '../Filter/Filter';
+import { useNavigate } from 'react-router-dom';
+// import Filter from '../Filter/Filter';
 import './AllCategories.css';
+import downIcon from '../../assets/down.png';
 
 // Import product images
 // Almonds
@@ -103,6 +105,7 @@ const SpicesIcon = () => (
 );
 
 const AllCategories = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showProducts, setShowProducts] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -110,6 +113,8 @@ const AllCategories = () => {
   const [quantityDisplay, setQuantityDisplay] = useState({});
   const [selectedWeights, setSelectedWeights] = useState({});
   const [showNotification, setShowNotification] = useState(false);
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [likedProducts, setLikedProducts] = useState([]);
   const [filters, setFilters] = useState({
     priceRange: [0, 1000],
     sortBy: 'name',
@@ -505,6 +510,10 @@ const AllCategories = () => {
   ];
 
   const handleCategoryClick = (categoryId) => {
+    if (categoryId === 'pulses') {
+      navigate('/pulses');
+      return;
+    }
     setSelectedCategory(categoryId);
     setShowProducts(true);
     setFilters(prev => ({ ...prev, selectedCategory: categoryId }));
@@ -514,7 +523,48 @@ const AllCategories = () => {
   useEffect(() => {
     setShowProducts(true);
     setSelectedCategory('all');
+    // Load liked products from localStorage
+    const savedLikes = JSON.parse(localStorage.getItem('likedProducts')) || [];
+    setLikedProducts(savedLikes);
   }, []);
+
+  // Sort options
+  const sortOptions = [
+    { value: 'name', label: 'Name, A-Z' },
+    { value: 'name-desc', label: 'Name, Z-A' },
+    { value: 'price', label: 'Price, low to high' },
+    { value: 'price-desc', label: 'Price, high to low' }
+  ];
+
+  const handleSortChange = (sortValue) => {
+    setFilters(prev => ({ ...prev, sortBy: sortValue }));
+    setShowSortDropdown(false);
+  };
+
+  const getCurrentSortLabel = () => {
+    const option = sortOptions.find(opt => opt.value === filters.sortBy);
+    return option ? option.label : 'Sort by';
+  };
+
+  const toggleLike = (product) => {
+    const isLiked = likedProducts.some(liked => liked.id === product.id);
+    
+    if (isLiked) {
+      // Remove from likes
+      const updatedLikes = likedProducts.filter(liked => liked.id !== product.id);
+      setLikedProducts(updatedLikes);
+      localStorage.setItem('likedProducts', JSON.stringify(updatedLikes));
+    } else {
+      // Add to likes
+      const updatedLikes = [...likedProducts, product];
+      setLikedProducts(updatedLikes);
+      localStorage.setItem('likedProducts', JSON.stringify(updatedLikes));
+    }
+  };
+
+  const isProductLiked = (productId) => {
+    return likedProducts.some(liked => liked.id === productId);
+  };
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -747,16 +797,30 @@ const AllCategories = () => {
     }
   }, [filters, showProducts, selectedCategoryData]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showSortDropdown && !event.target.closest('.sort-dropdown-container')) {
+        setShowSortDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSortDropdown]);
+
   return (
     <div className="all-categories-page">
       <div className="all-categories-container">
             <div className="all-products-content">
               <div className="all-products-sidebar">
-                <Filter 
+                {/* <Filter 
                   onFilterChange={handleFilterChange}
                   categories={categories}
                   selectedCategory={selectedCategory}
-                />
+                /> */}
               </div>
               
               <div className="all-products-main">
@@ -854,8 +918,42 @@ const AllCategories = () => {
 
 
             <div className="all-products-header">
-              <h1 className="all-products-title">All Products</h1>
-              <p className="all-products-subtitle">Explore our complete range of organic products</p>
+              <div className="all-products-info">
+                <div className="all-products-info-content">
+                  <div className="all-products-text">
+                    <h1 className="all-products-title">All Products</h1>
+                    <p className="all-products-subtitle">Explore our complete range of organic products</p>
+                  </div>
+                  
+                  {/* Sort Dropdown */}
+                  <div className="sort-dropdown-container">
+                    <button
+                      className={`sort-dropdown-trigger ${showSortDropdown ? 'active' : ''}`}
+                      onClick={() => setShowSortDropdown(!showSortDropdown)}
+                    >
+                      <span>{getCurrentSortLabel()}</span>
+                      <img 
+                        src={downIcon} 
+                        alt="dropdown" 
+                        className={`sort-arrow ${showSortDropdown ? 'open' : ''}`}
+                      />
+                    </button>
+                    {showSortDropdown && (
+                      <div className="sort-dropdown-menu">
+                        {sortOptions.map(option => (
+                          <button
+                            key={option.value}
+                            className={`sort-option ${filters.sortBy === option.value ? 'active' : ''}`}
+                            onClick={() => handleSortChange(option.value)}
+                          >
+                            {option.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
             
                 <div className="all-products-info">
@@ -898,11 +996,10 @@ const AllCategories = () => {
             <div className="all-products-scroll-container">
                 <div className="all-products-grid">
                 {filteredProductsList.map((product, index) => {
-                  const selectedWeight = getSelectedWeight(product.id);
-                  const cartQuantity = getCartItemQuantity(product.id, selectedWeight);
-                  const currentPrice = getProductPrice(product, selectedWeight);
-                  const currentOriginalPrice = getProductOriginalPrice(product, selectedWeight);
-                  const cartKey = `${product.id}-${selectedWeight}`;
+                  const cartQuantity = getCartItemQuantity(product.id, '1kg');
+                  const currentPrice = product.price;
+                  const currentOriginalPrice = product.originalPrice;
+                  const cartKey = `${product.id}-1kg`;
                   
                   
                   return (
@@ -913,11 +1010,15 @@ const AllCategories = () => {
                       </div>
                       
                       {/* Heart Icon */}
-                      <div className="heart-icon">
+                      <button 
+                        className={`heart-icon ${isProductLiked(product.id) ? 'liked' : ''}`}
+                        onClick={() => toggleLike(product)}
+                        title={isProductLiked(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                      >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                         </svg>
-                      </div>
+                      </button>
 
                       {/* Product Image */}
                       <div className="product-image-container">
@@ -951,51 +1052,17 @@ const AllCategories = () => {
                           <span className="original-price">
                             ₹{cartQuantity > 0 ? currentOriginalPrice * cartQuantity : currentOriginalPrice}
                           </span>
-                        </div>
-                        
-                        {/* Weight Dropdown */}
-                        <div className="weight-selector">
-                          <select 
-                            className="weight-dropdown"
-                            value={selectedWeight}
-                            onChange={(e) => handleWeightChange(product.id, e.target.value)}
-                          >
-                            {weightOptions.map(option => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </select>
+                          <span className="discount-percentage">
+                            ({product.discount}% Off)
+                          </span>
                         </div>
                         
                         <div className="product-actions">
-                          <div className="quantity-controls">
-                            <button 
-                              className="quantity-btn minus"
-                              onClick={() => {
-                                console.log('Minus button clicked:', cartKey, cartQuantity - 1);
-                                updateQuantity(cartKey, cartQuantity - 1);
-                              }}
-                              disabled={cartQuantity <= 0}
-                            >
-                              -
-                            </button>
-                            <span className="quantity-display">{cartQuantity}</span>
-                            <button 
-                              className="quantity-btn plus"
-                              onClick={() => {
-                                console.log('Plus button clicked:', cartKey, cartQuantity + 1);
-                                updateQuantity(cartKey, cartQuantity + 1);
-                              }}
-                            >
-                              +
-                            </button>
-                          </div>
                           <button 
                             className="add-btn"
-                            onClick={() => addToCartPage(product, selectedWeight)}
+                            onClick={() => addToCartPage(product, '1kg')}
                           >
-                            Add
+                            <span>Add To Cart</span>
                           </button>
                         </div>
                       </div>

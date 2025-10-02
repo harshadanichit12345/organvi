@@ -94,3 +94,85 @@ form button:hover {
   background-color: #27692b;
   transform: translateY(-2px);
 }
+
+/* Responsive Design */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .containercontact {
+    max-width: 700px;
+    padding: 1.8rem;
+  }
+
+  .contact-title {
+    font-size: 2.8rem;
+  }
+
+  form#product-form {
+    max-width: 500px;
+    padding: 2.2rem;
+  }
+}
+
+/* Medium mobile styles (481px - 767px) */
+@media (max-width: 768px) {
+  .containercontact {
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+
+  .contact-title {
+    font-size: 2.5rem;
+  }
+
+  form#product-form {
+    max-width: 100%;
+    padding: 2rem;
+  }
+
+  form input,
+  form textarea {
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  form button {
+    width: 140px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Small mobile styles (≤480px) */
+@media (max-width: 480px) {
+  .containercontact {
+    padding: 1rem;
+  }
+
+  .contact-header {
+    margin-bottom: 3rem;
+  }
+
+  .contact-title {
+    font-size: 2rem;
+  }
+
+  form#product-form {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  form input,
+  form textarea {
+    padding: 0.6rem 0.8rem;
+    font-size: 16px; /* Prevents zoom on iOS */
+    margin-bottom: 0.8rem;
+  }
+
+  form button {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+}

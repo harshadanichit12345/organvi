@@ -231,6 +231,37 @@
 }
 
 /* Responsive Design for Categories Page */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .categories-page .categories-container {
+    padding: 0 1rem;
+  }
+  
+  .categories-page .categories-title {
+    font-size: 2.8rem;
+  }
+  
+  .categories-page .categories-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.8rem;
+  }
+  
+  .categories-page .category-box {
+    padding: 1.8rem;
+  }
+  
+  .categories-page .products-section {
+    padding: 2.5rem;
+  }
+  
+  .categories-page .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.2rem;
+  }
+}
+
+/* Medium mobile styles (481px - 767px) */
 @media (max-width: 768px) {
   .categories-page .categories-container {
     padding: 0 0.5rem;
@@ -259,9 +290,22 @@
   }
 }
 
+/* Small mobile styles (≤480px) */
 @media (max-width: 480px) {
+  .categories-page {
+    padding: 1.5rem 0;
+  }
+  
+  .categories-page .categories-container {
+    padding: 0 0.75rem;
+  }
+  
   .categories-page .categories-title {
     font-size: 2rem;
+  }
+  
+  .categories-page .categories-subtitle {
+    font-size: 1rem;
   }
   
   .categories-page .categories-grid {
@@ -273,14 +317,51 @@
     padding: 1rem;
   }
   
+  .categories-page .category-icon {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .categories-page .icon-component {
+    font-size: 1.8rem;
+  }
+  
+  .categories-page .category-name {
+    font-size: 1.1rem;
+  }
+  
   .categories-page .products-section {
     padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .categories-page .products-title {
+    font-size: 1.8rem;
   }
   
   .categories-page .products-grid {
     grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  
+  .categories-page .product-item {
+    padding: 1.2rem;
+  }
+  
+  .categories-page .product-icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .categories-page .product-emoji {
+    font-size: 1.3rem;
+  }
+  
+  .categories-page .product-name {
+    font-size: 0.95rem;
   }
 }
+
 
 
 

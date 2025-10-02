@@ -329,7 +329,34 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Responsive design */
+/* Responsive design - Mobile First Approach */
+
+/* Large tablet and small desktop styles (769px - 1024px) */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .btn {
+    padding: 13px 26px;
+    font-size: 15px;
+  }
+  
+  /* Typography adjustments */
+  h1 {
+    font-size: 2.2rem;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+  }
+  
+  h3 {
+    font-size: 1.4rem;
+  }
+}
+
+/* Tablet styles (481px - 768px) */
 @media (max-width: 768px) {
   .container {
     padding: 0 16px;
@@ -338,18 +365,157 @@ body {
   .btn {
     padding: 12px 24px;
     font-size: 14px;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Typography adjustments */
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.2rem;
+  }
+  
+  /* Improve form inputs for mobile */
+  .form-input {
+    padding: 14px 18px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Better touch targets */
+  .btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Grid adjustments */
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .grid-3 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 }
 
+/* Small mobile styles (≤480px) */
 @media (max-width: 480px) {
   .container {
     padding: 0 12px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 13px;
+    min-height: 40px;
+  }
+  
+  /* Optimize form inputs for small screens */
+  .form-input {
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+  
+  /* Typography adjustments */
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.3rem;
+  }
+  
+  h3 {
+    font-size: 1.1rem;
+  }
+  
+  /* Grid adjustments for mobile */
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+  
+  /* Spacing adjustments */
+  .section {
+    padding: 2rem 0;
+  }
+  
+  .card {
+    padding: 1rem;
+  }
+  
+  /* Better spacing for small screens */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Improve card spacing */
+  .card {
+    margin-bottom: 1rem;
   }
 }
 
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
+}
+
+/* Additional responsive utilities */
+@media (max-width: 768px) {
+  /* Prevent horizontal scrolling */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Better touch targets for mobile */
+  button, 
+  .btn, 
+  input[type="button"], 
+  input[type="submit"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improve text readability on mobile */
+  body {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Ensure no horizontal scrolling on small screens */
+  * {
+    max-width: 100%;
+  }
+  
+  /* Better spacing for small screens */
+  .container {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Improve form usability on mobile */
+  input, 
+  textarea, 
+  select {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
 }
 
 /* Custom scrollbar */

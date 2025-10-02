@@ -93,3 +93,93 @@
   align-items: center;
   justify-content: center;
 }
+
+/* Responsive Design */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .login-modal-box {
+    width: 350px;
+    padding: 2.2rem;
+  }
+
+  .login-modal-title {
+    font-size: 1.7rem;
+  }
+
+  .login-modal-input {
+    padding: 0.7rem;
+    font-size: 1rem;
+  }
+
+  .login-modal-btn {
+    padding: 0.7rem;
+    font-size: 1rem;
+  }
+}
+
+/* Medium mobile styles (481px - 767px) */
+@media (max-width: 768px) {
+  .login-modal-backdrop {
+    padding: 1rem;
+  }
+
+  .login-modal-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+  }
+
+  .login-modal-title {
+    font-size: 1.6rem;
+  }
+
+  .login-modal-input {
+    padding: 0.7rem;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .login-modal-btn {
+    padding: 0.7rem;
+    font-size: 1rem;
+  }
+}
+
+/* Small mobile styles (≤480px) */
+@media (max-width: 480px) {
+  .login-modal-backdrop {
+    padding: 0.75rem;
+  }
+
+  .login-modal-box {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+
+  .login-modal-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .login-modal-input {
+    padding: 0.6rem;
+    font-size: 16px; /* Prevents zoom on iOS */
+    margin-bottom: 1.2rem;
+  }
+
+  .login-modal-btn {
+    padding: 0.6rem;
+    font-size: 0.95rem;
+    margin-top: 0.6rem;
+  }
+
+  .login-modal-close {
+    width: 24px;
+    height: 24px;
+    font-size: 0.9rem;
+    top: 8px;
+    right: 8px;
+  }
+}

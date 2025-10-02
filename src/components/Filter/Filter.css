@@ -4,6 +4,153 @@
   margin-bottom: 3rem;
 }
 
+/* Mobile optimizations for compact filter */
+@media (max-width: 768px) {
+  .filter-container {
+    margin-bottom: 1rem;
+  }
+  
+  .filter-header {
+    margin-bottom: 1rem;
+    padding-bottom: 8px;
+  }
+  
+  .filter-title {
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .clear-all-btn {
+    font-size: 0.8rem;
+    padding: 3px 6px;
+  }
+  
+  .filter-section {
+    margin-bottom: 15px;
+  }
+  
+  .filter-section-title {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+  
+  .category-item {
+    margin-bottom: 8px;
+  }
+  
+  .category-header {
+    padding: 6px 8px;
+  }
+  
+  .category-name {
+    font-size: 0.8rem;
+  }
+  
+  .dropdown-icon {
+    font-size: 0.7rem;
+  }
+  
+  .subcategories {
+    padding-left: 12px;
+  }
+  
+  .subcategory-option {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+  }
+  
+  .package-type-option,
+  .discount-option,
+  .price-option {
+    margin-bottom: 6px;
+  }
+  
+  .package-type-label,
+  .discount-label,
+  .price-label {
+    font-size: 0.75rem;
+  }
+  
+  .filter-select {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-container {
+    margin-bottom: 0.5rem;
+  }
+  
+  .filter-header {
+    margin-bottom: 0.8rem;
+    padding-bottom: 6px;
+  }
+  
+  .filter-title {
+    font-size: 1rem;
+    letter-spacing: 0.3px;
+  }
+  
+  .clear-all-btn {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+  }
+  
+  .filter-section {
+    margin-bottom: 12px;
+  }
+  
+  .filter-section-title {
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+  }
+  
+  .category-item {
+    margin-bottom: 6px;
+  }
+  
+  .category-header {
+    padding: 4px 6px;
+  }
+  
+  .category-name {
+    font-size: 0.7rem;
+  }
+  
+  .dropdown-icon {
+    font-size: 0.6rem;
+  }
+  
+  .subcategories {
+    padding-left: 10px;
+  }
+  
+  .subcategory-option {
+    padding: 3px 6px;
+    font-size: 0.7rem;
+    margin-bottom: 3px;
+  }
+  
+  .package-type-option,
+  .discount-option,
+  .price-option {
+    margin-bottom: 4px;
+  }
+  
+  .package-type-label,
+  .discount-label,
+  .price-label {
+    font-size: 0.7rem;
+  }
+  
+  .filter-select {
+    font-size: 0.7rem;
+    padding: 4px 6px;
+  }
+}
+
 .filter-header {
   display: flex;
   justify-content: space-between;
@@ -462,6 +609,28 @@
   color: #4caf50;
 }
 
+/* Responsive Design */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .filter-container {
+    padding: 10px;
+  }
+  
+  .filter-title {
+    font-size: 1.3rem;
+  }
+  
+  .filter-section {
+    margin-bottom: 22px;
+  }
+  
+  .filter-section-title {
+    font-size: 1.1rem;
+  }
+}
+
+/* Medium mobile styles (481px - 767px) */
 @media (max-width: 768px) {
   .filter-container {
     padding: 15px;
@@ -473,5 +642,106 @@
   
   .filter-section {
     margin-bottom: 20px;
+  }
+  
+  .filter-section-title {
+    font-size: 1rem;
+  }
+  
+  .filter-select {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .filter-option {
+    font-size: 1rem;
+    padding: 6px 0;
+  }
+}
+
+/* Small mobile styles (≤480px) */
+@media (max-width: 480px) {
+  .filter-container {
+    padding: 12px;
+  }
+  
+  .filter-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .filter-title {
+    font-size: 1rem;
+  }
+  
+  .clear-all-btn {
+    font-size: 0.9rem;
+    padding: 4px 8px;
+  }
+  
+  .filter-section {
+    margin-bottom: 18px;
+  }
+  
+  .filter-section-title {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+  
+  .filter-select {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+  
+  .filter-option {
+    font-size: 0.9rem;
+    padding: 5px 0;
+  }
+  
+  .price-slider {
+    height: 5px;
+  }
+  
+  .price-slider::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .price-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .price-value {
+    font-size: 1rem;
+  }
+  
+  .selected-items-box {
+    padding: 12px;
+  }
+  
+  .selected-items-title {
+    font-size: 0.9rem;
+  }
+  
+  .selected-category-section {
+    padding: 10px;
+  }
+  
+  .selected-category-name {
+    font-size: 0.9rem;
+  }
+  
+  .product-item {
+    padding: 3px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .remove-item-btn {
+    width: 18px;
+    height: 18px;
+    font-size: 1rem;
   }
 }

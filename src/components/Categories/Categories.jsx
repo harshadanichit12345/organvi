@@ -2,13 +2,29 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Categories.css';
 
+// Import category images
+import allProductIcon from '../../assets/allproduct.png';
+import pulsesIcon from '../../assets/pulses.png';
+import dryFruitsIcon from '../../assets/dryfruits.png';
+import sweetenerIcon from '../../assets/sweetner.png';
+import spicesIcon from '../../assets/spices.png';
+
 const Categories = () => {
   const navigate = useNavigate();
 
   const handleCategoryClick = (categoryId) => {
     if (categoryId === 1) {
-      // Navigate to AllCategories page when "All Products" is clicked
-      navigate('/allcategories');
+      // Navigate to Pulses page when "Pulses & Dal" is clicked
+      navigate('/pulses');
+    } else if (categoryId === 2) {
+      // Navigate to Sweetener page when "Sweetener" is clicked
+      navigate('/sweetener');
+    } else if (categoryId === 3) {
+      // Navigate to DryFruits page when "Dry Fruits & Nuts" is clicked
+      navigate('/dryfruits');
+    } else if (categoryId === 4) {
+      // Navigate to Spices page when "Spices & Masalas" is clicked
+      navigate('/spices');
     } else {
       // For other categories, you can add navigation to specific category pages
       console.log(`Navigate to category: ${categoryId}`);
@@ -18,64 +34,24 @@ const Categories = () => {
   const categories = [
     {
       id: 1,
-      name: 'All Products',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
-          <path d="M8 21v-4a2 2 0 012-2h4a2 2 0 012 2v4"/>
-          <path d="M12 3v4"/>
-          <path d="M8 3v4"/>
-          <path d="M16 3v4"/>
-        </svg>
-      )
+      name: 'Pulses & Dal',
+      icon: <img src={pulsesIcon} alt="Pulses & Dal" className="category-image" />
     },
     {
       id: 2,
-      name: 'Pulses & Dal',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M8 12h8"/>
-          <path d="M12 8v8"/>
-        </svg>
-      )
+      name: 'Sweetener',
+      icon: <img src={sweetenerIcon} alt="Sweetener" className="category-image" />
     },
     {
       id: 3,
       name: 'Dry Fruits & Nuts',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-          <path d="M2 17l10 5 10-5"/>
-          <path d="M2 12l10 5 10-5"/>
-        </svg>
-      )
+      icon: <img src={dryFruitsIcon} alt="Dry Fruits & Nuts" className="category-image" />
     },
     {
       id: 4,
-      name: 'Sweeteners',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M9 12l2 2 4-4"/>
-          <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-          <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-          <path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
-          <path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
-        </svg>
-      )
-    },
-    {
-      id: 5,
       name: 'Spices & Masalas',
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-          <path d="M2 17l10 5 10-5"/>
-          <path d="M2 12l10 5 10-5"/>
-          <circle cx="12" cy="12" r="1"/>
-        </svg>
-      )
-    }
+      icon: <img src={spicesIcon} alt="Spices & Masalas" className="category-image" />
+    },
   ];
 
   return (

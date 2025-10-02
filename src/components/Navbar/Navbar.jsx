@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   ShoppingCart,
   User,
@@ -8,48 +8,93 @@ import {
   Search,
   MapPin,
   ChevronDown,
-  UserPlus,
-  Tag,
-  ArrowRight,
-  Home,
   Heart,
-  Bell,
   Package,
   MessageCircle,
   Instagram,
   Linkedin,
-  ExternalLink
+  ExternalLink,
+  Grid3X3,
+  Wheat,
+  Nut,
+  Candy,
+  ChefHat,
+  Gift,
+  Droplets,
+  Apple,
+  Coffee
 } from 'lucide-react';
 import './Navbar.css';
-import logo from '../../assets/organvilogo.jpg';
+import logo from '../../assets/organvilogo1.png';
 import LoginModal from '../../pages/LoginModal/LoginModal';
+
+// Import category images (same as desktop)
+import allProductIcon from '../../assets/allproduct.png';
+import pulsesIcon from '../../assets/pulses.png';
+import dryFruitsIcon from '../../assets/dryfruits.png';
+import sweetenerIcon from '../../assets/sweetner.png';
+import spicesIcon from '../../assets/spices.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [cartCount, setCartCount] = useState(0);
-  const [notificationCount, setNotificationCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [showSearchArea, setShowSearchArea] = useState(false);
   const [locationSearchQuery, setLocationSearchQuery] = useState('');
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   const location = useLocation();
+  const navigate = useNavigate();
 
-  // Function to add a notification (for testing)
-  const addNotification = () => {
-    const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-    const newNotification = {
-      id: Date.now(),
-      message: 'New notification',
-      timestamp: new Date().toISOString()
-    };
-    notifications.push(newNotification);
-    localStorage.setItem('notifications', JSON.stringify(notifications));
-    setNotificationCount(notifications.length);
+  // Handle logo click
+  const handleLogoClick = () => {
+    setShowLocationDropdown(false);
+    setShowUserDropdown(false);
+    setShowSearchArea(false);
+    setShowLoginModal(false);
+    setShowSearchResults(false);
+    
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  };
+
+  // Search functionality
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query.trim().length > 2) {
+      // Mock search results - replace with actual search logic
+      const mockResults = [
+        { id: 1, name: 'Organic Turmeric Powder', category: 'Spices' },
+        { id: 2, name: 'Organic Basmati Rice', category: 'Rice' },
+        { id: 3, name: 'Organic Almonds', category: 'Dry Fruits' },
+        { id: 4, name: 'Organic Jaggery', category: 'Sweeteners' },
+        { id: 5, name: 'Organic Moong Dal', category: 'Pulses' }
+      ].filter(item => 
+        item.name.toLowerCase().includes(query.toLowerCase()) ||
+        item.category.toLowerCase().includes(query.toLowerCase())
+      );
+      setSearchResults(mockResults);
+      setShowSearchResults(true);
+    } else {
+      setSearchResults([]);
+      setShowSearchResults(false);
+    }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Navigate to search results page or handle search
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setShowSearchResults(false);
+    }
   };
 
   useEffect(() => {
@@ -61,13 +106,11 @@ const Navbar = () => {
   useEffect(() => {
     const updateCartCount = () => {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const uniqueItems = cart.length; // Count unique products, not quantities
-      console.log('Navbar cart count update:', uniqueItems, 'Cart items:', cart);
+      const uniqueItems = cart.length;
       setCartCount(uniqueItems);
     };
     
     const handleCartUpdated = (event) => {
-      console.log('Navbar received cartUpdated event:', event.detail);
       setCartCount(event.detail);
     };
     
@@ -90,90 +133,194 @@ const Navbar = () => {
     return () => window.removeEventListener('storage', updateWishlistCount);
   }, []);
 
+  // Close search results when clicking outside
   useEffect(() => {
-    const updateNotificationCount = () => {
-      const notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-      setNotificationCount(notifications.length);
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.search-container')) {
+        setShowSearchResults(false);
+      }
     };
-    updateNotificationCount();
-    window.addEventListener('storage', updateNotificationCount);
-    return () => window.removeEventListener('storage', updateNotificationCount);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Close hamburger menu when switching screen sizes
+  useEffect(() => {
+    const handleResize = () => {
+      console.log('Window resized to:', window.innerWidth); // Debug log
+      
+      // Close menu when switching to desktop view
+      if (window.innerWidth >= 1024 && isMenuOpen) {
+        console.log('Closing hamburger menu - switched to desktop view'); // Debug log
+        setIsMenuOpen(false);
+      }
+      // Close menu when switching between any screen sizes
+      else if (isMenuOpen) {
+        console.log('Closing hamburger menu - screen size changed'); // Debug log
+        setIsMenuOpen(false);
+      }
+    };
 
+    // Check on initial load if we're on desktop
+    if (window.innerWidth >= 1024) {
+      console.log('Initial load - desktop view, closing menu'); // Debug log
+      setIsMenuOpen(false);
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMenuOpen]);
 
   return (
     <>
-      <header className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-        <div className="container">
-          <div className="row-main">
-            <div className="left-group">
-              <button className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Open menu">
+      {/* Main Navbar - White background, positioned below green bar */}
+      <header className={`main-navbar ${isScrolled ? 'scrolled' : ''}`}>
+        <div className="navbar-container">
+          <div className="navbar-content">
+            
+            {/* Left Side - Logo */}
+            <div className="navbar-left">
+              {/* Hamburger Menu - Hidden on desktop */}
+              <button 
+                className="hamburger-menu"
+                onClick={() => {
+                  console.log('Hamburger clicked, current state:', isMenuOpen);
+                  setIsMenuOpen(!isMenuOpen);
+                  console.log('New state will be:', !isMenuOpen);
+                }}
+                aria-label="Open menu"
+              >
                 {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
-              <Link to="/" className="brand">
-                <img src={logo} alt="Organvi" />
+              
+              {/* Logo - No border or outline on click */}
+              <Link 
+                to="/" 
+                className="navbar-logo" 
+                onClick={handleLogoClick}
+                title="Go to Homepage"
+              >
+                <img 
+                  src={logo} 
+                  alt="organic tattva" 
+                  className="logo-image"
+                />
               </Link>
             </div>
 
-            <div className="search">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search for products, brands and more"
-              />
+            {/* Center - Search Bar */}
+            <div className="navbar-center">
+              <div className="search-wrapper">
+                {/* Universal Search Bar - Full width in center */}
+                <div className="search-container">
+                  <form onSubmit={handleSearchSubmit} className="search-form">
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => handleSearch(e.target.value)}
+                      placeholder="Search for products"
+                      className="search-input"
+                    />
+                    <button
+                      type="submit"
+                      className="search-button"
+                    >
+                      <Search size={20} />
+                    </button>
+                  </form>
+                  
+                  {/* Search Results Dropdown */}
+                  {showSearchResults && searchResults.length > 0 && (
+                    <div className="search-results-dropdown">
+                      {searchResults.map((result) => (
+                        <div
+                          key={result.id}
+                          className="search-result-item"
+                          onClick={() => {
+                            navigate(`/product/${result.id}`);
+                            setShowSearchResults(false);
+                            setSearchQuery('');
+                          }}
+                        >
+                          <div className="result-name">{result.name}</div>
+                          <div className="result-category">{result.category}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Location Selector - Next to search bar */}
+                <div 
+                  className="location-selector"
+                  onClick={() => setShowLocationDropdown(!showLocationDropdown)}
+                >
+                  <MapPin size={18} className="location-icon" />
+                  <div className="location-text">
+                    <span className="location-label">Deliver to</span>
+                    <span className="location-value">Pune 411057</span>
+                  </div>
+                  <ChevronDown size={16} className="location-chevron" />
+                </div>
+              </div>
             </div>
 
-            <div className="right-group">
-              <div className="deliver" onClick={() => setShowLocationDropdown(!showLocationDropdown)}>
-                <MapPin size={30} />
-                <div className="deliver-text">
-                  <span className="label">Deliver to</span>
-                  <span className="value">Pune 411057</span>
-                </div>
-                <ChevronDown size={16} />
-              </div>
-
-              <div className="account" onClick={() => setShowUserDropdown(!showUserDropdown)}>
-                <User size={30} />
-                <div className="account-text">
-                  <span className="label">Hello, User</span>
-                  <span className="value">Account & Lists</span>
-                </div>
-              </div>
-
-              <button className="btn outline" onClick={() => setShowLoginModal(true)}>
-                <UserPlus size={18} />
-                Sign up
-              </button>
-
-              <button className="notification-btn">
-                <Bell size={25} />
-              </button>
-
-              <Link to="/addcart" className="cart">
-                <ShoppingCart size={25} />
-                {cartCount > 0 && <span className="badge">{cartCount}</span>}
+            {/* Right Side - Three Circular Icons */}
+            <div className="navbar-right">
+              {/* User Icon */}
+              <Link 
+                to="/account" 
+                className="navbar-icon user-icon"
+                onClick={() => {
+                  setShowUserDropdown(false);
+                  setShowLocationDropdown(false);
+                  setShowSearchArea(false);
+                }}
+              >
+                <User size={24} />
               </Link>
 
-              <button className="btn offers">
-                <Tag size={16} />
-                Offers
-              </button>
+              {/* Heart Icon */}
+              <Link 
+                to="/like" 
+                className="navbar-icon heart-icon"
+              >
+                <Heart size={24} />
+                {wishlistCount > 0 && (
+                  <span className="icon-badge">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
+
+              {/* Cart Icon with Badge */}
+              <Link 
+                to="/cart" 
+                className="navbar-icon cart-icon"
+              >
+                <ShoppingCart size={24} />
+                <span className="icon-badge">
+                  {cartCount}
+                </span>
+              </Link>
             </div>
           </div>
-
         </div>
       </header>
 
-      {/* Location Dropdown Popup */}
+      {/* Location Dropdown */}
       {showLocationDropdown && (
-        <div className="location-dropdown-overlay" onClick={() => setShowLocationDropdown(false)}>
-          <div className="location-dropdown" onClick={(e) => e.stopPropagation()}>
-            <div className="location-dropdown-content">
+        <div 
+          className="dropdown-overlay"
+          onClick={() => setShowLocationDropdown(false)}
+        >
+          <div 
+            className="location-dropdown"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="dropdown-content">
               <button 
-                className="search-area-btn" 
+                className="search-area-button"
                 onClick={() => setShowSearchArea(!showSearchArea)}
               >
                 + Search new area
@@ -196,14 +343,20 @@ const Navbar = () => {
         </div>
       )}
 
-      {/* User Dropdown Popup */}
+      {/* User Dropdown */}
       {showUserDropdown && (
-        <div className="user-dropdown-overlay" onClick={() => setShowUserDropdown(false)}>
-          <div className="user-dropdown" onClick={(e) => e.stopPropagation()}>
-            <div className="user-dropdown-content">
-              <div className="user-auth-section">
+        <div 
+          className="dropdown-overlay"
+          onClick={() => setShowUserDropdown(false)}
+        >
+          <div 
+            className="user-dropdown"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="dropdown-content">
+              <div className="auth-section">
                 <button 
-                  className="signin-btn"
+                  className="signin-button"
                   onClick={() => {
                     setShowLoginModal(true);
                     setShowUserDropdown(false);
@@ -211,8 +364,8 @@ const Navbar = () => {
                 >
                   Sign in
                 </button>
-                <div className="signup-text">
-                  <span className="new-customer">New Customer? </span>
+                <div className="signup-section">
+                  <span className="new-customer-text">New Customer? </span>
                   <button 
                     className="signup-link"
                     onClick={() => {
@@ -231,99 +384,53 @@ const Navbar = () => {
 
       {showLoginModal && <LoginModal onClose={() => setShowLoginModal(false)} />}
 
-      {/* Enhanced Left Drawer Sidebar */}
+      {/* Mobile Sidebar */}
       {isMenuOpen && (
-        <div className="drawer-overlay" onClick={() => setIsMenuOpen(false)}>
-          <aside className="drawer" onClick={(e) => e.stopPropagation()}>
-            <div className="drawer-header">
-              <Link to="/" className="brand" onClick={() => setIsMenuOpen(false)}>
-                <img src={logo} alt="Organvi" />
-              </Link>
-              <button className="drawer-close" onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
+        <div 
+          className={`mobile-overlay ${isMenuOpen ? 'open' : ''}`}
+          onClick={() => setIsMenuOpen(false)}
+        >
+          <aside 
+            className={`mobile-sidebar ${isMenuOpen ? 'open' : ''}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Sidebar Header */}
+            <div className="sidebar-header">
+              <span className="menu-title">MENU</span>
+              <button 
+                className="sidebar-close"
+                onClick={() => setIsMenuOpen(false)}
+                aria-label="Close menu"
+              >
                 <X size={20} />
               </button>
             </div>
 
-            <div className="drawer-body">
-              {/* Login Section with Icons */}
-              <div className="drawer-login-section">
-                <div className="drawer-login-row">
-                  <div className="drawer-login-item" onClick={() => { setShowLoginModal(true); setIsMenuOpen(false); }}>
-                    <User size={18} className="login-icon" />
-                    <span>Log In</span>
-                  </div>
-                  <div className="drawer-icons-group">
-                    <button className="drawer-icon-btn notification-btn">
-                      <Bell size={24} className="notification-icon" />
-                      {notificationCount > 0 && <span className="badge small notification-badge">{notificationCount}</span>}
+            {/* Sidebar Body - Only Categories */}
+            <div className="sidebar-content">
+              {/* Categories Section */}
+              <div className="sidebar-section">
+                <div className="categories-section">
+                  {[
+                    { name: 'Pulses & Dal', path: '/pulses', icon: pulsesIcon },
+                    { name: 'Sweetener', path: '/sweetener', icon: sweetenerIcon },
+                    { name: 'Dry Fruits & Nuts', path: '/dryfruits', icon: dryFruitsIcon },
+                    { name: 'Spices & Masalas', path: '/spices', icon: spicesIcon }
+                  ].map((category, index) => (
+                    <button
+                      key={index}
+                      className="category-item"
+                      onClick={() => {
+                        if (category.path !== '#') {
+                          navigate(category.path);
+                        }
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      <img src={category.icon} alt={category.name} className="category-icon" />
+                      <span className="category-name">{category.name}</span>
                     </button>
-                    <Link to="/addcart" className="drawer-icon-btn cart-btn" onClick={() => setIsMenuOpen(false)}>
-                      <ShoppingCart size={24} className="cart-icon" />
-                      {cartCount > 0 && <span className="badge small cart-badge">{cartCount}</span>}
-                    </Link>
-                  </div>
-                </div>
-              </div>
-
-             
-              
-
-              {/* Account Section */}
-              <div className="drawer-account-section">
-                <div className="drawer-item">
-                  <User size={18} />
-                  <span>My Account</span>
-                </div>
-                <div className="drawer-item">
-                  <Package size={18} />
-                  <span>My Orders</span>
-                </div>
-                <div className="drawer-item">
-                  <Heart size={18} />
-                  <span>My Wishlist</span>
-                  {wishlistCount > 0 && <span className="badge small">{wishlistCount}</span>}
-                </div>
-              </div>
-
-              {/* Horizontal Line */}
-              <div className="drawer-divider" />
-
-              {/* Better by Choice Section */}
-              <div className="drawer-section">Better by Choice</div>
-
-              {/* Horizontal Line */}
-              <div className="drawer-divider" />
-
-              {/* Help & Support Section */}
-              <div className="drawer-support-section">
-                <div className="drawer-item">
-                  <MessageCircle size={18} />
-                  <span>Help & Support</span>
-                </div>
-                <div className="drawer-item">
-                  <span>About Us</span>
-                </div>
-              </div>
-
-              {/* Social Media Section */}
-              <div className="drawer-social-section">
-                <div className="drawer-section">Find Us Here</div>
-                <div className="drawer-social-links">
-                  <a href="https://wa.me/yourwhatsappnumber" target="_blank" rel="noopener noreferrer" className="drawer-social-link">
-                    <MessageCircle size={18} />
-                    <span>WhatsApp</span>
-                    <ExternalLink size={14} />
-                  </a>
-                  <a href="https://linkedin.com/company/organvi" target="_blank" rel="noopener noreferrer" className="drawer-social-link">
-                    <Linkedin size={18} />
-                    <span>LinkedIn</span>
-                    <ExternalLink size={14} />
-                  </a>
-                  <a href="https://instagram.com/organvi" target="_blank" rel="noopener noreferrer" className="drawer-social-link">
-                    <Instagram size={18} />
-                    <span>Instagram</span>
-                    <ExternalLink size={14} />
-                  </a>
+                  ))}
                 </div>
               </div>
             </div>

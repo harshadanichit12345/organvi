@@ -117,7 +117,7 @@
 }
 
 .category-name {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 600;
   text-align: center;
   transition: all 0.3s ease;
@@ -279,6 +279,37 @@
   }
 }
 
+/* Responsive Design */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .categories {
+    padding: 5rem 0;
+  }
+
+  .categories-title {
+    font-size: 2.8rem;
+  }
+
+  .categories-description {
+    font-size: 1.1rem;
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.2rem;
+  }
+
+  .category-image-container {
+    height: 190px;
+  }
+
+  .category-name {
+    font-size: 1.3rem;
+  }
+}
+
+/* Medium mobile styles (481px - 767px) */
 @media (max-width: 768px) {
   .categories {
     padding: 4rem 0;
@@ -286,6 +317,11 @@
 
   .categories-title {
     font-size: 2.5rem;
+  }
+
+  .categories-description {
+    font-size: 1rem;
+    padding: 0 1rem;
   }
 
   .categories-grid {
@@ -298,13 +334,37 @@
   }
 
   .category-name {
-    font-size: 1.2rem;
+    font-size: 0.7rem;
+  }
+
+  .product-actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .add-to-cart-btn1 {
+    width: 100%;
+    margin-top: 0.5rem;
   }
 }
 
+/* Small mobile styles (≤480px) */
 @media (max-width: 480px) {
+  .categories {
+    padding: 3rem 0;
+  }
+
+  .categories-title {
+    font-size: 2rem;
+  }
+
+  .categories-description {
+    font-size: 0.95rem;
+    padding: 0 0.75rem;
+  }
+
   .categories-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: 1fr;
     gap: 1.5rem;
   }
 
@@ -317,7 +377,38 @@
     font-size: 1.1rem;
   }
 
-  .categories-title {
-    font-size: 2rem;
+  .product-actions {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .quantity-selector {
+    padding: 0.4rem;
+  }
+
+  .quantity-btn {
+    width: 18px;
+    height: 18px;
+    font-size: 0.8rem;
+  }
+
+  .quantity {
+    font-size: 1rem;
+    min-width: 25px;
+  }
+
+  .add-to-cart-btn1 {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+
+  .cart-popup-message {
+    top: 70px;
+    right: 10px;
+    left: 10px;
+    padding: 10px 15px;
+    font-size: 13px;
   }
 }

@@ -281,6 +281,47 @@
   transform: scale(1.2);
 }
 
+/* Responsive Design */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .product-scroller {
+    padding: 5rem 0;
+  }
+
+  .scroller-title {
+    font-size: 2.8rem;
+  }
+
+  .scroller-description {
+    font-size: 1.1rem;
+  }
+
+  .products-wrapper {
+    margin: 0 25px;
+  }
+
+  .product-card {
+    flex: 0 0 calc(33.333% - 1.5rem);
+    width: 280px;
+    margin-right: 25px;
+  }
+
+  .scroller-button {
+    width: 55px;
+    height: 55px;
+  }
+
+  .scroller-button.left {
+    left: -27px;
+  }
+
+  .scroller-button.right {
+    right: -27px;
+  }
+}
+
+/* Medium mobile styles (481px - 767px) */
 @media (max-width: 768px) {
   .product-scroller {
     padding: 4rem 0;
@@ -290,16 +331,22 @@
     font-size: 2.5rem;
   }
 
+  .scroller-description {
+    font-size: 1rem;
+  }
+
   .products-wrapper {
     margin: 0 20px;
   }
 
   .products-container {
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .product-card {
-    flex: 0 0 calc(50% - 1rem);
+    flex: 0 0 calc(50% - 0.75rem);
+    width: 100%;
+    margin-right: 0;
   }
 
   .scroller-button {
@@ -318,20 +365,43 @@
   .product-info {
     padding: 1.5rem;
   }
+
+  .product-name {
+    font-size: 1.3rem;
+  }
+
+  .price {
+    font-size: 1.6rem;
+  }
 }
 
+/* Small mobile styles (≤480px) */
 @media (max-width: 480px) {
+  .product-scroller {
+    padding: 3rem 0;
+  }
+
+  .scroller-title {
+    font-size: 2rem;
+  }
+
+  .scroller-description {
+    font-size: 0.95rem;
+    padding: 0 1rem;
+  }
+
   .products-wrapper {
-    margin: 0;
+    margin: 0 10px;
   }
 
   .products-container {
-    gap: 0;
+    gap: 1rem;
   }
 
   .product-card {
     flex: 0 0 100%;
     margin-right: 0;
+    width: 100%;
   }
 
   .product-actions {
@@ -341,6 +411,7 @@
 
   .add-to-cart-btn {
     width: 100%;
+    margin-top: 1rem;
   }
 
   .scroller-button {
@@ -366,5 +437,24 @@
 
   .price {
     font-size: 1.5rem;
+  }
+
+  .product-description {
+    font-size: 0.9rem;
+  }
+
+  .quantity-selector {
+    padding: 0.4rem;
+  }
+
+  .quantity-btn {
+    width: 18px;
+    height: 18px;
+    font-size: 0.8rem;
+  }
+
+  .quantity {
+    font-size: 1rem;
+    min-width: 25px;
   }
 }
