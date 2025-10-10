@@ -11,6 +11,10 @@ import Products from './pages/Products/Products';
 import CategoriesPage from './pages/Categories/Categories';
 import AllCategoriesPage from './pages/AllCategories/AllCategories';
 import ContactPage from './pages/ContactPage/ContactPage';
+import Returns from './pages/Returns/Returns';
+import Shipping from './pages/Shipping/Shipping';
+import FAQ from './pages/FAQ/FAQ';
+import About from './pages/About/About';
 import LoginModel from './pages/LoginModal/LoginModal';
 import Cart from './pages/Cart/Cart';
 import AddCart from './components/Cart/AddCart';
@@ -42,6 +46,10 @@ function App() {
               <Route path="/sweetener" element={<Sweetener />} />
               <Route path="/spices" element={<Spices />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/returns" element={<Returns />} />
+              <Route path="/shipping" element={<Shipping />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/about" element={<About />} />
               <Route path="/loginmodel" element={<LoginModel />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/addcart" element={<AddCart />} />

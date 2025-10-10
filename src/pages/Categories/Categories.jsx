@@ -1,50 +1,81 @@
 import React, { useState } from 'react';
 import './Categories.css';
 
-// Grid-style icons for all categories
+// Import GIF images from assets
+import dalGif from '../../assets/Dal.gif';
+import almondsGif from '../../assets/almonds-17904960-unscreen.gif';
+import sugarGif from '../../assets/sugar-cubes-18107560-unscreen.gif';
+import grindGif from '../../assets/grind-14324580-unscreen.gif';
+
+// GIF icons for all categories with orange color styling
 const AllCategoriesIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <rect x="3" y="3" width="7" height="7" rx="1"/>
-    <rect x="14" y="3" width="7" height="7" rx="1"/>
-    <rect x="3" y="14" width="7" height="7" rx="1"/>
-    <rect x="14" y="14" width="7" height="7" rx="1"/>
-  </svg>
+  <img 
+    src={dalGif} 
+    alt="All Categories" 
+    className="category-gif" 
+    style={{
+      background: 'transparent',
+      filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
+      border: 'none',
+      outline: 'none'
+    }}
+  />
 );
 
 const PulsesIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <rect x="3" y="3" width="7" height="7" rx="1"/>
-    <rect x="14" y="3" width="7" height="7" rx="1"/>
-    <rect x="3" y="14" width="7" height="7" rx="1"/>
-    <rect x="14" y="14" width="7" height="7" rx="1"/>
-  </svg>
+  <img 
+    src={dalGif} 
+    alt="Pulses & Grains" 
+    className="category-gif" 
+    style={{
+      background: 'transparent',
+      filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
+      border: 'none',
+      outline: 'none'
+    }}
+  />
 );
 
 const DryFruitsIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <rect x="3" y="3" width="7" height="7" rx="1"/>
-    <rect x="14" y="3" width="7" height="7" rx="1"/>
-    <rect x="3" y="14" width="7" height="7" rx="1"/>
-    <rect x="14" y="14" width="7" height="7" rx="1"/>
-  </svg>
+  <img 
+    src={almondsGif} 
+    alt="Dry Fruits & Nuts" 
+    className="category-gif" 
+    style={{
+      background: 'transparent',
+      filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
+      border: 'none',
+      outline: 'none'
+    }}
+  />
 );
 
 const SweetenersIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <rect x="3" y="3" width="7" height="7" rx="1"/>
-    <rect x="14" y="3" width="7" height="7" rx="1"/>
-    <rect x="3" y="14" width="7" height="7" rx="1"/>
-    <rect x="14" y="14" width="7" height="7" rx="1"/>
-  </svg>
+  <img 
+    src={sugarGif} 
+    alt="Sweeteners" 
+    className="category-gif" 
+    style={{
+      background: 'transparent',
+      filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
+      border: 'none',
+      outline: 'none'
+    }}
+  />
 );
 
 const SpicesIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <rect x="3" y="3" width="7" height="7" rx="1"/>
-    <rect x="14" y="3" width="7" height="7" rx="1"/>
-    <rect x="3" y="14" width="7" height="7" rx="1"/>
-    <rect x="14" y="14" width="7" height="7" rx="1"/>
-  </svg>
+  <img 
+    src={grindGif} 
+    alt="Spices & Powders" 
+    className="category-gif" 
+    style={{
+      background: 'transparent',
+      filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
+      border: 'none',
+      outline: 'none'
+    }}
+  />
 );
 
 const Categories = () => {

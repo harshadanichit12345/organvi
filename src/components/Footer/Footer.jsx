@@ -1,4 +1,4 @@
-import { Instagram, Facebook, Twitter, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import { Instagram, Facebook, Twitter, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/organvilogo.jpg';
 import fssaiLogo from '../../assets/fssai.png';
@@ -6,6 +6,9 @@ import rupayLogo from '../../assets/rupay.png';
 import visaLogo from '../../assets/visa.png';
 import mastercardLogo from '../../assets/mastercard.png';
 import upiLogo from '../../assets/upi (1).png';
+import addressIcon from '../../assets/address.gif';
+import phoneIcon from '../../assets/phoneno.gif';
+import emailIcon from '../../assets/email.gif';
 import './Footer.css';
 
 const Footer = () => {
@@ -56,7 +59,6 @@ const Footer = () => {
           <div className="footer-section policies-section">
             <h4 className="footer-title">Policies</h4>
             <ul className="footer-list">
-              <li><Link to="/partner" className="footer-link">Profit by Partnering</Link></li>
               <li><Link to="/privacy" className="footer-link">Privacy Policy</Link></li>
               <li><Link to="/terms" className="footer-link">Terms and Condition</Link></li>
               <li><Link to="/returns" className="footer-link">Returns and Refund</Link></li>
@@ -72,15 +74,15 @@ const Footer = () => {
              
               <div className="contact-details">
                 <div className="contact-item">
-                  <MapPin size={20} />
+                  <img src={addressIcon} alt="Address" className="contact-icon" />
                   <span>Sr No 61, 1/ B, Nalegaon Road, near Govt Rest House, Malkapur, Udgir, Maharashtra 413517</span>
                 </div>
-                <div className="contact-item">
-                  <Mail size={20} />
+                <div className="contact-item contact-email">
+                  <img src={emailIcon} alt="Email" className="contact-icon" />
                   <span>organviagro@gmail.com</span>
                 </div>
                   <div className="contact-item contact-phone">
-                    <Phone size={20} />
+                    <img src={phoneIcon} alt="Phone" className="contact-icon" />
                     <span>+91 9175580173/ 9284361797</span>
                   </div>
                 
@@ -95,11 +97,11 @@ const Footer = () => {
                 <a href="#" className="social-link" aria-label="Facebook">
                   <Facebook size={20} />
                 </a>
-                <a href="#" className="social-link" aria-label="Instagram">
+                <a href="https://www.instagram.com/organvi2021/?igsh=MW00cWsxZTE5ajV6aw%3D%3D" target="_blank" rel="noopener noreferrer" className="social-link" aria-label="Instagram">
                   <Instagram size={20} />
                 </a>
-                <a href="#" className="social-link" aria-label="YouTube">
-                  <Youtube size={20} />
+                <a href="#" className="social-link" aria-label="LinkedIn">
+                  <Linkedin size={20} />
                 </a>
               </div>
             </div>

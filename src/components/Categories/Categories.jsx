@@ -2,15 +2,17 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Categories.css';
 
-// Import category images
-import allProductIcon from '../../assets/allproduct.png';
-import pulsesIcon from '../../assets/pulses.png';
-import dryFruitsIcon from '../../assets/dryfruits.png';
-import sweetenerIcon from '../../assets/sweetner.png';
-import spicesIcon from '../../assets/spices.png';
+// Import GIF images from assets
+import dalGif from '../../assets/Dal.gif';
+import almondsGif from '../../assets/almonds-17904960-unscreen.gif';
+import sugarGif from '../../assets/sugar-cubes-18107560-unscreen.gif';
+import grindGif from '../../assets/grind-14324580-unscreen.gif';
 
 const Categories = () => {
   const navigate = useNavigate();
+  
+  // Debug: Log the GIF imports
+  console.log('GIF imports:', { dalGif, almondsGif, sugarGif, grindGif });
 
   const handleCategoryClick = (categoryId) => {
     if (categoryId === 1) {
@@ -35,22 +37,62 @@ const Categories = () => {
     {
       id: 1,
       name: 'Pulses & Dal',
-      icon: <img src={pulsesIcon} alt="Pulses & Dal" className="category-image" />
+      icon: <img 
+        src={dalGif} 
+        alt="Pulses & Dal" 
+        className="category-gif" 
+        style={{
+          background: 'transparent',
+          filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
+          border: 'none',
+          outline: 'none'
+        }}
+      />
     },
     {
       id: 2,
       name: 'Sweetener',
-      icon: <img src={sweetenerIcon} alt="Sweetener" className="category-image" />
+      icon: <img 
+        src={sugarGif} 
+        alt="Sweetener" 
+        className="category-gif" 
+        style={{
+          background: 'transparent',
+          filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
+          border: 'none',
+          outline: 'none'
+        }}
+      />
     },
     {
       id: 3,
       name: 'Dry Fruits & Nuts',
-      icon: <img src={dryFruitsIcon} alt="Dry Fruits & Nuts" className="category-image" />
+      icon: <img 
+        src={almondsGif} 
+        alt="Dry Fruits & Nuts" 
+        className="category-gif" 
+        style={{
+          background: 'transparent',
+          filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
+          border: 'none',
+          outline: 'none'
+        }}
+      />
     },
     {
       id: 4,
       name: 'Spices & Masalas',
-      icon: <img src={spicesIcon} alt="Spices & Masalas" className="category-image" />
+      icon: <img 
+        src={grindGif} 
+        alt="Spices & Masalas" 
+        className="category-gif" 
+        style={{
+          background: 'transparent',
+          filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
+          border: 'none',
+          outline: 'none'
+        }}
+      />
     },
   ];
 

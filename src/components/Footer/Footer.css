@@ -30,12 +30,13 @@
 .footer-content {
   display: grid;
   grid-template-columns: 3fr 1fr 2fr 1fr;
-  gap: 3rem;
+  gap: 2rem;
   align-items: start;
-  padding: 4rem 3rem 2rem 3rem;
+  padding: 2rem 4rem 1rem 4rem;
   max-width: 1400px;
   margin: 0 auto;
   animation: fadeInUp 1s ease-out 0.3s both;
+  grid-auto-flow: row;
 }
 
 @keyframes fadeInUp {
@@ -73,8 +74,10 @@
   grid-column: 1;
   text-align: left;
   padding: 0;
-  margin-left: -5rem;
+  margin-left: 0;
   padding-left: 0;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 
@@ -82,13 +85,24 @@
   grid-column: 4;
 }
 
+.policies-section {
+  text-align: left;
+}
+
+.newsletter-section {
+  grid-column: 1;
+  text-align: left;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
 .footer-title {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   color: black;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   position: relative;
   animation: titleSlideIn 0.8s ease-out 0.5s both;
   transition: all 0.3s ease;
@@ -112,13 +126,15 @@
 
 
 .about-text {
-  font-size: 1rem;
-  line-height: 1.4;
-  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  margin-bottom: 1.2rem;
   color: black;
-  max-width: 150%;
+  max-width: 100%;
   text-align: left;
-  width: 150%;
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .certification {
@@ -171,20 +187,65 @@
   flex-direction: column;
   gap: 0.8rem;
   padding: 0;
+  flex-wrap: nowrap;
 }
 
 .policies-section .footer-list {
   flex-direction: column;
   gap: 0.8rem;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.policies-section .footer-list li {
+  text-align: left;
+  align-self: flex-start;
+}
+
+.policies-section .footer-link {
+  text-align: left;
+  display: inline-block;
+}
+
+.footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) {
+  text-align: left !important;
+}
+
+.footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) .footer-title {
+  text-align: left !important;
+}
+
+.footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) .footer-list {
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+.footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) .footer-list li {
+  text-align: left !important;
+  align-self: flex-start !important;
+}
+
+.footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) .footer-link {
+  text-align: left !important;
+  display: inline-block;
+}
+
+.footer-list li {
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .footer-link {
   color: black;
   text-decoration: none;
   transition: all 0.3s ease;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   position: relative;
   animation: linkFadeIn 0.6s ease-out both;
+  white-space: nowrap;
+  display: inline-block;
 }
 
 .footer-link:hover {
@@ -204,24 +265,24 @@
   }
 }
 
-.footer-link::before {
+
+.footer-link::after {
   content: '';
   position: absolute;
-  left: -15px;
-  top: 50%;
-  transform: translateY(-50%);
+  bottom: -2px;
+  left: 0;
   width: 0;
   height: 2px;
   background: #6f9c3d;
   transition: width 0.3s ease;
 }
 
-.footer-link:hover::before {
-  width: 10px;
+.footer-link:hover::after {
+  width: 100%;
 }
 
 .footer-link:hover {
-  color: #ff8c42;
+  color: #6f9c3d;
   transform: translateX(15px);
 }
 
@@ -291,6 +352,42 @@
   box-shadow: 0 8px 25px rgba(111, 156, 61, 0.4);
 }
 
+/* Twitter hover - Twitter Blue */
+.social-link[aria-label="Twitter"]:hover::before {
+  background: #1DA1F2;
+}
+
+.social-link[aria-label="Twitter"]:hover {
+  box-shadow: 0 8px 25px rgba(29, 161, 242, 0.4);
+}
+
+/* Facebook hover - Facebook Blue */
+.social-link[aria-label="Facebook"]:hover::before {
+  background: #1877F2;
+}
+
+.social-link[aria-label="Facebook"]:hover {
+  box-shadow: 0 8px 25px rgba(24, 119, 242, 0.4);
+}
+
+/* Instagram hover - Instagram Gradient */
+.social-link[aria-label="Instagram"]:hover::before {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.social-link[aria-label="Instagram"]:hover {
+  box-shadow: 0 8px 25px rgba(225, 48, 108, 0.4);
+}
+
+/* LinkedIn hover - LinkedIn Blue */
+.social-link[aria-label="LinkedIn"]:hover::before {
+  background: #0077B5;
+}
+
+.social-link[aria-label="LinkedIn"]:hover {
+  box-shadow: 0 8px 25px rgba(0, 119, 181, 0.4);
+}
+
 .newsletter {
   animation: scaleIn 0.8s ease-out 0.6s both;
   width: 100%;
@@ -298,21 +395,24 @@
 }
 
 .newsletter-title {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   color: black;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
+  padding-top: 2rem;
 }
 
 .newsletter-form {
   display: flex;
   background: rgba(0, 0, 0, 0.1);
-  border-radius: 25px;
+  border-radius: 20px;
   overflow: hidden;
   border: 2px solid transparent;
   transition: all 0.3s ease;
+  height: 35px;
+  flex-wrap: nowrap;
 }
 
 .newsletter-form:focus-within {
@@ -322,18 +422,19 @@
 
 .newsletter-input {
   flex: 1;
-  padding: 0.8rem 1rem;
+  padding: 0.4rem 0.6rem;
   border: none;
   background: transparent;
   color: black;
-  font-size: 1.1rem;
+  font-size: 0.8rem;
   outline: none;
+  min-width: 0;
 }
 
 .newsletter-btn {
   background: #6f9c3d;
   border: none;
-  padding: 0.8rem 1rem;
+  padding: 0.4rem 0.6rem;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -341,6 +442,8 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
+  font-size: 0.75rem;
+  flex-shrink: 0;
 }
 
 .newsletter-btn:hover {
@@ -351,7 +454,7 @@
 
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2rem 0;
+  padding: 1rem 0;
   animation: slideInLeft 0.8s ease-out 0.8s both;
 }
 
@@ -421,30 +524,37 @@
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  flex-wrap: nowrap;
 }
 
 .contact-item {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   color: black;
-  line-height: 1.4;
+  line-height: 1.3;
+  flex-wrap: nowrap;
 }
 
 .contact-phone {
   white-space: nowrap;
 }
 
-.contact-item svg {
-  color: black;
-  margin-top: 0.1rem;
-  flex-shrink: 0;
-  transition: color 0.3s ease;
+.contact-email {
+  white-space: nowrap;
 }
 
-.contact-item:hover svg {
-  color: #6f9c3d;
+.contact-icon {
+  width: 30px;
+  height: 30px;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.contact-item:hover .contact-icon {
+  transform: scale(1.1);
 }
 
 .social-section {
@@ -452,12 +562,12 @@
 }
 
 .social-title {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   color: black;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
 
 
@@ -467,45 +577,200 @@
 /* Tablet styles (768px - 1024px) */
 @media (max-width: 1024px) {
   .footer-content {
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
     padding: 3rem 2rem 2rem;
     max-width: 1000px;
   }
 
   .about-section {
-    grid-column: 1;
+    grid-column: 1 / -1;
+    margin-bottom: 1rem;
   }
 
   .contact-section {
+    grid-column: 1;
+  }
+
+  .policies-section {
     grid-column: 2;
   }
   
-  .footer-logo {
-    width: 120px;
-    height: 120px;
-  }
-  
   .footer-title {
-    font-size: 1.8rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
   }
   
-  .footer-description {
-    font-size: 0.95rem;
+  .about-text {
+    font-size: 0.8rem;
+    width: 100%;
+    max-width: none;
+  }
+
+  .newsletter {
+    max-width: 100%;
+    margin-top: 1rem;
+  }
+
+  .newsletter-title {
+    font-size: 1rem;
+  }
+
+  .newsletter-form {
+    height: 40px;
+  }
+
+  .newsletter-input {
+    font-size: 0.8rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .newsletter-btn {
+    font-size: 0.75rem;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .contact-item {
+    font-size: 0.8rem;
+  }
+
+  .social-links {
+    gap: 0.8rem;
+  }
+
+  .social-link {
+    width: 42px;
+    height: 42px;
   }
 }
 
 /* Medium mobile styles (481px - 767px) */
 @media (max-width: 768px) {
   .footer-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 2rem 1rem 1rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem 2rem 0.8rem 2rem;
   }
 
-  .about-section,
+  .about-section {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
   .contact-section {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+
+  .policies-section {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .policies-section .footer-title {
+    text-align: left;
+  }
+
+  .policies-section .footer-list {
+    align-items: flex-start;
+  }
+
+  .footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) {
     grid-column: 1;
+    text-align: left;
+  }
+
+  .footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) .footer-title {
+    text-align: left !important;
+  }
+
+  .footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) .footer-list {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) .footer-list li {
+    text-align: left !important;
+    align-self: flex-start !important;
+  }
+
+  .newsletter-section {
+    grid-column: 1;
+    text-align: left;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+
+  .about-section {
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  .about-text {
+    text-align: center;
+    width: 100%;
+    max-width: none;
+    font-size: 0.9rem;
+  }
+
+  .footer-title {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .footer-list {
+    align-items: center;
+  }
+
+  .footer-link {
+    font-size: 0.85rem;
+  }
+
+  .newsletter {
+    max-width: 100%;
+    margin: 1rem auto 0;
+  }
+
+  .newsletter-title {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .newsletter-form {
+    height: 35px;
+    max-width: 350px;
+    margin: 0 auto;
+    flex-wrap: nowrap;
+  }
+
+  .newsletter-input {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .newsletter-btn {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.6rem;
+    flex-shrink: 0;
+  }
+
+  .contact-details {
+    align-items: center;
+  }
+
+  .contact-item {
+    font-size: 0.8rem;
+    justify-content: center;
+  }
+
+  .social-links {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .social-link {
+    width: 44px;
+    height: 44px;
   }
 
   .footer-bottom-content {
@@ -517,32 +782,46 @@
   .footer-bottom-links {
     gap: 1.5rem;
   }
-
-  .social-links {
-    justify-content: center;
-  }
-
-  .contact-item {
-    font-size: 0.85rem;
-  }
-
-
-  .floating-chat {
-    bottom: 1rem;
-    left: 1rem;
-  }
-
-  .chat-bubble {
-    width: 50px;
-    height: 50px;
-  }
 }
 
 /* Small mobile styles (≤480px) */
 @media (max-width: 480px) {
   .footer-content {
-    padding: 1.5rem 1rem 1rem;
-    gap: 1.5rem;
+    grid-template-columns: 1fr 1fr;
+    padding: 1rem 1.5rem 0.8rem 1.5rem;
+    gap: 1rem;
+  }
+
+  .about-section {
+    grid-column: 1 / -1;
+  }
+
+  .contact-section {
+    grid-column: 1 / -1;
+  }
+
+  .footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) {
+    grid-column: 1;
+  }
+
+  .policies-section {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .policies-section .footer-title {
+    text-align: left;
+  }
+
+  .policies-section .footer-list {
+    align-items: flex-start;
+  }
+
+  .newsletter-section {
+    grid-column: 1;
+    text-align: left;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
   }
 
   .footer-section {
@@ -550,13 +829,63 @@
   }
 
   .footer-title {
-    font-size: 1.6rem;
+    font-size: 0.95rem;
     text-align: center;
+    margin-bottom: 0.5rem;
   }
 
+  .about-text {
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
 
   .footer-link {
-    font-size: 1.1rem;
+    font-size: 0.8rem;
+  }
+
+  .newsletter {
+    max-width: 100%;
+    margin: 1rem auto 0;
+  }
+
+  .newsletter-title {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .newsletter-form {
+    flex-direction: row;
+    border-radius: 10px;
+    gap: 0;
+    height: 32px;
+    max-width: 100%;
+    flex-wrap: nowrap;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.7rem;
+    border-radius: 0;
+    min-width: 0;
+  }
+
+  .newsletter-btn {
+    flex-shrink: 0;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0;
+    font-size: 0.7rem;
+  }
+
+  .contact-item {
+    font-size: 0.75rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.2rem;
+  }
+
+  .contact-item svg {
+    margin: 0 auto;
   }
 
   .social-links {
@@ -568,33 +897,6 @@
   .social-link {
     width: 40px;
     height: 40px;
-  }
-
-  .newsletter {
-    max-width: 100%;
-  }
-
-  .newsletter-title {
-    font-size: 1.3rem;
-  }
-
-  .newsletter-form {
-    flex-direction: column;
-    border-radius: 12px;
-    gap: 0.5rem;
-  }
-
-  .newsletter-input {
-    width: 100%;
-    padding: 0.9rem 1rem;
-    font-size: 1.1rem;
-  }
-
-  .newsletter-btn {
-    width: 100%;
-    padding: 0.9rem 1rem;
-    border-radius: 8px;
-    font-size: 1.1rem;
   }
 
   .footer-bottom {
@@ -612,33 +914,121 @@
     gap: 0.8rem;
   }
 
-.copyright,
-.footer-bottom-link {
-  font-size: 1.1rem;
-}
-
-
-  .floating-chat {
-    bottom: 0.5rem;
-    left: 0.5rem;
-  }
-
-  .chat-bubble {
-    width: 45px;
-    height: 45px;
-  }
-
-  .notification-badge {
-    width: 16px;
-    height: 16px;
-    font-size: 0.6rem;
+  .copyright,
+  .footer-bottom-link {
+    font-size: 0.9rem;
   }
 
   .company-info {
     text-align: center;
   }
 
+  .fssai-logo {
+    height: 120px;
+    margin: 0 auto;
+  }
+
+  .payment-methods {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .payment-logo {
+    height: 25px;
+  }
+}
+
+/* Extra small mobile styles (≤320px) */
+@media (max-width: 320px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    padding: 0.8rem 0.8rem 0.8rem 0.8rem;
+    gap: 0.6rem;
+  }
+
+  .about-section {
+    grid-column: 1 / -1;
+  }
+
+  .contact-section {
+    grid-column: 1 / -1;
+  }
+
+  .footer-section:not(.about-section):not(.contact-section):not(.policies-section):not(.newsletter-section) {
+    grid-column: 1;
+  }
+
+  .policies-section {
+    grid-column: 1;
+    text-align: left;
+  }
+
+  .policies-section .footer-title {
+    text-align: left;
+  }
+
+  .policies-section .footer-list {
+    align-items: flex-start;
+  }
+
+  .newsletter-section {
+    grid-column: 1;
+    text-align: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+
+  .footer-title {
+    font-size: 0.9rem;
+  }
+
+  .about-text {
+    font-size: 0.7rem;
+  }
+
+  .footer-link {
+    font-size: 0.85rem;
+  }
+
+  .newsletter-title {
+    font-size: 0.85rem;
+  }
+
+  .newsletter-form {
+    height: 32px;
+    flex-wrap: nowrap;
+  }
+
+  .newsletter-input {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .newsletter-btn {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+
   .contact-item {
-    font-size: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .social-link {
+    width: 36px;
+    height: 36px;
+  }
+
+  .fssai-logo {
+    height: 100px;
+  }
+
+  .payment-logo {
+    height: 22px;
+  }
+
+  .copyright {
+    font-size: 0.8rem;
   }
 }
