@@ -1,0 +1,143 @@
+/* Congratulations Page Styles */
+.congratulations-container {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 0;
+}
+
+.congratulations-form {
+  background: #f7fff7;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 4rem 3rem;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  animation: slideDown 0.8s ease-out;
+  transform: translateY(0);
+  text-align: center;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Congratulations Emoji */
+.congratulations-emoji {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  animation: bounce 1s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Congratulations Message */
+.congratulations-message {
+  margin-bottom: 3rem;
+}
+
+.congratulations-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.5px;
+}
+
+.congratulations-subtitle {
+  font-size: 1.2rem;
+  color: #22c55e;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Loading Section */
+.loading-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner {
+  color: #22c55e;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .congratulations-container {
+    padding: 1rem;
+  }
+  
+  .congratulations-form {
+    padding: 3rem 2rem;
+    max-width: 100%;
+  }
+  
+  .congratulations-emoji {
+    font-size: 3.5rem;
+  }
+  
+  .congratulations-title {
+    font-size: 2rem;
+  }
+  
+  .congratulations-subtitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .congratulations-form {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .congratulations-emoji {
+    font-size: 3rem;
+  }
+  
+  .congratulations-title {
+    font-size: 1.8rem;
+  }
+  
+  .congratulations-subtitle {
+    font-size: 1rem;
+  }
+}

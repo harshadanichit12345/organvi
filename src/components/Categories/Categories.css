@@ -1,0 +1,450 @@
+.categories-container {
+  padding: 2rem 0 0 0;
+  max-width: 100%;
+  margin: 0;
+  background: #f8f7f3; /* Light textured off-white background */
+  border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+/* Responsive design for categories */
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .categories-row {
+    gap: 0.3rem;
+    padding: 0.6rem 0.8rem;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    overflow: visible;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.2rem;
+    flex-shrink: 1;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .category-gif {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .category-name {
+    font-size: 0.6rem;
+    margin-top: 0.1rem;
+    line-height: 1.0;
+  }
+}
+
+/* Mobile styles (≤768px) */
+@media (max-width: 768px) {
+  .categories-row {
+    gap: 0.2rem;
+    padding: 0.4rem 0.5rem;
+    overflow: visible;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.1rem;
+    flex-shrink: 1;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .category-gif {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .category-name {
+    font-size: 0.5rem;
+    line-height: 1.0;
+    margin-top: 0.05rem;
+  }
+}
+
+/* Small mobile styles (≤480px) */
+@media (max-width: 480px) {
+  .categories-row {
+    gap: 0.1rem;
+    padding: 0.3rem 0.3rem;
+    overflow: visible;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.05rem;
+    flex-shrink: 1;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .category-gif {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .category-name {
+    font-size: 0.45rem;
+    line-height: 1.0;
+    margin-top: 0.02rem;
+  }
+}
+
+/* Extra small mobile styles (≤360px) */
+@media (max-width: 360px) {
+  .categories-row {
+    gap: 0.05rem;
+    padding: 0.2rem 0.2rem;
+    overflow: visible;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+  
+  .category-item {
+    min-width: 0;
+    padding: 0.02rem;
+    flex-shrink: 1;
+    flex: 1;
+  }
+  
+  .category-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .category-gif {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .category-name {
+    font-size: 0.4rem;
+    line-height: 1.0;
+    margin-top: 0.01rem;
+  }
+}
+
+/* No scrollbar needed - categories fit in single row */
+
+.categories-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  background: #f8f7f3; /* Light textured off-white background */
+  padding: 0.8rem 1rem;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.3rem;
+  min-width: 0;
+  background: transparent;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  flex: 1;
+  flex-shrink: 1;
+}
+
+.category-item:hover {
+  background: transparent;
+}
+
+.category-icon {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 0.2rem;
+  transition: transform 0.3s ease;
+}
+
+.category-item:hover .category-icon {
+  transform: translateY(-4px);
+}
+
+.category-image {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2);
+}
+
+/* GIF image styling with orange color effects */
+.category-gif {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  background: transparent !important;
+  filter: hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6) !important;
+  transition: all 0.3s ease;
+  border: none !important;
+  outline: none !important;
+}
+
+.category-item:hover .category-gif {
+  transform: scale(1.1);
+  filter: hue-rotate(40deg) saturate(2.5) brightness(1.3) contrast(1.5) !important;
+}
+
+/* Additional specific styling to ensure GIF changes are applied */
+.categories-container .category-item .category-icon .category-gif {
+  background: transparent !important;
+  filter: hue-rotate(30deg) saturate(2.0) brightness(1.2) contrast(1.4) !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.categories-container .category-item:hover .category-icon .category-gif {
+  filter: hue-rotate(40deg) saturate(2.5) brightness(1.3) contrast(1.5) !important;
+}
+
+/* Force orange color on all GIF images */
+.categories-container img.category-gif,
+.categories-container .category-item .category-icon img,
+.categories-container .category-item img {
+  filter: hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6) !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.category-name {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #2d5016;
+  text-align: center;
+  line-height: 1.1;
+  margin-top: 0.2rem;
+}
+
+/* Responsive Design */
+
+/* Large Desktop (1200px+) */
+@media (min-width: 1200px) {
+  .categories-container {
+    padding: 0.5rem 2rem 0 2rem;
+  }
+  
+  .categories-row {
+    gap: 3rem;
+  }
+  
+  .category-item {
+    min-width: 140px;
+    padding: 0.5rem;
+  }
+  
+  .category-icon {
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .category-image {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .category-gif {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .category-name {
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet styles (768px - 1024px) */
+@media (max-width: 1024px) {
+  .categories-container {
+    padding: 0.5rem 1.5rem 0 1.5rem;
+  }
+  
+  .categories-row {
+    gap: 1.5rem;
+  }
+  
+  .category-item {
+    min-width: 110px;
+    padding: 0.5rem;
+  }
+  
+  .category-icon {
+    width: 65px;
+    height: 65px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .category-image {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .category-gif {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .category-name {
+    font-size: 0.9rem;
+  }
+}
+
+/* Medium mobile styles (481px - 767px) */
+@media (max-width: 768px) {
+  .categories-container {
+    padding: 0.3rem 1rem 0 1rem;
+  }
+  
+  .categories-row {
+    gap: 1.2rem;
+    justify-content: center;
+  }
+  
+  .category-item {
+    min-width: 100px;
+    padding: 0.3rem;
+  }
+  
+  .category-icon {
+    width: 60px;
+    height: 60px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .category-image {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .category-gif {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .category-name {
+    font-size: 0.85rem;
+    line-height: 1.2;
+  }
+}
+
+/* Small mobile styles (≤480px) */
+@media (max-width: 480px) {
+  .categories-container {
+    padding: 0.2rem 0.5rem 0 0.5rem;
+  }
+  
+  .categories-row {
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .category-item {
+    min-width: 85px;
+    padding: 0.2rem;
+  }
+  
+  .category-icon {
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .category-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .category-gif {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .category-name {
+    font-size: 0.75rem;
+    line-height: 1.1;
+    margin-top: 0.3rem;
+  }
+}
+
+/* Extra small mobile styles (≤360px) */
+@media (max-width: 360px) {
+  .categories-container {
+    padding: 0.1rem 0.3rem 0 0.3rem;
+  }
+  
+  .categories-row {
+    gap: 0.8rem;
+  }
+  
+  .category-item {
+    min-width: 75px;
+    padding: 0.1rem;
+  }
+  
+  .category-icon {
+    width: 45px;
+    height: 45px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
+  
+  .category-image {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .category-gif {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .category-name {
+    font-size: 0.7rem;
+    line-height: 1.1;
+  }
+}
