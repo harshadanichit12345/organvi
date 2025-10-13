@@ -20,8 +20,13 @@ const UserRegistration = ({ onComplete }) => {
   };
 
   return (
-    <div className="user-registration-container">
-      <div className="user-registration-form">
+    <div className="account-modal-overlay">
+      <div className="account-modal-container">
+        <div className="user-registration-form">
+          {/* Close Button */}
+          <button className="modal-close-btn" onClick={() => window.history.back()}>
+            ×
+          </button>
         {/* Header */}
         <div className="registration-header">
           <h1 className="registration-title">Complete Your Profile</h1>
@@ -84,6 +89,7 @@ const UserRegistration = ({ onComplete }) => {
             <ArrowRight size={20} />
           </button>
         </form>
+        </div>
       </div>
     </div>
   );

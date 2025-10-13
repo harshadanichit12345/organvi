@@ -16,7 +16,9 @@ const Chatbot = () => {
     }
   ]);
   const [inputValue, setInputValue] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [showPhoneInput, setShowPhoneInput] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 

@@ -1,3 +1,10 @@
+/* Terms + Buy Now gating */
+.cart-terms { display: flex; align-items: center; gap: 0.5rem; margin: 0.75rem 0; }
+.cart-terms-checkbox { width: 18px; height: 18px; }
+.cart-terms-label { color: #333; }
+
+.cart-buy-now-btn.disabled { background: #a7d6b3; cursor: not-allowed; opacity: 0.8; }
+.cart-buy-now-btn:disabled { pointer-events: none; }
 /* Cart Page Layout */
 .cart-page {
   padding: 0;
@@ -1248,5 +1255,119 @@
   .cart-edit-btn:hover,
   .cart-delete-btn:hover {
     transform: none;
+  }
+}
+
+/* Payment Modal Styles */
+.payment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.payment-modal {
+  background: white;
+  border-radius: 12px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.close-payment-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  color: inherit;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+  transition: all 0.3s ease;
+}
+
+.close-payment-btn:hover {
+  transform: scale(1.1);
+}
+
+/* Close GIF image styling */
+.close-payment-btn .close-gif {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  background: transparent;
+  border: none;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  transition: transform 0.2s ease;
+}
+
+.close-payment-btn:hover .close-gif {
+  transform: scale(1.08);
+}
+
+@media (max-width: 768px) {
+  .payment-modal {
+    max-width: 95%;
+    max-height: 95%;
+    margin: 0.5rem;
+  }
+  
+  .close-payment-btn {
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 35px;
+    height: 35px;
+  }
+  .close-payment-btn .close-gif {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-modal {
+    max-width: 99%;
+    max-height: 98%;
+    margin: 0.2rem;
+  }
+  
+  .close-payment-btn {
+    top: 0.3rem;
+    right: 0.3rem;
+    width: 30px;
+    height: 30px;
+  }
+  .close-payment-btn .close-gif {
+    width: 24px;
+    height: 24px;
   }
 }

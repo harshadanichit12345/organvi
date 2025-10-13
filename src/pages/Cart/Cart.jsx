@@ -3,10 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import './Cart.css';
 import binIcon from '../../assets/bin.png';
 import editIcon from '../../assets/editing.png';
+import PaymentForm from '../../components/Payment/PaymentForm';
+import closeGif from '../../assets/close.gif';
 
 const Carts = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
+  const [showPayment, setShowPayment] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -59,6 +63,34 @@ const Carts = () => {
 
   const getTotal = () => {
     return cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
+  };
+
+  const handleProceedToPayment = () => {
+    if (cartItems.length === 0) {
+      alert('Your cart is empty!');
+      return;
+    }
+    if (!agreeTerms) {
+      alert('Please agree to the terms and conditions to continue.');
+      return;
+    }
+    setShowPayment(true);
+  };
+
+  const handlePaymentSuccess = (response) => {
+    console.log('Payment successful:', response);
+    // Clear cart after successful payment
+    setCartItems([]);
+    localStorage.removeItem('cart');
+    window.dispatchEvent(new CustomEvent('cartUpdated', { detail: 0 }));
+    alert('Payment successful! Your order has been placed.');
+    setShowPayment(false);
+  };
+
+  const handlePaymentFailure = (error) => {
+    console.error('Payment failed:', error);
+    alert('Payment failed: ' + error);
+    setShowPayment(false);
   };
 
   return (
@@ -149,13 +181,23 @@ const Carts = () => {
             <p className="cart-taxes-note">Taxes and shipping calculated at checkout</p>
             
             <div className="cart-terms">
-              <input type="checkbox" id="cart-terms-checkbox" className="cart-terms-checkbox" />
+              <input 
+                type="checkbox" 
+                id="cart-terms-checkbox" 
+                className="cart-terms-checkbox"
+                checked={agreeTerms}
+                onChange={(e) => setAgreeTerms(e.target.checked)}
+              />
               <label htmlFor="cart-terms-checkbox" className="cart-terms-label">
                 I agree with the terms and conditions.
               </label>
             </div>
             
-            <button className="cart-buy-now-btn">
+            <button 
+              className={`cart-buy-now-btn ${agreeTerms ? '' : 'disabled'}`} 
+              onClick={handleProceedToPayment}
+              disabled={!agreeTerms}
+            >
               <div className="cart-buy-now-top">
                 <span className="cart-buy-now-text">BUY NOW</span>
                 <div className="cart-payment-icons">
@@ -169,6 +211,26 @@ const Carts = () => {
                 <span className="cart-shiprocket">Shiprocket</span>
               </div>
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Modal */}
+      {showPayment && (
+        <div className="payment-modal-overlay">
+          <div className="payment-modal">
+            <button
+              className="close-payment-btn"
+              onClick={() => setShowPayment(false)}
+            >
+              <img src={closeGif} alt="Close" className="close-gif" />
+            </button>
+            <PaymentForm
+              cartItems={cartItems}
+              totalAmount={getTotal()}
+              onPaymentSuccess={handlePaymentSuccess}
+              onPaymentFailure={handlePaymentFailure}
+            />
           </div>
         </div>
       )}

@@ -108,8 +108,13 @@ const OTPVerification = ({ phoneNumber, countryCode, onVerifyOTP, onResendOTP, o
   };
 
   return (
-    <div className="otp-container">
-      <div className="otp-form">
+    <div className="account-modal-overlay">
+      <div className="account-modal-container">
+        <div className="otp-form">
+          {/* Close Button */}
+          <button className="modal-close-btn" onClick={onBack}>
+            ×
+          </button>
         {/* Back Button */}
         <button className="back-btn" onClick={onBack}>
           <ArrowLeft size={20} />
@@ -196,6 +201,7 @@ const OTPVerification = ({ phoneNumber, countryCode, onVerifyOTP, onResendOTP, o
               <p className="timer-text">{formatTime(resendTimer)}</p>
             </>
           ) : null}
+        </div>
         </div>
       </div>
     </div>

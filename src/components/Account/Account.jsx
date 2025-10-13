@@ -62,6 +62,10 @@ const Account = () => {
     }
   };
 
+  const handleCloseModal = () => {
+    navigate(-1); // Go back to previous page
+  };
+
 
   if (showCongratulations) {
     return <Congratulations />;
@@ -89,13 +93,19 @@ const Account = () => {
   }
 
   return (
-    <div className="account-container">
-      <div className="account-form">
-        {/* Header */}
-        <div className="account-header">
-          <h1 className="account-title">Login with OTP</h1>
-          <p className="account-subtitle">Enter your log in details</p>
-        </div>
+    <div className="account-modal-overlay" onClick={handleCloseModal}>
+      <div className="account-modal-container" onClick={(e) => e.stopPropagation()}>
+        <div className="account-form">
+          {/* Close Button */}
+          <button className="modal-close-btn" onClick={handleCloseModal}>
+            ×
+          </button>
+          
+          {/* Header */}
+          <div className="account-header">
+            <h1 className="account-title">Login with OTP</h1>
+            <p className="account-subtitle">Enter your log in details</p>
+          </div>
 
         {/* Phone Input */}
         <form onSubmit={handleRequestOTP} className="phone-form">
@@ -167,6 +177,7 @@ const Account = () => {
             {' '}and{' '}
             <Link to="/terms" className="terms-link">T&Cs</Link>.
           </p>
+        </div>
         </div>
       </div>
     </div>

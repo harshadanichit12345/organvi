@@ -357,8 +357,15 @@
   float: none !important; /* Remove any float */
 }
 
+.cart-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
 .cart-icon {
   background: none;
+  position: relative;
+  overflow: visible;
 }
 
 /* Force heart icon to stay in same row */
@@ -893,4 +900,52 @@
 /* Enforce larger logo on desktop */
 @media (min-width: 1024px) {
   .logo-image { height: 115px !important; }
+}
+
+/* Cart Success Message */
+.cart-success-message {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  background: #28a745;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 1001;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  animation: slideDown 0.3s ease;
+  min-width: 200px;
+  text-align: center;
+}
+
+.cart-success-message::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  right: 12px;
+  border: 5px solid transparent;
+  border-top-color: #28a745;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile responsive for cart message */
+@media (max-width: 768px) {
+  .cart-success-message {
+    font-size: 10px;
+    padding: 6px 10px;
+    top: -35px;
+  }
 }

@@ -1,56 +1,96 @@
 .hero {
   position: relative;
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-top: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: 100vh;
   background: white;
+  min-height: 100vh;
 }
 
 .hero-image-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   display: flex;
-  align-items: center;
-  justify-content: center;
   background: white;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  top: 0;
 }
 
 .hero-image {
+  position: absolute;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.8s ease-in-out;
+  border-radius: 0;
+  top: 0;
+  left: 0;
 }
 
-.hero-image:hover {
-  transform: scale(1.02);
+.hero-image.active {
+  opacity: 1;
+  transform: translateX(0);
 }
 
-/* Disable hover effects on mobile for better performance */
-@media (max-width: 768px) {
-  .hero-image:hover {
-    transform: none;
-  }
+.hero-image.slide-out {
+  opacity: 0;
+  transform: translateX(-100%);
 }
+
+.hero-image:first-child {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Force ALL images to only slide from right to left */
+.hero-image:not(.active) {
+  transform: translateX(100%) !important;
+  opacity: 0;
+}
+
+/* When first image becomes inactive, it slides out to the left */
+.hero-image:first-child:not(.active) {
+  transform: translateX(-100%) !important;
+  opacity: 0;
+}
+
+/* When image becomes inactive, it slides out to the left */
+.hero-image.slide-out {
+  transform: translateX(-100%) !important;
+  opacity: 0;
+}
+
+/* Hover effect removed as requested */
+
+/* Hover effects removed for all devices */
+
 
 /* Responsive Design */
 
 /* Large Desktop (1200px+) */
 @media (min-width: 1200px) {
   .hero {
+    height: 100vh;
     min-height: 100vh;
   }
   
   .hero-image-container {
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
   }
 }
 
@@ -58,11 +98,15 @@
 @media (max-width: 1024px) {
   .hero {
     margin-top: 0;
-    min-height: 70vh;
+    height: 90vh;
+    min-height: 90vh;
   }
   
   .hero-image-container {
-    height: 70vh;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
   }
 }
 
@@ -70,11 +114,28 @@
 @media (max-width: 768px) {
   .hero {
     margin-top: 0;
-    min-height: 60vh;
+    height: 80vh;
+    min-height: 80vh;
+    padding: 0;
+    margin-bottom: 0;
   }
   
   .hero-image-container {
-    height: 60vh;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin-bottom: 0;
+    left: 0;
+    top: 0;
+  }
+  
+  .hero-image {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
   }
 }
 
@@ -82,11 +143,28 @@
 @media (max-width: 480px) {
   .hero {
     margin-top: 0;
-    min-height: 50vh;
+    height: 70vh;
+    min-height: 70vh;
+    padding: 0;
+    margin-bottom: 0;
   }
   
   .hero-image-container {
-    height: 50vh;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin-bottom: 0;
+    left: 0;
+    top: 0;
+  }
+  
+  .hero-image {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
   }
 }
 
@@ -94,10 +172,27 @@
 @media (max-width: 360px) {
   .hero {
     margin-top: 0;
-    min-height: 45vh;
+    height: 60vh;
+    min-height: 60vh;
+    padding: 0;
+    margin-bottom: 0;
   }
   
   .hero-image-container {
-    height: 45vh;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin-bottom: 0;
+    left: 0;
+    top: 0;
+  }
+  
+  .hero-image {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
   }
 }

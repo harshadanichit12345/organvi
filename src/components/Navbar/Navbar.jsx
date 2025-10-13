@@ -20,11 +20,14 @@ import {
   Gift,
   Droplets,
   Apple,
-  Coffee
+  Coffee,
+  LogOut,
+  UserCheck
 } from 'lucide-react';
 import './Navbar.css';
 import logo from '../../assets/organvilogo1.png';
 import LoginModal from '../../pages/LoginModal/LoginModal';
+import { useUser } from '../../context/UserContext';
 
 
 const Navbar = () => {
@@ -32,6 +35,7 @@ const Navbar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [wishlistCount, setWishlistCount] = useState(0);
+  const [cartMessage, setCartMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -42,6 +46,7 @@ const Navbar = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const { userData, logoutUser } = useUser();
 
   // Handle logo click
   const handleLogoClick = () => {
@@ -52,22 +57,121 @@ const Navbar = () => {
     setShowSearchResults(false);
   };
 
-  // Search functionality
+  // Handle logout
+  const handleLogout = () => {
+    logoutUser();
+    setShowUserDropdown(false);
+    navigate('/');
+  };
+
+  // Universal search functionality with real product data
   const handleSearch = (query) => {
     setSearchQuery(query);
-    if (query.trim().length > 2) {
-      // Mock search results - replace with actual search logic
-      const mockResults = [
-        { id: 1, name: 'Organic Turmeric Powder', category: 'Spices' },
-        { id: 2, name: 'Organic Basmati Rice', category: 'Rice' },
-        { id: 3, name: 'Organic Almonds', category: 'Dry Fruits' },
-        { id: 4, name: 'Organic Jaggery', category: 'Sweeteners' },
-        { id: 5, name: 'Organic Moong Dal', category: 'Pulses' }
-      ].filter(item => 
-        item.name.toLowerCase().includes(query.toLowerCase()) ||
-        item.category.toLowerCase().includes(query.toLowerCase())
-      );
-      setSearchResults(mockResults);
+    if (query.trim().length > 1) {
+      // Real product data from AllCategories
+      const allProducts = [
+        // Almonds
+        { id: 1, name: 'Organic Almonds', category: 'Dry Fruits', price: 450, weight: '250g', image: '/src/assets/almond.png' },
+        
+        // Cashews
+        { id: 2, name: 'Organic Cashews', category: 'Dry Fruits', price: 500, weight: '250g', image: '/src/assets/cashewnut.png' },
+        
+        // Chana Dal
+        { id: 3, name: 'Organic Chana Dal', category: 'Pulses', price: 95, weight: '500g', image: '/src/assets/chanadal.png' },
+        
+        // Chilly (3 types)
+        { id: 4, name: 'Organic Red Chilly Powder', category: 'Spices', price: 75, weight: '100g', image: '/src/assets/chilly.jpg' },
+        { id: 5, name: 'Organic Green Chilly Powder', category: 'Spices', price: 80, weight: '100g', image: '/src/assets/chilly1.jpg' },
+        { id: 6, name: 'Organic Kashmiri Chilly Powder', category: 'Spices', price: 85, weight: '100g', image: '/src/assets/chilly2.png' },
+        
+        // Jaggery (6 types)
+        { id: 7, name: 'Organic Jaggery (Type 1)', category: 'Sweeteners', price: 80, weight: '1kg', image: '/src/assets/jaggary2.jpg' },
+        { id: 8, name: 'Organic Jaggery (Type 2)', category: 'Sweeteners', price: 85, weight: '1kg', image: '/src/assets/jaggary3.png' },
+        { id: 9, name: 'Organic Jaggery (Type 3)', category: 'Sweeteners', price: 90, weight: '1kg', image: '/src/assets/jaggary4.jpg' },
+        { id: 10, name: 'Organic Jaggery (Type 4)', category: 'Sweeteners', price: 95, weight: '1kg', image: '/src/assets/jaggary5.jpg' },
+        { id: 11, name: 'Organic Jaggery (Type 5)', category: 'Sweeteners', price: 100, weight: '1kg', image: '/src/assets/jaggary6.png' },
+        { id: 12, name: 'Organic Jaggery (Type 6)', category: 'Sweeteners', price: 105, weight: '1kg', image: '/src/assets/jeggary.png' },
+        
+        // Masoor Dal
+        { id: 13, name: 'Organic Masoor Dal', category: 'Pulses', price: 85, weight: '500g', image: '/src/assets/Masoor Dal.png' },
+        
+        // Turmeric (5 types)
+        { id: 14, name: 'Organic Turmeric (Type 1)', category: 'Spices', price: 120, weight: '250g', image: '/src/assets/termeric.png' },
+        { id: 15, name: 'Organic Turmeric (Type 2)', category: 'Spices', price: 125, weight: '250g', image: '/src/assets/termeric2.jpg' },
+        { id: 16, name: 'Organic Turmeric (Type 3)', category: 'Spices', price: 130, weight: '250g', image: '/src/assets/termeric3.jpg' },
+        { id: 17, name: 'Organic Turmeric (Type 4)', category: 'Spices', price: 135, weight: '250g', image: '/src/assets/termeric4.jpg' },
+        { id: 18, name: 'Organic Turmeric (Type 5)', category: 'Spices', price: 140, weight: '250g', image: '/src/assets/termeric5.png' },
+        
+        // Mix Sprouts
+        { id: 19, name: 'Organic Mix Sprouts', category: 'Vegetables', price: 95, weight: '250g', image: '/src/assets/Mix Sprouts.png' },
+        
+        // Moong Dal
+        { id: 20, name: 'Organic Moong Dal', category: 'Pulses', price: 90, weight: '500g', image: '/src/assets/moongdal.png' },
+        
+        // Pistachios
+        { id: 21, name: 'Organic Pistachios', category: 'Dry Fruits', price: 600, weight: '250g', image: '/src/assets/pista1.png' },
+        
+        // Raisins
+        { id: 22, name: 'Organic Raisins', category: 'Dry Fruits', price: 200, weight: '500g', image: '/src/assets/rainse1.png' },
+        
+        // Toor Dal
+        { id: 23, name: 'Organic Toor Dal', category: 'Pulses', price: 100, weight: '500g', image: '/src/assets/toordal.png' },
+        
+        // Urad Dal
+        { id: 24, name: 'Organic Urad Dal', category: 'Pulses', price: 110, weight: '500g', image: '/src/assets/uraldal.png' },
+        
+        // Roasted Chana
+        { id: 25, name: 'Organic Roasted Chana', category: 'Snacks', price: 85, weight: '250g', image: '/src/assets/roastchana1.png' }
+      ];
+      
+      const results = allProducts.filter(product => {
+        const searchTerm = query.toLowerCase();
+        const productName = product.name.toLowerCase();
+        const categoryName = product.category.toLowerCase();
+        
+        // Remove common prefixes for better matching
+        const cleanProductName = productName
+          .replace(/^organic\s+/i, '')
+          .replace(/^natural\s+/i, '')
+          .replace(/^fresh\s+/i, '')
+          .replace(/^pure\s+/i, '');
+        
+        // Create keyword variations and mappings
+        const keywordMappings = {
+          'dal': ['chana dal', 'moong dal', 'toor dal', 'urad dal', 'masoor dal'],
+          'rice': ['basmati rice', 'brown rice'],
+          'nuts': ['almonds', 'cashews', 'pistachios', 'walnuts'],
+          'spices': ['turmeric', 'chilly', 'chilli', 'chili', 'garam masala'],
+          'sweeteners': ['jaggery', 'honey', 'sugar'],
+          'dry fruits': ['almonds', 'cashews', 'pistachios', 'raisins', 'dates']
+        };
+        
+        // Get expanded keywords
+        let expandedKeywords = [searchTerm];
+        for (const [key, values] of Object.entries(keywordMappings)) {
+          if (searchTerm.includes(key)) {
+            expandedKeywords = [...expandedKeywords, ...values];
+          }
+        }
+        
+        // Create keyword variations
+        const keywords = [
+          ...expandedKeywords,
+          searchTerm.replace(/\s+/g, ''), // Remove spaces
+          searchTerm.replace(/\s+/g, ' '), // Normalize spaces
+        ];
+        
+        // Check if any keyword matches
+        const matches = keywords.some(keyword => {
+          return cleanProductName.includes(keyword) || 
+                 productName.includes(keyword) || 
+                 categoryName.includes(keyword);
+        });
+        
+        return matches;
+      }).slice(0, 8); // Limit to 8 results
+      
+      setSearchResults(results);
       setShowSearchResults(true);
     } else {
       setSearchResults([]);
@@ -98,7 +202,16 @@ const Navbar = () => {
     };
     
     const handleCartUpdated = (event) => {
+      console.log('Cart updated event received:', event.detail, event.message);
       setCartCount(event.detail);
+      if (event.message) {
+        console.log('Setting cart message:', event.message);
+        setCartMessage(event.message);
+        // Hide message after 3 seconds
+        setTimeout(() => {
+          setCartMessage('');
+        }, 3000);
+      }
     };
     
     updateCartCount();
@@ -115,9 +228,19 @@ const Navbar = () => {
       const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
       setWishlistCount(wishlist.length);
     };
+    
+    const handleWishlistUpdated = (event) => {
+      console.log('Wishlist updated event received:', event.detail);
+      setWishlistCount(event.detail);
+    };
+    
     updateWishlistCount();
     window.addEventListener('storage', updateWishlistCount);
-    return () => window.removeEventListener('storage', updateWishlistCount);
+    window.addEventListener('wishlistUpdated', handleWishlistUpdated);
+    return () => {
+      window.removeEventListener('storage', updateWishlistCount);
+      window.removeEventListener('wishlistUpdated', handleWishlistUpdated);
+    };
   }, []);
 
   // Close search results when clicking outside
@@ -164,7 +287,7 @@ const Navbar = () => {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => handleSearch(e.target.value)}
-                    placeholder="Search for products..."
+                    placeholder="Search the product"
                     className="search-input"
                   />
                   <button
@@ -177,19 +300,82 @@ const Navbar = () => {
                 
                 {/* Search Results Dropdown */}
                 {showSearchResults && searchResults.length > 0 && (
-                  <div className="search-results-dropdown">
+                  <div className="search-results-dropdown" style={{
+                    position: 'absolute',
+                    top: '100%',
+                    left: '0',
+                    right: '0',
+                    background: 'white',
+                    border: '1px solid #e9ecef',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                    zIndex: 9999,
+                    maxHeight: '400px',
+                    overflowY: 'auto',
+                    marginTop: '0.25rem'
+                  }}>
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: '0.5rem 1rem',
+                      background: '#f8f9fa',
+                      borderBottom: '1px solid #e9ecef',
+                      fontSize: '0.8rem',
+                      color: '#666'
+                    }}>
+                      <span style={{ fontWeight: '600' }}>{searchResults.length} results found</span>
+                      <span style={{ fontStyle: 'italic', color: '#4caf50' }}>Click to view product</span>
+                    </div>
                     {searchResults.map((result) => (
                       <div
                         key={result.id}
                         className="search-result-item"
                         onClick={() => {
-                          navigate(`/product/${result.id}`);
+                          // Navigate to AllCategories page and highlight the product
+                          navigate('/allcategories');
                           setShowSearchResults(false);
                           setSearchQuery('');
+                          
+                          // Store the search query for highlighting on the AllCategories page
+                          localStorage.setItem('searchHighlight', JSON.stringify({
+                            productId: result.id,
+                            productName: result.name
+                          }));
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          padding: '0.75rem 1rem',
+                          cursor: 'pointer',
+                          transition: 'background-color 0.2s ease',
+                          borderBottom: '1px solid #f8f9fa'
                         }}
                       >
-                        <div className="result-name">{result.name}</div>
-                        <div className="result-category">{result.category}</div>
+                        <img 
+                          src={result.image} 
+                          alt={result.name} 
+                          style={{
+                            width: '40px',
+                            height: '40px',
+                            objectFit: 'cover',
+                            borderRadius: '6px',
+                            marginRight: '0.75rem'
+                          }} 
+                        />
+                        <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                          <span style={{ fontSize: '0.9rem', fontWeight: '600', color: '#2c3e50', marginBottom: '0.25rem' }}>
+                            {result.name}
+                          </span>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <span style={{ fontSize: '0.7rem', color: '#4caf50', fontWeight: '600' }}>₹{result.price}</span>
+                            <span style={{ fontSize: '0.75rem', color: '#666', background: '#f8f9fa', padding: '0.1rem 0.3rem', borderRadius: '4px' }}>
+                              {result.weight}
+                            </span>
+                            <span style={{ fontSize: '0.75rem', color: '#666' }}>{result.category}</span>
+                          </div>
+                        </div>
+                        <div style={{ fontSize: '1rem', color: '#4caf50', opacity: '0.7' }}>→</div>
                       </div>
                     ))}
                   </div>
@@ -226,15 +412,59 @@ const Navbar = () => {
               </Link>
 
               {/* Cart Icon with Badge */}
-              <Link 
-                to="/cart" 
-                className="navbar-icon cart-icon"
-              >
-                <ShoppingCart size={24} />
-                <span className="icon-badge">
-                  {cartCount}
-                </span>
-              </Link>
+              <div className="cart-icon-container">
+                <Link 
+                  to="/cart" 
+                  className="navbar-icon cart-icon"
+                  title={cartMessage || `Cart (${cartCount} items)`}
+                >
+                  <ShoppingCart size={24} />
+                  <span className="icon-badge">
+                    {cartCount}
+                  </span>
+                </Link>
+                {cartMessage && (
+                  <div className="cart-success-message">
+                    {cartMessage}
+                  </div>
+                )}
+                {/* Debug: Always show cart message state */}
+                <div style={{
+                  position: 'absolute',
+                  top: '-100px',
+                  right: '0',
+                  background: 'red',
+                  color: 'white',
+                  padding: '4px 8px',
+                  fontSize: '10px',
+                  borderRadius: '4px',
+                  zIndex: 9999
+                }}>
+                  Cart Message: {cartMessage || 'None'}
+                </div>
+                {/* Test button for development */}
+                <button 
+                  onClick={() => {
+                    console.log('Test button clicked');
+                    setCartMessage('✅ Test message!');
+                  }}
+                  style={{
+                    position: 'absolute',
+                    top: '-80px',
+                    right: '0',
+                    background: 'blue',
+                    color: 'white',
+                    padding: '4px 8px',
+                    fontSize: '10px',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    zIndex: 9999
+                  }}
+                >
+                  Test Message
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -286,6 +516,38 @@ const Navbar = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="dropdown-content">
+              {userData ? (
+                // User is logged in - show user info and logout
+                <div className="user-section">
+                  <div className="user-info">
+                    <div className="user-avatar">
+                      <UserCheck size={20} />
+                    </div>
+                    <div className="user-details">
+                      <p className="user-name">{userData.firstName} {userData.lastName}</p>
+                      <p className="user-email">{userData.email}</p>
+                    </div>
+                  </div>
+                  <div className="user-actions">
+                    <Link 
+                      to="/dashboard" 
+                      className="dashboard-link"
+                      onClick={() => setShowUserDropdown(false)}
+                    >
+                      <Grid3X3 size={16} />
+                      <span>Dashboard</span>
+                    </Link>
+                    <button 
+                      className="logout-button"
+                      onClick={handleLogout}
+                    >
+                      <LogOut size={16} />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                // User is not logged in - show login/signup options
               <div className="auth-section">
                 <button 
                   className="signin-button"
@@ -309,6 +571,7 @@ const Navbar = () => {
                   </button>
                 </div>
               </div>
+              )}
             </div>
           </div>
         </div>

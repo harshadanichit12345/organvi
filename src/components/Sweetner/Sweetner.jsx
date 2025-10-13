@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import Filter from '../Filter/Filter';
 import './Sweetner.css';
+import ViewMoreDetails from '../Pulses/ViewMoreDetails';
 
 // Import product images for sweeteners
 import jaggeryImg from '../../assets/jeggary.png';
@@ -9,6 +11,14 @@ import jaggery3Img from '../../assets/jaggary3.png';
 import jaggery4Img from '../../assets/jaggary4.jpg';
 import jaggery5Img from '../../assets/jaggary5.jpg';
 import jaggery6Img from '../../assets/jaggary6.png';
+import downIcon from '../../assets/down.png';
+import closeGif from '../../assets/close.gif';
+import binIcon from '../../assets/bin.png';
+import editIcon from '../../assets/editing.png';
+import mastercardIcon from '../../assets/mastercard.png';
+import rupayIcon from '../../assets/rupay.png';
+import upiIcon from '../../assets/upi (1).png';
+import visaIcon from '../../assets/visa.png';
 
 // Sweetener Icon
 const SweetenerIcon = () => (
@@ -18,11 +28,22 @@ const SweetenerIcon = () => (
 );
 
 const Sweetener = () => {
+  const navigate = useNavigate();
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [quantityDisplay, setQuantityDisplay] = useState({});
-  const [selectedWeights, setSelectedWeights] = useState({});
   const [showNotification, setShowNotification] = useState(false);
+  const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [likedProducts, setLikedProducts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedWeight, setSelectedWeight] = useState('500g');
+  const [modalQuantity, setModalQuantity] = useState(1);
+  const [showCartModal, setShowCartModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingCartItem, setEditingCartItem] = useState(null);
+  const [showViewMore, setShowViewMore] = useState(false);
+  const [selectedViewMoreProduct, setSelectedViewMoreProduct] = useState(null);
   const [filters, setFilters] = useState({
     priceRange: [0, 1000],
     sortBy: 'name',
@@ -107,6 +128,31 @@ const Sweetener = () => {
     setFilters(newFilters);
   };
 
+  // Weight options for modal
+  const weightOptions = [
+    { value: '500g', label: '500g', multiplier: 1 },
+    { value: '1kg', label: '1kg', multiplier: 2 }
+  ];
+
+  // Sort options
+  const sortOptions = [
+    { value: 'name', label: 'Sort By' },
+    { value: 'name', label: 'Name, A-Z' },
+    { value: 'name-desc', label: 'Name, Z-A' },
+    { value: 'price', label: 'Price, low to high' },
+    { value: 'price-desc', label: 'Price, high to low' }
+  ];
+
+  const handleSortChange = (sortValue) => {
+    setFilters(prev => ({ ...prev, sortBy: sortValue }));
+    setShowSortDropdown(false);
+  };
+
+  const getCurrentSortLabel = () => {
+    const currentSort = sortOptions.find(option => option.value === filters.sortBy);
+    return currentSort ? currentSort.label : 'Name, A-Z';
+  };
+
   // Cart functionality
   const addToCart = (product, weight) => {
     const cartKey = `${product.id}-${weight}`;
@@ -139,7 +185,6 @@ const Sweetener = () => {
     const cartKey = `${product.id}-${weight}`;
     const cartQuantity = quantityDisplay[cartKey] || 0;
     if (cartQuantity === 0) {
-      alert("Please increase the quantity first using + button!");
       return;
     }
     
@@ -178,9 +223,10 @@ const Sweetener = () => {
       localStorage.setItem('cart', JSON.stringify(updatedCart));
     }
     
-    // Update cart count in navbar/sidebar
+    // Update local cart state
     setTimeout(() => {
       const finalCart = JSON.parse(localStorage.getItem('cart')) || [];
+      setCart(finalCart);
       const uniqueItems = finalCart.length; // Count unique products, not quantities
       console.log('Cart updated - Unique items:', uniqueItems, 'Cart:', finalCart);
       window.dispatchEvent(new CustomEvent('cartUpdated', { detail: uniqueItems }));
@@ -198,9 +244,6 @@ const Sweetener = () => {
     }, 3000);
   };
 
-  const removeFromCart = (cartKey) => {
-    setCart(prevCart => prevCart.filter(item => item.cartKey !== cartKey));
-  };
 
   const updateQuantity = (cartKey, newQuantity) => {
     console.log('updateQuantity called:', cartKey, newQuantity);
@@ -223,33 +266,197 @@ const Sweetener = () => {
     return quantityDisplay[cartKey] || 0;
   };
 
-  // Weight options and pricing
-  const weightOptions = [
-    { value: '1kg', label: '1 kg', multiplier: 1 },
-    { value: '2kg', label: '2 kg', multiplier: 2 },
-    { value: '5kg', label: '5 kg', multiplier: 5 }
-  ];
 
-  const getSelectedWeight = (productId) => {
-    return selectedWeights[productId] || '1kg';
+  const isProductLiked = (productId) => {
+    return likedProducts.some(liked => liked.id === productId);
   };
 
-  const handleWeightChange = (productId, weight) => {
-    setSelectedWeights(prev => ({
-      ...prev,
-      [productId]: weight
-    }));
+  // Modal functions
+  const openModal = (product) => {
+    setSelectedProduct(product);
+    setSelectedWeight('500g');
+    setModalQuantity(1);
+    setIsEditing(false);
+    setEditingCartItem(null);
+    setShowModal(true);
   };
 
-  const getProductPrice = (product, weight) => {
-    const weightOption = weightOptions.find(w => w.value === weight);
-    return Math.round(product.price * weightOption.multiplier);
+  const openEditModal = (cartItem) => {
+    // Find the product from the sweetener data
+    const product = sweetenerProducts.find(p => p.id === cartItem.id);
+    console.log('Editing cart item:', cartItem);
+    console.log('Found product:', product);
+    if (product) {
+      setSelectedProduct(product);
+      setSelectedWeight(cartItem.weight);
+      setModalQuantity(cartItem.quantity);
+      setIsEditing(true);
+      setEditingCartItem(cartItem);
+      setShowModal(true);
+      setShowCartModal(false); // Close cart modal when opening edit modal
+      console.log('Edit modal opened with product:', product.name);
+    } else {
+      console.log('Product not found for cart item:', cartItem);
+    }
   };
 
-  const getProductOriginalPrice = (product, weight) => {
-    const weightOption = weightOptions.find(w => w.value === weight);
-    return Math.round(product.originalPrice * weightOption.multiplier);
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedProduct(null);
+    setSelectedWeight('500g');
+    setModalQuantity(1);
+    setIsEditing(false);
+    setEditingCartItem(null);
   };
+
+  const openViewMore = (product) => {
+    setSelectedViewMoreProduct(product);
+    setShowViewMore(true);
+  };
+
+  const closeViewMore = () => {
+    setShowViewMore(false);
+    setSelectedViewMoreProduct(null);
+  };
+
+  const handleWeightChange = (weight) => {
+    setSelectedWeight(weight);
+  };
+
+  const handleQuantityChange = (change) => {
+    const newQuantity = modalQuantity + change;
+    if (newQuantity >= 1) {
+      setModalQuantity(newQuantity);
+    }
+  };
+
+  const getModalPrice = () => {
+    if (!selectedProduct) return 0;
+    return selectedWeight === '1kg' ? selectedProduct.price * 2 : selectedProduct.price;
+  };
+
+  const getModalOriginalPrice = () => {
+    if (!selectedProduct) return 0;
+    return selectedWeight === '1kg' ? selectedProduct.originalPrice * 2 : selectedProduct.originalPrice;
+  };
+
+  const handleModalAddToCart = () => {
+    if (selectedProduct) {
+      const cartItem = {
+        id: selectedProduct.id,
+        name: selectedProduct.name,
+        price: getModalPrice(),
+        originalPrice: getModalOriginalPrice(),
+        weight: selectedWeight,
+        quantity: modalQuantity,
+        image: selectedProduct.image
+      };
+      
+      if (isEditing && editingCartItem) {
+        // Replace the existing item
+        const updatedCart = cart.map(item => 
+          item.id === editingCartItem.id && item.weight === editingCartItem.weight
+            ? { ...cartItem }
+            : item
+        );
+        setCart(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        window.dispatchEvent(new CustomEvent('cartUpdated', { detail: updatedCart }));
+      } else {
+        // Add new item directly to cart
+        console.log('Adding to cart:', cartItem);
+        
+        // Get existing cart from localStorage
+        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Check if item already exists
+        const existingItemIndex = existingCart.findIndex(item => item.id === cartItem.id);
+        
+        if (existingItemIndex === -1) {
+          // Add new item
+          const updatedCart = [...existingCart, cartItem];
+          localStorage.setItem('cart', JSON.stringify(updatedCart));
+          setCart(updatedCart);
+        } else {
+          // Update existing item quantity
+          const updatedCart = existingCart.map(item =>
+            item.id === cartItem.id
+              ? { ...item, quantity: item.quantity + cartItem.quantity }
+              : item
+          );
+          localStorage.setItem('cart', JSON.stringify(updatedCart));
+          setCart(updatedCart);
+        }
+        
+        // Update cart count in navbar
+        const finalCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const uniqueItems = finalCart.length;
+        window.dispatchEvent(new CustomEvent('cartUpdated', { detail: uniqueItems }));
+      }
+      closeModal();
+      setShowCartModal(true);
+      console.log('Cart modal should be visible now');
+    }
+  };
+
+  const openCartModal = () => {
+    setShowCartModal(true);
+  };
+
+
+  const closeCartModal = () => {
+    setShowCartModal(false);
+  };
+
+  const getCartSubtotal = () => {
+    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+
+  const updateCartQuantity = (itemId, change) => {
+    const updatedCart = cart.map(item => 
+      item.id === itemId 
+        ? { ...item, quantity: Math.max(1, item.quantity + change) }
+        : item
+    );
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    
+    // Update cart count in navbar
+    const uniqueItems = updatedCart.length;
+    window.dispatchEvent(new CustomEvent('cartUpdated', { detail: uniqueItems }));
+  };
+
+  const removeFromCart = (itemId) => {
+    const updatedCart = cart.filter(item => item.id !== itemId);
+    setCart(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    
+    // Update cart count in navbar
+    const uniqueItems = updatedCart.length;
+    window.dispatchEvent(new CustomEvent('cartUpdated', { detail: uniqueItems }));
+  };
+
+  const toggleLike = (product) => {
+    const isLiked = likedProducts.some(liked => liked.id === product.id);
+    
+    if (isLiked) {
+      // Remove from likes
+      const updatedLikes = likedProducts.filter(liked => liked.id !== product.id);
+      setLikedProducts(updatedLikes);
+      localStorage.setItem('wishlist', JSON.stringify(updatedLikes));
+    } else {
+      // Add to likes with default rating
+      const productWithRating = { ...product, rating: 4 };
+      const updatedLikes = [...likedProducts, productWithRating];
+      setLikedProducts(updatedLikes);
+      localStorage.setItem('wishlist', JSON.stringify(updatedLikes));
+    }
+    
+    // Trigger wishlist count update in navbar
+    const finalCount = isLiked ? likedProducts.length - 1 : likedProducts.length + 1;
+    window.dispatchEvent(new CustomEvent('wishlistUpdated', { detail: finalCount }));
+  };
+
 
   const applyFilters = (products, filterSettings) => {
     let filtered = [...products];
@@ -316,7 +523,46 @@ const Sweetener = () => {
 
   useEffect(() => {
     setFilteredProducts(applyFilters(sweetenerProducts, filters));
+    // Load liked products from localStorage
+    const savedLikes = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setLikedProducts(savedLikes);
   }, [filters]);
+
+  // Load cart from localStorage
+  useEffect(() => {
+    const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCart(savedCart);
+  }, []);
+
+  // Listen for wishlist updates from other components
+  useEffect(() => {
+    const handleWishlistUpdated = () => {
+      const savedLikes = JSON.parse(localStorage.getItem('wishlist')) || [];
+      setLikedProducts(savedLikes);
+    };
+    
+    window.addEventListener('wishlistUpdated', handleWishlistUpdated);
+    window.addEventListener('storage', handleWishlistUpdated);
+    
+    return () => {
+      window.removeEventListener('wishlistUpdated', handleWishlistUpdated);
+      window.removeEventListener('storage', handleWishlistUpdated);
+    };
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showSortDropdown && !event.target.closest('.sort-dropdown-container')) {
+        setShowSortDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSortDropdown]);
 
   return (
     <div className="sweetener-page">
@@ -337,6 +583,7 @@ const Sweetener = () => {
             </div>
             
             <div className="sweetener-info">
+              <div className="sweetener-info-content">
               <p className="sweetener-count">
                 {filters.selectedItems && filters.selectedItems.length > 0 ? (
                   `Showing ${filteredProductsList.length} products from selected categories`
@@ -347,54 +594,63 @@ const Sweetener = () => {
                 )}
               </p>
               
-              {/* Cart Summary */}
-              {cart.length > 0 && (
-                <div className="cart-summary">
-                  <h3>Cart ({cart.reduce((total, item) => total + item.quantity, 0)} items)</h3>
-                  <div className="cart-items">
-                    {cart.map(item => (
-                      <div key={item.id} className="cart-item">
-                        <span className="cart-item-name">{item.name}</span>
-                        <span className="cart-item-quantity">Qty: {item.quantity}</span>
-                        <span className="cart-item-price">₹{item.price * item.quantity}</span>
+                {/* Sort Dropdown */}
+                <div className="sort-dropdown-container">
+                  <button 
+                    className={`sort-dropdown-trigger ${showSortDropdown ? 'active' : ''}`}
+                    onClick={() => setShowSortDropdown(!showSortDropdown)}
+                  >
+                    <span>{getCurrentSortLabel()}</span>
+                    <img 
+                      src={downIcon} 
+                      alt="dropdown" 
+                      className={`sort-arrow ${showSortDropdown ? 'open' : ''}`}
+                    />
+                  </button>
+                  
+                  {showSortDropdown && (
+                    <div className="sort-dropdown-menu">
+                      {sortOptions.map((option) => (
                         <button 
-                          className="remove-from-cart-btn"
-                          onClick={() => removeFromCart(item.id)}
+                          key={option.value}
+                          className={`sort-option ${filters.sortBy === option.value ? 'active' : ''}`}
+                          onClick={() => handleSortChange(option.value)}
                         >
-                          ×
+                          {option.label}
                         </button>
-                      </div>
                     ))}
                   </div>
-                  <div className="cart-total">
-                    Total: ₹{cart.reduce((total, item) => total + (item.price * item.quantity), 0)}
+                  )}
                   </div>
                 </div>
-              )}
+              
             </div>
             
             <div className="sweetener-scroll-container">
               <div className="sweetener-grid">
                 {filteredProductsList.map((product, index) => {
-                  const selectedWeight = getSelectedWeight(product.id);
-                  const cartQuantity = getCartItemQuantity(product.id, selectedWeight);
-                  const currentPrice = getProductPrice(product, selectedWeight);
-                  const currentOriginalPrice = getProductOriginalPrice(product, selectedWeight);
-                  const cartKey = `${product.id}-${selectedWeight}`;
+                  const cartQuantity = getCartItemQuantity(product.id, '1kg');
+                  const currentPrice = product.price;
+                  const currentOriginalPrice = product.originalPrice;
+                  const cartKey = `${product.id}-1kg`;
                   
                   return (
-                    <div key={product.id} className="product-card">
+                    <div key={product.id} className="sweetener-product-card">
                       {/* Discount Badge */}
                       <div className="discount-badge">
                         -{product.discount}%
                       </div>
                       
                       {/* Heart Icon */}
-                      <div className="heart-icon">
+                      <button 
+                        className={`heart-icon ${isProductLiked(product.id) ? 'liked' : ''}`}
+                        onClick={() => toggleLike(product)}
+                        title={isProductLiked(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                      >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                         </svg>
-                      </div>
+                      </button>
 
                       {/* Product Image */}
                       <div className="product-image-container">
@@ -423,51 +679,30 @@ const Sweetener = () => {
                           <span className="original-price">
                             ₹{cartQuantity > 0 ? currentOriginalPrice * cartQuantity : currentOriginalPrice}
                           </span>
+                          <span className="discount-percentage">
+                            ({product.discount}% Off)
+                          </span>
                         </div>
                         
-                        {/* Weight Dropdown */}
-                        <div className="weight-selector">
-                          <select 
-                            className="weight-dropdown"
-                            value={selectedWeight}
-                            onChange={(e) => handleWeightChange(product.id, e.target.value)}
+                        <div className="view-details-section">
+                          <a 
+                            href="#"
+                            className="view-details-link"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              openViewMore(product);
+                            }}
                           >
-                            {weightOptions.map(option => (
-                              <option key={option.value} value={option.value}>
-                                {option.label}
-                              </option>
-                            ))}
-                          </select>
+                            View More Details
+                          </a>
                         </div>
                         
                         <div className="product-actions">
-                          <div className="quantity-controls">
-                            <button 
-                              className="quantity-btn minus"
-                              onClick={() => {
-                                console.log('Minus button clicked:', cartKey, cartQuantity - 1);
-                                updateQuantity(cartKey, cartQuantity - 1);
-                              }}
-                              disabled={cartQuantity <= 0}
-                            >
-                              -
-                            </button>
-                            <span className="quantity-display">{cartQuantity}</span>
-                            <button 
-                              className="quantity-btn plus"
-                              onClick={() => {
-                                console.log('Plus button clicked:', cartKey, cartQuantity + 1);
-                                updateQuantity(cartKey, cartQuantity + 1);
-                              }}
-                            >
-                              +
-                            </button>
-                          </div>
                           <button 
                             className="add-btn"
-                            onClick={() => addToCartPage(product, selectedWeight)}
+                            onClick={() => openModal(product)}
                           >
-                            Add
+                            <span>Add To Cart</span>
                           </button>
                         </div>
                       </div>
@@ -508,6 +743,201 @@ const Sweetener = () => {
             <span className="notification-text">Item added to cart successfully!</span>
           </div>
         </div>
+      )}
+
+      {/* Product Modal */}
+      {showModal && selectedProduct && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal} title="Close">
+              <img src={closeGif} alt="Close" className="close-icon" />
+            </button>
+            
+            <div className="modal-product-info">
+              <div className="modal-product-image">
+                <img src={selectedProduct.image} alt={selectedProduct.name} />
+              </div>
+              <div className="modal-product-details">
+                <h3 className="modal-product-name">{selectedProduct.name}</h3>
+                <div className="modal-pricing">
+                  <span className="modal-original-price">₹{getModalOriginalPrice().toFixed(2)}</span>
+                  <span className="modal-current-price">₹{getModalPrice().toFixed(2)}</span>
+                  <p className="modal-tax-info">(Inc. of all taxes)</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-size-section">
+              <p className="modal-size-label">Size: {selectedWeight}</p>
+              <div className="modal-weight-options">
+                <button 
+                  className={`modal-weight-btn ${selectedWeight === '500g' ? 'selected' : ''}`}
+                  onClick={() => handleWeightChange('500g')}
+                >
+                  <span className="weight-text">500 g</span>
+                  <div className="weight-pricing">
+                    <span className="weight-original-price">₹{selectedProduct.originalPrice.toFixed(2)}</span>
+                    <span className="weight-current-price">₹{selectedProduct.price.toFixed(2)}</span>
+                  </div>
+                  <div className="discount-badge-modal">4% OFF</div>
+                </button>
+                
+                <button 
+                  className={`modal-weight-btn ${selectedWeight === '1kg' ? 'selected' : ''}`}
+                  onClick={() => handleWeightChange('1kg')}
+                >
+                  <span className="weight-text">1 kg</span>
+                  <div className="weight-pricing">
+                    <span className="weight-original-price">₹{(selectedProduct.originalPrice * 2).toFixed(2)}</span>
+                    <span className="weight-current-price">₹{(selectedProduct.price * 2).toFixed(2)}</span>
+                  </div>
+                  <div className="discount-badge-modal">4% OFF</div>
+                </button>
+              </div>
+            </div>
+
+            <div className="modal-quantity-section">
+              <div className="modal-quantity-controls">
+                <button 
+                  className="quantity-btn"
+                  onClick={() => handleQuantityChange(-1)}
+                >
+                  -
+                </button>
+                <span className="quantity-display">{modalQuantity}</span>
+                <button 
+                  className="quantity-btn"
+                  onClick={() => handleQuantityChange(1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div className="modal-actions">
+              <button className="modal-add-to-cart-btn" onClick={handleModalAddToCart}>
+                {isEditing ? 'REPLACE ITEM' : 'ADD TO CART'}
+              </button>
+              <a href="#" className="modal-view-details" onClick={(e) => e.preventDefault()}>
+                View full details →
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Shopping Cart Modal */}
+      {showCartModal && (() => {
+        console.log('Rendering cart modal, cart items:', cart);
+        return (
+        <div className="cart-modal-overlay" onClick={closeCartModal}>
+          <div className="cart-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="cart-header">
+              <h2>SHOPPING CART</h2>
+            </div>
+            
+
+            <div className="cart-items">
+              {cart.length === 0 ? (
+                <div className="empty-cart">
+                  <p>Your cart is empty</p>
+                </div>
+              ) : (
+                cart.map((item) => (
+                <div key={item.id} className="cart-item">
+                  <div className="cart-item-image">
+                    <img src={item.image} alt={item.name} />
+                  </div>
+                  <div className="cart-item-details">
+                    <h3 className="cart-item-name">{item.name}</h3>
+                    <p className="cart-item-weight">{item.weight}</p>
+                    <div className="cart-item-pricing">
+                      <span className="cart-original-price">₹{item.originalPrice.toFixed(2)}</span>
+                      <span className="cart-current-price">₹{item.price.toFixed(2)}</span>
+                    </div>
+                    <div className="cart-quantity-controls">
+                      <button 
+                        className="cart-quantity-btn"
+                        onClick={() => updateCartQuantity(item.id, -1)}
+                      >
+                        -
+                      </button>
+                      <span className="cart-quantity">{item.quantity}</span>
+                      <button 
+                        className="cart-quantity-btn"
+                        onClick={() => updateCartQuantity(item.id, 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <div className="cart-item-actions">
+                      <button 
+                        className="cart-edit-btn"
+                        onClick={() => openEditModal(item)}
+                        title="Edit"
+                      >
+                        <img src={editIcon} alt="Edit" />
+                      </button>
+                      <button 
+                        className="cart-remove-btn"
+                        onClick={() => removeFromCart(item.id)}
+                        title="Remove"
+                      >
+                        <img src={binIcon} alt="Remove" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                ))
+              )}
+            </div>
+
+            <div className="cart-summary">
+              <div className="cart-subtotal">
+                <span>Subtotal:</span>
+                <span>₹{getCartSubtotal().toFixed(2)}</span>
+              </div>
+              <p className="cart-tax-info">Taxes and shipping calculated at checkout.</p>
+              
+              <div className="cart-actions">
+                <button 
+                  className="cart-view-btn"
+                  onClick={() => {
+                    closeCartModal();
+                    navigate('/cart');
+                  }}
+                >
+                  VIEW CART
+                </button>
+                <button 
+                  className="cart-buy-btn"
+                  onClick={() => {
+                    closeCartModal();
+                    navigate('/cart');
+                  }}
+                >
+                  BUY NOW
+                  <div className="payment-icons">
+                    <img src={visaIcon} alt="Visa" />
+                    <img src={mastercardIcon} alt="Mastercard" />
+                    <img src={rupayIcon} alt="RuPay" />
+                    <img src={upiIcon} alt="UPI" />
+                  </div>
+                </button>
+                <p className="cart-powered-by">Powered By Shiprocket.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        );
+      })()}
+
+      {/* View More Details Component */}
+      {showViewMore && selectedViewMoreProduct && (
+        <ViewMoreDetails 
+          product={selectedViewMoreProduct} 
+          onClose={closeViewMore} 
+        />
       )}
     </div>
   );

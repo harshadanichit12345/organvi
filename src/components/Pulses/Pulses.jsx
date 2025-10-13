@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import Filter from '../Filter/Filter';
 import './Pulses.css';
+import ViewMoreDetails from './ViewMoreDetails';
 
 // Import product images for pulses
 import chanadalImg from '../../assets/chanadal.png';
@@ -45,6 +46,10 @@ const Pulses = () => {
   const [showCartModal, setShowCartModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingCartItem, setEditingCartItem] = useState(null);
+  const [showProductDetails, setShowProductDetails] = useState(false);
+  const [selectedProductDetails, setSelectedProductDetails] = useState(null);
+  const [showViewMore, setShowViewMore] = useState(false);
+  const [selectedViewMoreProduct, setSelectedViewMoreProduct] = useState(null);
   const [filters, setFilters] = useState({
     priceRange: [0, 1000],
     sortBy: 'name',
@@ -272,25 +277,6 @@ const Pulses = () => {
     return quantityDisplay[cartKey] || 0;
   };
 
-  const toggleLike = (product) => {
-    const isLiked = likedProducts.some(liked => liked.id === product.id);
-    
-    if (isLiked) {
-      // Remove from likes
-      const updatedLikes = likedProducts.filter(liked => liked.id !== product.id);
-      setLikedProducts(updatedLikes);
-      localStorage.setItem('likedProducts', JSON.stringify(updatedLikes));
-    } else {
-      // Add to likes
-      const updatedLikes = [...likedProducts, product];
-      setLikedProducts(updatedLikes);
-      localStorage.setItem('likedProducts', JSON.stringify(updatedLikes));
-    }
-  };
-
-  const isProductLiked = (productId) => {
-    return likedProducts.some(liked => liked.id === productId);
-  };
 
   // Modal functions
   const openModal = (product) => {
@@ -328,6 +314,26 @@ const Pulses = () => {
     setModalQuantity(1);
     setIsEditing(false);
     setEditingCartItem(null);
+  };
+
+  const openProductDetails = (product) => {
+    setSelectedProductDetails(product);
+    setShowProductDetails(true);
+  };
+
+  const closeProductDetails = () => {
+    setShowProductDetails(false);
+    setSelectedProductDetails(null);
+  };
+
+  const openViewMore = (product) => {
+    setSelectedViewMoreProduct(product);
+    setShowViewMore(true);
+  };
+
+  const closeViewMore = () => {
+    setShowViewMore(false);
+    setSelectedViewMoreProduct(null);
   };
 
   const handleWeightChange = (weight) => {
@@ -447,6 +453,31 @@ const Pulses = () => {
     window.dispatchEvent(new CustomEvent('cartUpdated', { detail: uniqueItems }));
   };
 
+  const toggleLike = (product) => {
+    const isLiked = likedProducts.some(liked => liked.id === product.id);
+    
+    if (isLiked) {
+      // Remove from likes
+      const updatedLikes = likedProducts.filter(liked => liked.id !== product.id);
+      setLikedProducts(updatedLikes);
+      localStorage.setItem('wishlist', JSON.stringify(updatedLikes));
+    } else {
+      // Add to likes with default rating
+      const productWithRating = { ...product, rating: 4 };
+      const updatedLikes = [...likedProducts, productWithRating];
+      setLikedProducts(updatedLikes);
+      localStorage.setItem('wishlist', JSON.stringify(updatedLikes));
+    }
+    
+    // Trigger wishlist count update in navbar
+    const finalCount = isLiked ? likedProducts.length - 1 : likedProducts.length + 1;
+    window.dispatchEvent(new CustomEvent('wishlistUpdated', { detail: finalCount }));
+  };
+
+  const isProductLiked = (productId) => {
+    return likedProducts.some(liked => liked.id === productId);
+  };
+
 
   const applyFilters = (products, filterSettings) => {
     let filtered = [...products];
@@ -514,7 +545,7 @@ const Pulses = () => {
   useEffect(() => {
     setFilteredProducts(applyFilters(pulsesProducts, filters));
     // Load liked products from localStorage
-    const savedLikes = JSON.parse(localStorage.getItem('likedProducts')) || [];
+    const savedLikes = JSON.parse(localStorage.getItem('wishlist')) || [];
     setLikedProducts(savedLikes);
   }, [filters]);
 
@@ -522,6 +553,22 @@ const Pulses = () => {
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
     setCart(savedCart);
+  }, []);
+
+  // Listen for wishlist updates from other components
+  useEffect(() => {
+    const handleWishlistUpdated = () => {
+      const savedLikes = JSON.parse(localStorage.getItem('wishlist')) || [];
+      setLikedProducts(savedLikes);
+    };
+    
+    window.addEventListener('wishlistUpdated', handleWishlistUpdated);
+    window.addEventListener('storage', handleWishlistUpdated);
+    
+    return () => {
+      window.removeEventListener('wishlistUpdated', handleWishlistUpdated);
+      window.removeEventListener('storage', handleWishlistUpdated);
+    };
   }, []);
 
   // Close dropdown when clicking outside
@@ -656,6 +703,19 @@ const Pulses = () => {
                           <span className="discount-percentage">
                             ({product.discount}% Off)
                           </span>
+                        </div>
+                        
+                        <div className="view-details-section">
+                          <a 
+                            href="#"
+                            className="view-details-link"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              openViewMore(product);
+                            }}
+                          >
+                            View More Details
+                          </a>
                         </div>
                         
                         
@@ -893,6 +953,139 @@ const Pulses = () => {
         </div>
         );
       })()}
+
+      {/* Product Details Modal */}
+      {showProductDetails && selectedProductDetails && (
+        <div className="product-details-modal-overlay" onClick={closeProductDetails}>
+          <div className="product-details-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="product-details-close" onClick={closeProductDetails}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+            
+            <div className="product-details-content">
+              <div className="product-details-images">
+                <div className="main-product-image">
+                  <img src={selectedProductDetails.image} alt={selectedProductDetails.name} />
+                </div>
+                <div className="product-thumbnails">
+                  <img src={selectedProductDetails.image} alt={selectedProductDetails.name} className="thumbnail active" />
+                  <img src={selectedProductDetails.image} alt={selectedProductDetails.name} className="thumbnail" />
+                </div>
+              </div>
+              
+              <div className="product-details-info">
+                <h1 className="product-details-name">{selectedProductDetails.name}</h1>
+                <div className="product-details-pricing">
+                  <span className="product-details-current-price">₹{selectedProductDetails.price}</span>
+                  <span className="product-details-original-price">₹{selectedProductDetails.originalPrice}</span>
+                  <span className="product-details-discount">({selectedProductDetails.discount}% Off)</span>
+                </div>
+                
+                <div className="product-details-description">
+                  <h3>Product Description</h3>
+                  <p>Premium quality {selectedProductDetails.name.toLowerCase()} sourced from the finest organic farms. 
+                  Rich in nutrients and free from harmful pesticides. Perfect for healthy cooking and nutrition.</p>
+                  
+                  <h3>Key Features</h3>
+                  <ul>
+                    <li>100% Organic & Natural</li>
+                    <li>No Pesticides or Chemicals</li>
+                    <li>Rich in Protein & Fiber</li>
+                    <li>Premium Quality</li>
+                    <li>Fresh & Clean</li>
+                  </ul>
+                  
+                  <h3>Nutritional Benefits</h3>
+                  <p>High in protein, fiber, vitamins, and minerals. Great for maintaining a healthy diet and supporting overall wellness.</p>
+                </div>
+                
+                <div className="product-details-actions">
+                  <div className="quantity-selector">
+                    <label>Quantity:</label>
+                    <select value={modalQuantity} onChange={(e) => setModalQuantity(parseInt(e.target.value))}>
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                      <option value={4}>4</option>
+                      <option value={5}>5</option>
+                    </select>
+                  </div>
+                  
+                  <div className="weight-selector">
+                    <label>Weight:</label>
+                    <select value={selectedWeight} onChange={(e) => setSelectedWeight(e.target.value)}>
+                      <option value="500g">500g</option>
+                      <option value="1kg">1kg</option>
+                      <option value="2kg">2kg</option>
+                    </select>
+                  </div>
+                  
+                  <button 
+                    className="product-details-add-btn"
+                    onClick={() => {
+                      const weightOption = weightOptions.find(opt => opt.value === selectedWeight);
+                      const price = Math.round(selectedProductDetails.price * weightOption.multiplier);
+                      const originalPrice = Math.round(selectedProductDetails.originalPrice * weightOption.multiplier);
+                      
+                      const cartItem = {
+                        id: `${selectedProductDetails.id}-${selectedWeight}`,
+                        name: selectedProductDetails.name,
+                        price: price,
+                        originalPrice: originalPrice,
+                        image: selectedProductDetails.image,
+                        weight: selectedWeight,
+                        quantity: modalQuantity
+                      };
+                      
+                      const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+                      const existingItemIndex = existingCart.findIndex(item => item.id === cartItem.id);
+                      
+                      if (existingItemIndex === -1) {
+                        const updatedCart = [...existingCart, cartItem];
+                        localStorage.setItem('cart', JSON.stringify(updatedCart));
+                      } else {
+                        const updatedCart = existingCart.map(item =>
+                          item.id === cartItem.id
+                            ? { ...item, quantity: item.quantity + modalQuantity }
+                            : item
+                        );
+                        localStorage.setItem('cart', JSON.stringify(updatedCart));
+                      }
+                      
+                      setTimeout(() => {
+                        const finalCart = JSON.parse(localStorage.getItem('cart')) || [];
+                        setCart(finalCart);
+                        const uniqueItems = finalCart.length;
+                        window.dispatchEvent(new CustomEvent('cartUpdated', { detail: uniqueItems }));
+                      }, 100);
+                      
+                      setShowNotification(true);
+                      setTimeout(() => {
+                        setShowNotification(false);
+                      }, 3000);
+                      
+                      closeProductDetails();
+                    }}
+                  >
+                    Add to Cart - ₹{Math.round(selectedProductDetails.price * weightOptions.find(opt => opt.value === selectedWeight).multiplier) * modalQuantity}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* View More Details Component */}
+      {showViewMore && selectedViewMoreProduct && (
+        <ViewMoreDetails 
+          product={selectedViewMoreProduct} 
+          onClose={closeViewMore} 
+        />
+      )}
     </div>
   );
 };

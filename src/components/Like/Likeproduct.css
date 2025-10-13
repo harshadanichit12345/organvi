@@ -1,240 +1,410 @@
-.like-page {
-  min-height: 100vh;
-  background: #f8f9fa;
-  padding-top: 20px;
-}
+/* Like Page Responsive Styles */
 
-.like-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.like-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.like-header h1 {
-  font-size: 2.5rem;
-  color: #2d5016;
-  margin-bottom: 10px;
-  font-weight: 600;
-}
-
-.like-header p {
-  font-size: 1.1rem;
-  color: #6b7280;
-  margin: 0;
-}
-
-.empty-likes {
-  text-align: center;
-  padding: 80px 20px;
-}
-
-.empty-heart {
-  color: #e5e7eb;
-  margin-bottom: 20px;
-}
-
-.empty-likes h2 {
-  font-size: 1.8rem;
-  color: #374151;
-  margin-bottom: 10px;
-}
-
-.empty-likes p {
-  font-size: 1.1rem;
-  color: #6b7280;
-  margin-bottom: 30px;
-}
-
-.browse-btn {
-  display: inline-block;
-  background: #4a7c59;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.browse-btn:hover {
-  background: #2d5016;
-  transform: translateY(-2px);
-}
-
-.liked-products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
-  padding-bottom: 40px;
-}
-
-.product-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+/* Ensure product images are properly sized */
+.product-image-container {
+  height: 250px;
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-image {
-  position: relative;
-  height: 200px;
-  overflow: hidden;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
 }
 
-.product-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.product-card:hover .product-image img {
-  transform: scale(1.05);
-}
-
-.remove-like-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.remove-like-btn:hover {
-  background: white;
-  transform: scale(1.1);
-}
-
-.filled-heart {
-  color: #ef4444;
-}
-
-.product-info {
-  padding: 20px;
-}
-
-.product-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 8px;
-  line-height: 1.4;
-}
-
-.product-rating {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.stars {
-  display: flex;
-  gap: 2px;
-}
-
-.star-filled {
-  color: #fbbf24;
-}
-
-.star-empty {
-  color: #d1d5db;
-}
-
-.rating-text {
-  font-size: 0.9rem;
-  color: #6b7280;
-}
-
-.product-price {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.current-price {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #2d5016;
-}
-
-.original-price {
-  font-size: 1rem;
-  color: #9ca3af;
-  text-decoration: line-through;
-}
-
-.add-to-cart-btn {
-  width: 100%;
-  background: #4a7c59;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-}
-
-.add-to-cart-btn:hover {
-  background: #2d5016;
-  transform: translateY(-1px);
-}
-
-/* Responsive Design */
+/* Empty state responsive styles */
 @media (max-width: 768px) {
-  .like-container {
-    padding: 0 16px;
+  .empty-likes {
+    padding: 2rem 1rem;
+    text-align: center;
   }
   
-  .like-header h1 {
-    font-size: 2rem;
+  .empty-likes h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
   }
   
-  .liked-products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
+  .empty-likes p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
   }
   
-  .product-image {
-    height: 180px;
+  .browse-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
   }
   
-  .product-info {
-    padding: 16px;
+  .empty-heart {
+    width: 48px !important;
+    height: 48px !important;
+    margin-bottom: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .liked-products-grid {
-    grid-template-columns: 1fr;
+  .empty-likes {
+    padding: 1.5rem 0.5rem;
   }
   
-  .like-header h1 {
+  .empty-likes h2 {
+    font-size: 1.3rem;
+  }
+  
+  .empty-likes p {
+    font-size: 0.9rem;
+  }
+  
+  .browse-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .empty-heart {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+/* Modal responsive improvements for Like page */
+@media (max-width: 768px) {
+  .modal-content {
+    margin: 0.5rem;
+    padding: 1.5rem;
+    max-width: calc(100vw - 1rem);
+    max-height: 95vh;
+  }
+  
+  .modal-product-info {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .modal-product-image {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+  
+  .modal-product-name {
+    font-size: 1.2rem;
+  }
+  
+  .modal-pricing {
+    justify-content: center;
+  }
+  
+  .modal-size-section {
+    margin: 1rem 0;
+  }
+  
+  .modal-weight-options {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .modal-weight-btn {
+    padding: 0.8rem;
+    text-align: left;
+  }
+  
+  .modal-quantity-section {
+    margin: 1rem 0;
+  }
+  
+  .modal-quantity-controls {
+    justify-content: center;
+  }
+  
+  .modal-total-section {
+    margin: 1rem 0;
+    text-align: center;
+  }
+  
+  .modal-actions {
+    margin-top: 1rem;
+  }
+  
+  .modal-add-to-cart-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    margin: 0.25rem;
+    padding: 1rem;
+    max-width: calc(100vw - 0.5rem);
+    max-height: 98vh;
+  }
+  
+  .modal-product-image {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .modal-product-name {
+    font-size: 1.1rem;
+  }
+  
+  .modal-original-price {
+    font-size: 0.9rem;
+  }
+  
+  .modal-current-price {
+    font-size: 1.1rem;
+  }
+  
+  .modal-weight-btn {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .weight-text {
+    font-size: 0.9rem;
+  }
+  
+  .weight-pricing {
+    font-size: 0.8rem;
+  }
+  
+  .discount-badge-modal {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .modal-quantity-controls {
+    gap: 0.5rem;
+  }
+  
+  .modal-quantity-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+  
+  .modal-quantity-display {
+    font-size: 1rem;
+  }
+  
+  .modal-total-amount {
+    font-size: 1.2rem;
+  }
+  
+  .modal-add-to-cart-btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Success notification responsive */
+@media (max-width: 768px) {
+  .success-notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    transform: none;
+  }
+  
+  .notification-content {
+    min-width: auto;
+    padding: 0.8rem 1rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .notification-icon {
+    font-size: 1.2rem;
+  }
+  
+  .notification-text {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .success-notification {
+    top: 5px;
+    right: 5px;
+    left: 5px;
+  }
+  
+  .notification-content {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .notification-text {
+    font-size: 0.8rem;
+  }
+}
+
+/* View More Details responsive */
+@media (max-width: 768px) {
+  .view-details-link {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .view-details-link {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+/* Heart icon responsive */
+@media (max-width: 768px) {
+  .heart-icon {
+    width: 18px;
+    height: 18px;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heart-icon {
+    width: 16px;
+    height: 16px;
+    top: 0.4rem;
+    left: 0.4rem;
+  }
+}
+
+/* Discount badge responsive */
+@media (max-width: 768px) {
+  .discount-badge {
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .discount-badge {
+    top: 0.4rem;
+    right: 0.4rem;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.3rem;
+  }
+}
+
+/* Product card responsive improvements */
+@media (max-width: 768px) {
+  .product-card {
+    min-height: 280px;
+  }
+  
+  .product-image-container {
+    height: 220px;
+    padding: 1rem;
+  }
+  
+  .product-name {
+    font-size: 0.95rem;
+    line-height: 1.3;
+    min-height: 2.6rem;
+  }
+  
+  .current-price {
+    font-size: 1.1rem;
+  }
+  
+  .original-price {
+    font-size: 0.9rem;
+  }
+  
+  .discount-percentage {
+    font-size: 0.7rem;
+  }
+  
+  .add-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    min-height: 260px;
+    padding: 0.7rem;
+  }
+  
+  .product-image-container {
+    height: 200px;
+    padding: 0.9rem;
+  }
+  
+  .product-name {
+    font-size: 0.9rem;
+    line-height: 1.2;
+    min-height: 2.4rem;
+  }
+  
+  .current-price {
+    font-size: 1rem;
+  }
+  
+  .original-price {
+    font-size: 0.85rem;
+  }
+  
+  .discount-percentage {
+    font-size: 0.65rem;
+  }
+  
+  .add-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Grid responsive improvements */
+@media (max-width: 1024px) {
+  .all-products-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .all-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .all-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+}
+
+/* Header responsive */
+@media (max-width: 768px) {
+  .all-products-title {
     font-size: 1.8rem;
+  }
+  
+  .all-products-subtitle {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .all-products-title {
+    font-size: 1.6rem;
+  }
+  
+  .all-products-subtitle {
+    font-size: 0.9rem;
   }
 }

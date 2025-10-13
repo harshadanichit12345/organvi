@@ -16,8 +16,13 @@ const Congratulations = () => {
   }, [navigate]);
 
   return (
-    <div className="congratulations-container">
-      <div className="congratulations-form">
+    <div className="account-modal-overlay">
+      <div className="account-modal-container">
+        <div className="congratulations-form">
+          {/* Close Button */}
+          <button className="modal-close-btn" onClick={() => navigate('/dashboard')}>
+            ×
+          </button>
         {/* Congratulations Emoji */}
         <div className="congratulations-emoji">
           🎉
@@ -33,6 +38,7 @@ const Congratulations = () => {
         <div className="loading-section">
           <Loader2 className="spinner" size={32} />
           <p className="loading-text">Redirecting...</p>
+        </div>
         </div>
       </div>
     </div>

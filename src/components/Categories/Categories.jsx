@@ -41,12 +41,6 @@ const Categories = () => {
         src={dalGif} 
         alt="Pulses & Dal" 
         className="category-gif" 
-        style={{
-          background: 'transparent',
-          filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
-          border: 'none',
-          outline: 'none'
-        }}
       />
     },
     {
@@ -56,12 +50,6 @@ const Categories = () => {
         src={sugarGif} 
         alt="Sweetener" 
         className="category-gif" 
-        style={{
-          background: 'transparent',
-          filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
-          border: 'none',
-          outline: 'none'
-        }}
       />
     },
     {
@@ -71,12 +59,6 @@ const Categories = () => {
         src={almondsGif} 
         alt="Dry Fruits & Nuts" 
         className="category-gif" 
-        style={{
-          background: 'transparent',
-          filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
-          border: 'none',
-          outline: 'none'
-        }}
       />
     },
     {
@@ -86,12 +68,6 @@ const Categories = () => {
         src={grindGif} 
         alt="Spices & Masalas" 
         className="category-gif" 
-        style={{
-          background: 'transparent',
-          filter: 'hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6)',
-          border: 'none',
-          outline: 'none'
-        }}
       />
     },
   ];

@@ -1,11 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Leaf, Users, Shield, Truck, Heart, Globe, CheckCircle, ArrowRight } from 'lucide-react';
 import './About.css';
 
 const About = () => {
+  const sectionRefs = useRef([]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all sections
+    sectionRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      sectionRefs.current.forEach((ref) => {
+        if (ref) observer.unobserve(ref);
+      });
+    };
   }, []);
 
   const productionSteps = [
@@ -13,43 +41,43 @@ const About = () => {
       step: 1,
       title: "Ploughing",
       description: "Preparing the soil for sowing",
-      icon: "🌾"
+      gif: "/src/assets/ploughing.gif"
     },
     {
       step: 2,
       title: "Sowing",
       description: "Planting seeds in nutrient-rich soil",
-      icon: "🌱"
+      gif: "/src/assets/sowing.gif"
     },
     {
       step: 3,
       title: "Adding Nutrients",
       description: "Fertilizing naturally to enrich soil",
-      icon: "🌿"
+      gif: "/src/assets/nutrient.gif"
     },
     {
       step: 4,
       title: "Irrigation",
       description: "Watering plants efficiently",
-      icon: "💧"
+      gif: "/src/assets/irrigation.gif"
     },
     {
       step: 5,
       title: "Protecting Plants",
       description: "Using natural methods to protect crops",
-      icon: "🛡️"
+      gif: "/src/assets/protecting.gif"
     },
     {
       step: 6,
       title: "Harvesting",
       description: "Collecting crops at peak freshness",
-      icon: "🌾"
+      gif: "/src/assets/harvesting.gif"
     },
     {
       step: 7,
       title: "Storage",
       description: "Proper storage to maintain quality before packaging",
-      icon: "📦"
+      gif: "/src/assets/storage.gif"
     }
   ];
 
@@ -74,7 +102,7 @@ const About = () => {
       </div>
 
       {/* Hero Section */}
-      <section className="hero-section">
+      <section className="hero-section" ref={(el) => (sectionRefs.current[0] = el)}>
         <div className="container">
           <div className="hero-content">
             <h1 className="hero-title">Welcome to Organvi – Eat Right, Live Right</h1>
@@ -87,94 +115,43 @@ const About = () => {
         </div>
       </section>
 
-      {/* Mission Section */}
-      <section className="mission-section">
-        <div className="mission-container">
-          <div className="mission-content">
-            <div className="mission-text">
-              <h2 className="mission-title">Mission</h2>
-              <p className="mission-description">
-                To help people live a better, healthier, and wholesome life by providing them with 100% certified, 
-                authentic organic food that nourishes both body and soul.
-              </p>
-            </div>
-            <div className="mission-visual">
-              <div className="target-icon">
-                <div className="target-circle outer"></div>
-                <div className="target-circle middle"></div>
-                <div className="target-circle inner"></div>
-                <div className="target-arrow"></div>
+      {/* Philosophy Section */}
+      <section className="philosophy-section" ref={(el) => (sectionRefs.current[1] = el)}>
+        <div className="container">
+          <h2 className="section-title">Our Philosophy</h2>
+          <p className="philosophy-description">
+            We believe in partnership with farmers to promote village economy and ensuring "YOU JUST EAT RIGHT" – 
+            safe, pure, and natural products through genuine products, chemical-free process, and clean & hygienic packing.
+          </p>
+          <div className="philosophy-cards">
+            <div className="philosophy-card">
+              <div className="card-icon">
+                <Shield size={40} />
               </div>
+              <h3>Genuine Products</h3>
+              <p>Authentic organic products directly from our farms</p>
+            </div>
+            <div className="philosophy-card">
+              <div className="card-icon">
+                <Leaf size={40} />
+              </div>
+              <h3>Chemical-Free Process</h3>
+              <p>No synthetic preservatives or artificial ingredients</p>
+            </div>
+            <div className="philosophy-card">
+              <div className="card-icon">
+                <Truck size={40} />
+              </div>
+              <h3>Clean & Hygienic Packing</h3>
+              <p>Maintaining quality from farm to your table</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Vision Section */}
-      <section className="vision-section">
-        <div className="vision-container">
-          <div className="vision-content">
-            <div className="vision-visual">
-              <div className="binoculars-icon">
-                <div className="binoculars-body"></div>
-                <div className="binoculars-lens left"></div>
-                <div className="binoculars-lens right"></div>
-                <div className="binoculars-strap"></div>
-              </div>
-            </div>
-            <div className="vision-text">
-              <h2 className="vision-title">Vision</h2>
-              <p className="vision-description">
-                To be the leading brand of organic food in India. To give back to the environment and advance on a path to sustainability. 
-                To make consumers aware of the benefits of organic food by giving them healthy choices of eating. To create a big movement 
-                that would lead people to switch to organic food and take-up a healthier lifestyle just like it used to be hundreds of years 
-                ago when pesticides were not introduced and everything we ate was natural and chemical-free.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Journey Section */}
-      <section className="journey-section">
-        <div className="journey-container">
-          <h2 className="journey-title">Journey from Farm to Plate</h2>
-          <div className="journey-steps">
-            <div className="journey-step">
-              <div className="step-icon farm-icon">
-                <div className="farm-field"></div>
-                <div className="farm-plants"></div>
-                <div className="farm-data"></div>
-              </div>
-              <h3 className="step-title">Farm</h3>
-            </div>
-            <div className="journey-arrow">
-              <div className="arrow-curve"></div>
-            </div>
-            <div className="journey-step">
-              <div className="step-icon factory-icon">
-                <div className="factory-building"></div>
-                <div className="factory-stacks"></div>
-              </div>
-              <h3 className="step-title">Hygienic Factory</h3>
-            </div>
-            <div className="journey-arrow">
-              <div className="arrow-curve"></div>
-            </div>
-            <div className="journey-step">
-              <div className="step-icon kitchen-icon">
-                <div className="kitchen-pan"></div>
-                <div className="kitchen-food"></div>
-                <div className="kitchen-steam"></div>
-              </div>
-              <h3 className="step-title">Your Kitchen</h3>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* About Organvi Section */}
-      <section className="about-organvi-section">
+      <section className="about-organvi-section" ref={(el) => (sectionRefs.current[2] = el)}>
         <div className="container">
           <div className="about-content">
             <div className="about-text">
@@ -232,7 +209,7 @@ const About = () => {
       </section>
 
       {/* Sustainable Farming Section */}
-      <section className="sustainable-farming-section">
+      <section className="sustainable-farming-section" ref={(el) => (sectionRefs.current[3] = el)}>
         <div className="container">
           <h2 className="section-title">What is Sustainable Farming?</h2>
           <p className="sustainable-description">
@@ -255,7 +232,7 @@ const About = () => {
       </section>
 
       {/* Production Process Section */}
-      <section className="production-process-section">
+      <section className="production-process-section" ref={(el) => (sectionRefs.current[4] = el)}>
         <div className="container">
           <h2 className="section-title">From Farm to Table – Our Production Process</h2>
           <p className="process-description">
@@ -266,16 +243,13 @@ const About = () => {
             {productionSteps.map((step, index) => (
               <div key={index} className="step-item">
                 <div className="step-number">{step.step}</div>
-                <div className="step-icon">{step.icon}</div>
+                <div className="step-gif">
+                  <img src={step.gif} alt={step.title} />
+                </div>
                 <div className="step-content">
                   <h3>{step.title}</h3>
                   <p>{step.description}</p>
                 </div>
-                {index < productionSteps.length - 1 && (
-                  <div className="step-arrow">
-                    <ArrowRight size={24} />
-                  </div>
-                )}
               </div>
             ))}
           </div>
@@ -283,7 +257,7 @@ const About = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="cta-section">
+      <section className="cta-section" ref={(el) => (sectionRefs.current[5] = el)}>
         <div className="container">
           <div className="cta-content">
             <h2>Ready to Experience Organic Excellence?</h2>

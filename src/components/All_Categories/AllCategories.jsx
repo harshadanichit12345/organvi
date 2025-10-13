@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import Filter from '../Filter/Filter';
 import './AllCategories.css';
+import ViewMoreDetails from '../Pulses/ViewMoreDetails';
 import downIcon from '../../assets/down.png';
 
 // Import product images
@@ -115,6 +116,8 @@ const AllCategories = () => {
   const [showNotification, setShowNotification] = useState(false);
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [likedProducts, setLikedProducts] = useState([]);
+  const [showViewMore, setShowViewMore] = useState(false);
+  const [selectedViewMoreProduct, setSelectedViewMoreProduct] = useState(null);
   const [filters, setFilters] = useState({
     priceRange: [0, 1000],
     sortBy: 'name',
@@ -523,9 +526,58 @@ const AllCategories = () => {
   useEffect(() => {
     setShowProducts(true);
     setSelectedCategory('all');
+    // Ensure default sort is applied
+    setFilters(prev => ({ ...prev, sortBy: 'name' }));
     // Load liked products from localStorage
-    const savedLikes = JSON.parse(localStorage.getItem('likedProducts')) || [];
+    const savedLikes = JSON.parse(localStorage.getItem('wishlist')) || [];
     setLikedProducts(savedLikes);
+    
+    // Check for search highlight from navbar
+    const searchHighlight = localStorage.getItem('searchHighlight');
+    if (searchHighlight) {
+      try {
+        const highlightData = JSON.parse(searchHighlight);
+        console.log('Search highlight received:', highlightData);
+        
+        // Clear the highlight data
+        localStorage.removeItem('searchHighlight');
+        
+        // Highlight the product after a delay
+        setTimeout(() => {
+          const productElement = document.querySelector(`[data-product-id="${highlightData.productId}"]`);
+          if (productElement) {
+            productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            productElement.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
+            productElement.style.border = '2px solid #4caf50';
+            productElement.style.transform = 'scale(1.02)';
+            
+            setTimeout(() => {
+              productElement.style.boxShadow = '';
+              productElement.style.border = '';
+              productElement.style.transform = '';
+            }, 3000);
+          }
+        }, 1000);
+      } catch (error) {
+        console.error('Error parsing search highlight:', error);
+      }
+    }
+  }, []);
+
+  // Listen for wishlist updates from other components
+  useEffect(() => {
+    const handleWishlistUpdated = () => {
+      const savedLikes = JSON.parse(localStorage.getItem('wishlist')) || [];
+      setLikedProducts(savedLikes);
+    };
+    
+    window.addEventListener('wishlistUpdated', handleWishlistUpdated);
+    window.addEventListener('storage', handleWishlistUpdated);
+    
+    return () => {
+      window.removeEventListener('wishlistUpdated', handleWishlistUpdated);
+      window.removeEventListener('storage', handleWishlistUpdated);
+    };
   }, []);
 
   // Sort options
@@ -543,8 +595,9 @@ const AllCategories = () => {
 
   const getCurrentSortLabel = () => {
     const option = sortOptions.find(opt => opt.value === filters.sortBy);
-    return option ? option.label : 'Sort by';
+    return option ? option.label : 'Name, A-Z';
   };
+
 
   const toggleLike = (product) => {
     const isLiked = likedProducts.some(liked => liked.id === product.id);
@@ -553,17 +606,32 @@ const AllCategories = () => {
       // Remove from likes
       const updatedLikes = likedProducts.filter(liked => liked.id !== product.id);
       setLikedProducts(updatedLikes);
-      localStorage.setItem('likedProducts', JSON.stringify(updatedLikes));
+      localStorage.setItem('wishlist', JSON.stringify(updatedLikes));
     } else {
-      // Add to likes
-      const updatedLikes = [...likedProducts, product];
+      // Add to likes with default rating
+      const productWithRating = { ...product, rating: 4 };
+      const updatedLikes = [...likedProducts, productWithRating];
       setLikedProducts(updatedLikes);
-      localStorage.setItem('likedProducts', JSON.stringify(updatedLikes));
+      localStorage.setItem('wishlist', JSON.stringify(updatedLikes));
     }
+    
+    // Trigger wishlist count update in navbar
+    const finalCount = isLiked ? likedProducts.length - 1 : likedProducts.length + 1;
+    window.dispatchEvent(new CustomEvent('wishlistUpdated', { detail: finalCount }));
   };
 
   const isProductLiked = (productId) => {
     return likedProducts.some(liked => liked.id === productId);
+  };
+
+  const openViewMore = (product) => {
+    setSelectedViewMoreProduct(product);
+    setShowViewMore(true);
+  };
+
+  const closeViewMore = () => {
+    setShowViewMore(false);
+    setSelectedViewMoreProduct(null);
   };
 
   const handleFilterChange = (newFilters) => {
@@ -824,97 +892,6 @@ const AllCategories = () => {
               </div>
               
               <div className="all-products-main">
-            <div className="virtues-promise-section">
-              <div className="section-row">
-                <h3 className="section-title">Our Virtues</h3>
-                <div className="virtues-grid">
-                  <div className="virtue-item">
-                    <div className="virtue-icon green">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        <path d="M8 12l2 2 4-4"/>
-                      </svg>
-                    </div>
-                    <span className="virtue-text">100% Natural</span>
-                  </div>
-                  <div className="virtue-item">
-                    <div className="virtue-icon green">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M9 12l2 2 4-4"/>
-                        <path d="M21 12c.552 0 1-.448 1-1V5c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1h18z"/>
-                        <path d="M3 12h18v6c0 .552-.448 1-1 1H4c-.552 0-1-.448-1-1v-6z"/>
-                      </svg>
-                    </div>
-                    <span className="virtue-text">Chemical Free</span>
-                  </div>
-                  <div className="virtue-item">
-                    <div className="virtue-icon green">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                        <circle cx="12" cy="10" r="3"/>
-                      </svg>
-                    </div>
-                    <span className="virtue-text">Locally Sourced</span>
-                  </div>
-                  <div className="virtue-item">
-                    <div className="virtue-icon green">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M9 12l2 2 4-4"/>
-                        <path d="M21 12c.552 0 1-.448 1-1V5c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1h18z"/>
-                        <path d="M3 12h18v6c0 .552-.448 1-1 1H4c-.552 0-1-.448-1-1v-6z"/>
-                      </svg>
-                    </div>
-                    <span className="virtue-text">Preservative Free</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="section-row">
-                <h3 className="section-title">Our Promise</h3>
-                <div className="promise-grid">
-                  <div className="promise-item">
-                    <div className="promise-icon red">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M9 12l2 2 4-4"/>
-                        <path d="M21 12c.552 0 1-.448 1-1V5c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1h18z"/>
-                        <path d="M3 12h18v6c0 .552-.448 1-1 1H4c-.552 0-1-.448-1-1v-6z"/>
-                      </svg>
-                    </div>
-                    <span className="promise-text">No Preservatives</span>
-                  </div>
-                  <div className="promise-item">
-                    <div className="promise-icon red">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M9 12l2 2 4-4"/>
-                        <path d="M21 12c.552 0 1-.448 1-1V5c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1h18z"/>
-                        <path d="M3 12h18v6c0 .552-.448 1-1 1H4c-.552 0-1-.448-1-1v-6z"/>
-                      </svg>
-                    </div>
-                    <span className="promise-text">No Chemicals</span>
-                  </div>
-                  <div className="promise-item">
-                    <div className="promise-icon red">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M9 12l2 2 4-4"/>
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
-                      </svg>
-                    </div>
-                    <span className="promise-text">No Additive</span>
-                  </div>
-                  <div className="promise-item">
-                    <div className="promise-icon red">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M9 12l2 2 4-4"/>
-                        <path d="M21 12c.552 0 1-.448 1-1V5c0-.552-.448-1-1-1H3c-.552 0-1 .448-1 1v6c0 .552.448 1 1 1h18z"/>
-                        <path d="M3 12h18v6c0 .552-.448 1-1 1H4c-.552 0-1-.448-1-1v-6z"/>
-                      </svg>
-                    </div>
-                    <span className="promise-text">No Artificial Flavoring</span>
-                  </div>
-                </div>
-              </div>
-            </div>
 
 
             <div className="all-products-header">
@@ -924,40 +901,14 @@ const AllCategories = () => {
                     <h1 className="all-products-title">All Products</h1>
                     <p className="all-products-subtitle">Explore our complete range of organic products</p>
                   </div>
-                  
-                  {/* Sort Dropdown */}
-                  <div className="sort-dropdown-container">
-                    <button
-                      className={`sort-dropdown-trigger ${showSortDropdown ? 'active' : ''}`}
-                      onClick={() => setShowSortDropdown(!showSortDropdown)}
-                    >
-                      <span>{getCurrentSortLabel()}</span>
-                      <img 
-                        src={downIcon} 
-                        alt="dropdown" 
-                        className={`sort-arrow ${showSortDropdown ? 'open' : ''}`}
-                      />
-                    </button>
-                    {showSortDropdown && (
-                      <div className="sort-dropdown-menu">
-                        {sortOptions.map(option => (
-                          <button
-                            key={option.value}
-                            className={`sort-option ${filters.sortBy === option.value ? 'active' : ''}`}
-                            onClick={() => handleSortChange(option.value)}
-                          >
-                            {option.label}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
                 </div>
+                
               </div>
             </div>
             
-                <div className="all-products-info">
-                  <p className="all-products-count">
+            {/* Products count and Sort dropdown in same row */}
+            <div className="products-controls-row">
+              <div className="all-products-count">
                 {filters.selectedItems && filters.selectedItems.length > 0 ? (
                   `Showing ${filteredProductsList.length} products from selected categories`
                 ) : filters.selectedPackageTypes && filters.selectedPackageTypes.length > 0 ? (
@@ -965,7 +916,39 @@ const AllCategories = () => {
                 ) : (
                   `Showing ${filteredProductsList.length} of ${currentProducts.length} products`
                 )}
-              </p>
+              </div>
+              
+              {/* Sort Dropdown - positioned on the right */}
+              <div className="sort-dropdown-container">
+                <button
+                  className={`sort-dropdown-trigger ${showSortDropdown ? 'active' : ''}`}
+                  onClick={() => setShowSortDropdown(!showSortDropdown)}
+                >
+                  <span className="sort-by-label">Sort by:</span>
+                  <span className="sort-selection">Name, A-Z</span>
+                  <img 
+                    src={downIcon} 
+                    alt="dropdown" 
+                    className={`sort-arrow ${showSortDropdown ? 'open' : ''}`}
+                  />
+                </button>
+                {showSortDropdown && (
+                  <div className="sort-dropdown-menu">
+                    {sortOptions.map(option => (
+                      <button
+                        key={option.value}
+                        className={`sort-option ${filters.sortBy === option.value ? 'active' : ''}`}
+                        onClick={() => handleSortChange(option.value)}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            
+                <div className="all-products-info">
               
               {/* Cart Summary */}
               {cart.length > 0 && (
@@ -1003,7 +986,7 @@ const AllCategories = () => {
                   
                   
                   return (
-                    <div key={product.id} className="product-card">
+                    <div key={product.id} className="product-card" data-product-id={product.id}>
                       {/* Discount Badge */}
                       <div className="discount-badge">
                         -{product.discount}%
@@ -1057,6 +1040,16 @@ const AllCategories = () => {
                           </span>
                         </div>
                         
+                        {/* View More Details Link - positioned above Add to Cart button and right aligned */}
+                        <div className="view-details-section">
+                          <button 
+                            className="view-details-link"
+                            onClick={() => openViewMore(product)}
+                          >
+                            View More Details
+                          </button>
+                        </div>
+                        
                         <div className="product-actions">
                           <button 
                             className="add-btn"
@@ -1104,6 +1097,14 @@ const AllCategories = () => {
             </div>
           </div>
         )}
+
+      {/* View More Details Component */}
+      {showViewMore && selectedViewMoreProduct && (
+        <ViewMoreDetails 
+          product={selectedViewMoreProduct} 
+          onClose={closeViewMore} 
+        />
+      )}
     </div>
   );
 };

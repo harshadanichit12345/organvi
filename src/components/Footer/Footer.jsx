@@ -1,5 +1,6 @@
 import { Instagram, Facebook, Twitter, Linkedin } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import logo from '../../assets/organvilogo.jpg';
 import fssaiLogo from '../../assets/fssai.png';
 import rupayLogo from '../../assets/rupay.png';
@@ -12,16 +13,47 @@ import emailIcon from '../../assets/email.gif';
 import './Footer.css';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    setIsLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubscribed(true);
+      setIsLoading(false);
+      setEmail('');
+      
+      // Hide success message after 3 seconds
+      setTimeout(() => {
+        setIsSubscribed(false);
+      }, 3000);
+    }, 1000);
+  };
+
   return (
     <footer className="footer">
 
       <div className="container">
         <div className="footer-content">
           {/* About Section */}
-          <div className="footer-section about-section">
+          <div className="footer-section about-section" style={{overflow: 'visible', height: 'auto'}}>
             <h4 className="footer-title">About Organvi</h4>
-            <p className="about-text">
-              Organvi is a certified organic farming and food processing company working in partnership with farmers to deliver pure, natural, and chemical-free products.
+            <p className="about-text" style={{display: 'block', visibility: 'visible', opacity: '1', color: 'black', fontSize: '14px', lineHeight: '1.4', margin: '10px 0'}}>
+              Organvi is a fast-growing organic food company dedicated to farming, producing, processing, and packing pure, chemical-free products. Through our "Partnership with Farmer" model, we ensure quality, sustainability, and community growth — so that YOU JUST EAT RIGHT.
             </p>
             <div className="certification">
               <img src={fssaiLogo} alt="FSSAI Logo" className="fssai-logo" />
@@ -44,14 +76,28 @@ const Footer = () => {
             </ul>
             <div className="newsletter">
               <h5 className="newsletter-title">Newsletter</h5>
-              <div className="newsletter-form">
+              <form onSubmit={handleSubscribe} className="newsletter-form">
                 <input
                   type="email"
                   placeholder="E-mail address"
                   className="newsletter-input"
+                  value={email}
+                  onChange={handleEmailChange}
+                  required
                 />
-                <button className="newsletter-btn">SUBSCRIBE</button>
-              </div>
+                <button 
+                  type="submit" 
+                  className="newsletter-btn"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'SUBSCRIBING...' : 'SUBSCRIBE'}
+                </button>
+              </form>
+              {isSubscribed && (
+                <div className="newsletter-success">
+                  <p>✅ Thank you for subscribing to our newsletter!</p>
+                </div>
+              )}
             </div>
           </div>
 

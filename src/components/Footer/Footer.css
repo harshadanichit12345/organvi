@@ -408,11 +408,12 @@
   display: flex;
   background: rgba(0, 0, 0, 0.1);
   border-radius: 20px;
-  overflow: hidden;
-  border: 2px solid transparent;
+  overflow: visible;
+  border: 2px solid #e5e7eb;
   transition: all 0.3s ease;
   height: 35px;
   flex-wrap: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .newsletter-form:focus-within {
@@ -429,6 +430,7 @@
   font-size: 0.8rem;
   outline: none;
   min-width: 0;
+  border-radius: 18px 0 0 18px;
 }
 
 .newsletter-btn {
@@ -444,12 +446,47 @@
   font-weight: bold;
   font-size: 0.75rem;
   flex-shrink: 0;
+  border-radius: 0 18px 18px 0;
 }
 
-.newsletter-btn:hover {
+.newsletter-btn:hover:not(:disabled) {
   background: #5a7f32;
   transform: scale(1.05);
   box-shadow: 0 4px 15px rgba(111, 156, 61, 0.3);
+}
+
+.newsletter-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.newsletter-success {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 8px;
+  color: #155724;
+  font-size: 0.8rem;
+  text-align: center;
+  animation: slideInSuccess 0.3s ease-out;
+}
+
+.newsletter-success p {
+  margin: 0;
+  font-weight: 500;
+}
+
+@keyframes slideInSuccess {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .footer-bottom {
@@ -837,6 +874,9 @@
   .about-text {
     font-size: 0.75rem;
     line-height: 1.2;
+    text-align: center;
+    margin: 0 auto 1rem auto;
+    display: block;
   }
 
   .footer-link {
@@ -981,10 +1021,14 @@
 
   .footer-title {
     font-size: 0.9rem;
+    text-align: center;
   }
 
   .about-text {
     font-size: 0.7rem;
+    text-align: center;
+    margin: 0 auto 0.8rem auto;
+    display: block;
   }
 
   .footer-link {

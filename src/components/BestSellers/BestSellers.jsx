@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './BestSellers.css';
 
 const BestSellers = () => {
@@ -7,35 +8,35 @@ const BestSellers = () => {
   const bestSellerProducts = [
     {
       id: 1,
-      name: 'Organic Quinoa Flour',
-      price: 285,
-      originalPrice: 300,
-      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&h=300&fit=crop',
-      discount: 5
+      name: 'Organic Almonds',
+      price: 450,
+      originalPrice: 500,
+      image: '/src/assets/almond.png',
+      discount: 10
     },
     {
       id: 2,
-      name: 'Organic Turmeric Powder',
-      price: 180,
-      originalPrice: 200,
-      image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&h=300&fit=crop',
+      name: 'Organic Cashew Nuts',
+      price: 380,
+      originalPrice: 420,
+      image: '/src/assets/cashewnut.png',
       discount: 10
     },
     {
       id: 3,
-      name: 'Organic Almonds',
-      price: 450,
-      originalPrice: 500,
-      image: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=300&h=300&fit=crop',
-      discount: 10
-    },
-    {
-      id: 4,
       name: 'Organic Jaggery',
       price: 120,
       originalPrice: 150,
-      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&h=300&fit=crop',
+      image: '/src/assets/jeggary.png',
       discount: 20
+    },
+    {
+      id: 4,
+      name: 'Organic Turmeric',
+      price: 180,
+      originalPrice: 200,
+      image: '/src/assets/termeric.png',
+      discount: 10
     }
   ];
 
@@ -63,7 +64,12 @@ const BestSellers = () => {
         <div className="best-sellers-content">
           <div className="best-sellers-main">
             <div className="best-sellers-header">
-              <h2 className="best-sellers-title">Best Seller Products</h2>
+              <div className="best-sellers-header-content">
+                <h2 className="best-sellers-title">Best Seller Products</h2>
+                <Link to="/allcategories" className="view-more-link">
+                  View More Products →
+                </Link>
+              </div>
             </div>
             
             

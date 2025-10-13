@@ -1,5 +1,5 @@
 .categories-container {
-  padding: 2rem 0 0 0;
+  padding: 1rem 0 0 0;
   max-width: 100%;
   margin: 0;
   background: #f8f7f3; /* Light textured off-white background */
@@ -32,8 +32,8 @@
   }
   
   .category-gif {
-    width: 25px;
-    height: 25px;
+    width: 50px !important;
+    height: 50px !important;
   }
   
   .category-name {
@@ -66,8 +66,8 @@
   }
   
   .category-gif {
-    width: 20px;
-    height: 20px;
+    width: 50px !important;
+    height: 50px !important;
   }
   
   .category-name {
@@ -100,8 +100,8 @@
   }
   
   .category-gif {
-    width: 18px;
-    height: 18px;
+    width: 50px !important;
+    height: 50px !important;
   }
   
   .category-name {
@@ -154,7 +154,7 @@
   gap: 0.5rem;
   flex-wrap: nowrap;
   background: #f8f7f3; /* Light textured off-white background */
-  padding: 0.8rem 1rem;
+  padding: 1rem 1.5rem; /* Reduced top & bottom padding */
   max-width: 100%;
   overflow: visible;
 }
@@ -202,13 +202,13 @@
   filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2);
 }
 
-/* GIF image styling with orange color effects */
+/* GIF image styling with consistent green color */
 .category-gif {
-  width: 30px;
-  height: 30px;
+  width: 50px !important;
+  height: 50px !important;
   object-fit: contain;
   background: transparent !important;
-  filter: hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6) !important;
+  filter: hue-rotate(100deg) saturate(1.5) brightness(1.1) contrast(1.2) !important;
   transition: all 0.3s ease;
   border: none !important;
   outline: none !important;
@@ -216,38 +216,40 @@
 
 .category-item:hover .category-gif {
   transform: scale(1.1);
-  filter: hue-rotate(40deg) saturate(2.5) brightness(1.3) contrast(1.5) !important;
+  filter: hue-rotate(100deg) saturate(1.5) brightness(1.1) contrast(1.2) !important;
 }
 
 /* Additional specific styling to ensure GIF changes are applied */
 .categories-container .category-item .category-icon .category-gif {
   background: transparent !important;
-  filter: hue-rotate(30deg) saturate(2.0) brightness(1.2) contrast(1.4) !important;
+  filter: hue-rotate(100deg) saturate(1.5) brightness(1.1) contrast(1.2) !important;
   border: none !important;
   outline: none !important;
 }
 
 .categories-container .category-item:hover .category-icon .category-gif {
-  filter: hue-rotate(40deg) saturate(2.5) brightness(1.3) contrast(1.5) !important;
+  filter: hue-rotate(100deg) saturate(1.5) brightness(1.1) contrast(1.2) !important;
 }
 
-/* Force orange color on all GIF images */
+/* Force consistent green color on all GIF images */
 .categories-container img.category-gif,
 .categories-container .category-item .category-icon img,
 .categories-container .category-item img {
-  filter: hue-rotate(25deg) saturate(2.5) brightness(1.3) contrast(1.6) !important;
+  width: 50px !important;
+  height: 50px !important;
+  filter: hue-rotate(100deg) saturate(1.5) brightness(1.1) contrast(1.2) !important;
   background: transparent !important;
   border: none !important;
   outline: none !important;
 }
 
 .category-name {
-  font-size: 0.6rem;
-  font-weight: 600;
-  color: #2d5016;
+  font-size: 1rem !important; /* much smaller */
+  font-weight: 500;
+  color: black;
   text-align: center;
-  line-height: 1.1;
-  margin-top: 0.2rem;
+  line-height: 1.0;
+  margin-top: 0.1rem;
 }
 
 /* Responsive Design */
@@ -281,12 +283,12 @@
   }
   
   .category-gif {
-    width: 50px;
-    height: 50px;
+    width: 50px !important;
+    height: 50px !important;
   }
   
   .category-name {
-    font-size: 0.9rem;
+    font-size: 1rem !important; /* as requested */
   }
 }
 
@@ -298,153 +300,164 @@
   
   .categories-row {
     gap: 1.5rem;
+    flex-wrap: nowrap;
   }
   
   .category-item {
     min-width: 110px;
     padding: 0.5rem;
+    flex: 1;
   }
   
   .category-icon {
-    width: 65px;
-    height: 65px;
+    width: 45px;
+    height: 45px;
     background: transparent;
     border: none;
     border-radius: 0;
   }
   
   .category-image {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
   }
   
   .category-gif {
-    width: 48px;
-    height: 48px;
+    width: 50px !important;
+    height: 50px !important;
   }
   
   .category-name {
-    font-size: 0.9rem;
+    font-size: 1rem !important;
   }
 }
 
 /* Medium mobile styles (481px - 767px) */
 @media (max-width: 768px) {
   .categories-container {
-    padding: 0.3rem 1rem 0 1rem;
+    padding: 0.2rem 1rem 0 1rem;
   }
   
   .categories-row {
-    gap: 1.2rem;
-    justify-content: center;
+    gap: 0.8rem;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 0.5rem 1rem;
   }
   
   .category-item {
-    min-width: 100px;
-    padding: 0.3rem;
+    min-width: 0;
+    padding: 0.2rem;
+    flex: 1;
   }
   
   .category-icon {
-    width: 60px;
-    height: 60px;
+    width: 35px;
+    height: 35px;
     background: transparent;
     border: none;
     border-radius: 0;
   }
   
   .category-image {
-    width: 45px;
-    height: 45px;
+    width: 30px;
+    height: 30px;
   }
   
   .category-gif {
-    width: 45px;
-    height: 45px;
+    width: 50px !important;
+    height: 50px !important;
   }
   
   .category-name {
-    font-size: 0.85rem;
-    line-height: 1.2;
+    font-size: 0.7rem !important; /* reduced for mobile */
+    line-height: 1.0;
   }
 }
 
 /* Small mobile styles (≤480px) */
 @media (max-width: 480px) {
   .categories-container {
-    padding: 0.2rem 0.5rem 0 0.5rem;
+    padding: 0.1rem 0.5rem 0 0.5rem;
   }
   
   .categories-row {
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0.3rem 0.5rem;
   }
   
   .category-item {
-    min-width: 85px;
-    padding: 0.2rem;
+    min-width: 0;
+    padding: 0.1rem;
+    flex: 1;
   }
   
   .category-icon {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     background: transparent;
     border: none;
     border-radius: 0;
   }
   
   .category-image {
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
   }
   
   .category-gif {
-    width: 40px;
-    height: 40px;
+    width: 50px !important;
+    height: 50px !important;
   }
   
   .category-name {
-    font-size: 0.75rem;
-    line-height: 1.1;
-    margin-top: 0.3rem;
+    font-size: 0.6rem !important; /* reduced for small mobile */
+    line-height: 1.0;
+    margin-top: 0.1rem;
   }
 }
 
 /* Extra small mobile styles (≤360px) */
 @media (max-width: 360px) {
   .categories-container {
-    padding: 0.1rem 0.3rem 0 0.3rem;
+    padding: 0.05rem 0.3rem 0 0.3rem;
   }
   
   .categories-row {
-    gap: 0.8rem;
+    gap: 0.3rem;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0.2rem 0.3rem;
   }
   
   .category-item {
-    min-width: 75px;
-    padding: 0.1rem;
+    min-width: 0;
+    padding: 0.05rem;
+    flex: 1;
   }
   
   .category-icon {
-    width: 45px;
-    height: 45px;
+    width: 25px;
+    height: 25px;
     background: transparent;
     border: none;
     border-radius: 0;
   }
   
   .category-image {
-    width: 35px;
-    height: 35px;
+    width: 20px;
+    height: 20px;
   }
   
   .category-gif {
-    width: 35px;
-    height: 35px;
+    width: 50px !important;
+    height: 50px !important;
   }
   
   .category-name {
-    font-size: 0.7rem;
-    line-height: 1.1;
+    font-size: 0.5rem !important; /* reduced for extra small mobile */
+    line-height: 1.0;
   }
 }
