@@ -338,8 +338,8 @@
   bottom: 120px; /* space from bottom/FAB */
   right: 20px;
   width: 360px; /* explicit width to avoid narrow column */
-  height: auto; /* dynamic height */
-  max-height: calc(100vh - 180px); /* slightly taller while staying below navbar */
+  height: calc(100vh - 180px); /* open at max height immediately */
+  max-height: calc(100vh - 180px); /* stay below navbar */
   background: white;
   border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
@@ -702,7 +702,8 @@
   
   .chatbot-window {
     width: 320px;
-    height: 450px;
+    height: calc(100vh - 180px);
+    max-height: calc(100vh - 180px);
   }
   
   .chatbot-toggle {
@@ -752,8 +753,8 @@
     position: fixed;
     width: calc(100vw - 24px);
     max-width: 360px;
-    height: auto;
-    max-height: calc(100vh - 160px); /* a bit taller on mobile too */
+    height: calc(100vh - 160px); /* open at max height on mobile */
+    max-height: calc(100vh - 160px);
     bottom: 100px;
     right: 12px;
     left: 12px;
@@ -836,7 +837,8 @@
   }
   
   .chatbot-window {
-    height: 350px;
+    height: calc(100vh - 140px);
+    max-height: calc(100vh - 140px);
     border-radius: 16px;
   }
   
@@ -948,7 +950,8 @@
   }
   
   .chatbot-window {
-    height: 320px;
+    height: calc(100vh - 120px);
+    max-height: calc(100vh - 120px);
   }
   
   .chatbot-toggle {

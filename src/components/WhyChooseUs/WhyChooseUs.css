@@ -192,7 +192,7 @@
   align-items: center;
   text-align: center;
   padding: 1.5rem 1rem;
-  background: linear-gradient(135deg, #2e7d32 0%, #388e3c 25%, #4caf50 50%, #66bb6a 75%, #81c784 100%);
+  background: #4caf50;
   border-radius: 12px;
   border: none;
   box-shadow: 0 4px 15px rgba(46, 125, 50, 0.2);
@@ -223,7 +223,7 @@
 .feature-item:hover {
   transform: translateY(-12px) scale(1.03);
   box-shadow: 0 20px 40px rgba(46, 125, 50, 0.4);
-  background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 25%, #388e3c 50%, #4caf50 75%, #66bb6a 100%);
+  background: #4caf50;
   border-radius: 16px;
 }
 

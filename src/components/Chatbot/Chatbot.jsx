@@ -7,14 +7,7 @@ import './Chatbot.css';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hi! I'm your Organvi assistant. How can I help you today?",
-      sender: 'bot',
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
@@ -32,6 +25,16 @@ const Chatbot = () => {
     'are your products fresh': 'Absolutely! We maintain strict quality control and ensure all our organic products are fresh. We have a direct supply chain from farm to your doorstep.',
     'do you have bulk discounts': 'Yes, we offer special discounts for bulk orders. Contact our customer support for more information about bulk pricing and special offers.',
     'how can i contact support': 'You can contact our support team through the contact page on our website, or reach out to us via WhatsApp, email, or phone. We\'re here to help with any questions or concerns.'
+  };
+
+  // Direct answers for the default clickable questions
+  const quickAnswers = {
+    'create or manage account': 'To create or manage your account, go to My Account from the top menu. From there you can sign up, update your details, and view your orders.',
+    'shipment status': 'Shipments are usually dispatched within 24-48 hours. You will receive an SMS/Email with tracking details once shipped.',
+    'payment options': 'We accept UPI, Credit/Debit Cards, Net Banking, and Cash on Delivery (where available).',
+    'track my order': 'To track your order, open My Orders in your account. After dispatch, tracking link and AWB number will be shown there.',
+    'return and refund': 'You can request a return within 30 days of delivery if items are unopened and in original condition. Refunds are processed to the original payment method.',
+    'delivery areas and timing': 'We currently deliver to major Indian cities. Standard delivery takes 2-5 business days depending on your pincode.'
   };
 
   const scrollToBottom = () => {
@@ -75,6 +78,28 @@ const Chatbot = () => {
       setMessages(prev => [...prev, botMessage]);
       setIsTyping(false);
     }, 1000);
+  };
+
+  // Quick question handler - sends predefined Q and immediate answer (no typing needed)
+  const handleQuickQuestion = (question) => {
+    const q = question.trim();
+    if (!q) return;
+    const userMessage = {
+      id: messages.length + 1,
+      text: q,
+      sender: 'user',
+      timestamp: new Date()
+    };
+    const lower = q.toLowerCase();
+    const directAnswer = quickAnswers[lower];
+    const answerText = directAnswer ? directAnswer : getBotResponse(lower);
+    const botMessage = {
+      id: messages.length + 2,
+      text: `${answerText}\n\nFor assistance, call +91 9284361797.`,
+      sender: 'bot',
+      timestamp: new Date()
+    };
+    setMessages(prev => [...prev, userMessage, botMessage]);
   };
 
   const getBotResponse = (userInput) => {
@@ -152,10 +177,12 @@ const Chatbot = () => {
   };
 
   const suggestedQuestions = [
-    'What products do you sell?',
-    'Are your products organic?',
-    'Do you offer free delivery?',
-    'What is your return policy?'
+    'Create or manage account',
+    'Shipment status',
+    'Payment options',
+    'Track my order',
+    'Return and refund',
+    'Delivery areas and timing'
   ];
 
   return (

@@ -5,6 +5,7 @@ import Navbar from './components/Navbar/Navbar';
 import Categories from './components/Categories/Categories';
 import Footer from './components/Footer/Footer';
 import Chatbot from './components/Chatbot/Chatbot';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import Home from './pages/Home/Home';
 import Products from './pages/Products/Products';
 import CategoriesPage from './pages/Categories/Categories';
@@ -36,6 +37,7 @@ function App() {
   return (
     <UserProvider>
       <Router>
+        <ScrollToTop />
         <div className="App">
           <Navbar />
           <Categories />

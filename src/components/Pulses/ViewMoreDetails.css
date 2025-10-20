@@ -553,17 +553,17 @@
 
 
 /* Why Choose Us Section */
-.why-choose-us {
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+.vmd-why-choose-us {
+ 
   padding: 2rem 3rem;
   margin: 0;
 }
 
-.why-choose-us h2 {
+.vmd-why-choose-us h2 {
   text-align: center;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: white;
+  color: black;
   margin: 0 0 2rem 0;
 }
 
@@ -576,7 +576,7 @@
 }
 
 .feature-card {
-  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  background: #4caf50;
   padding: 2rem 1.5rem;
   border-radius: 12px;
   text-align: left;
@@ -589,7 +589,7 @@
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   border-color: rgba(255, 255, 255, 0.4);
-  background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+  background: #4caf50;
 }
 
 .feature-icon {
@@ -631,7 +631,7 @@
 
 .main-message {
   text-align: center;
-  background: white;
+  background: transparent;
   padding: 1.5rem;
   border-radius: 8px;
   border: 2px solid #8B4513;
@@ -1498,11 +1498,11 @@
     font-size: 0.85rem;
   }
   
-  .why-choose-us {
+  .vmd-why-choose-us {
     padding: 1.5rem 1rem;
   }
   
-  .why-choose-us h2 {
+  .vmd-why-choose-us h2 {
     font-size: 1.4rem;
     margin-bottom: 1rem;
   }

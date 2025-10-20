@@ -429,8 +429,8 @@ const ViewMoreDetails = ({ product, onClose }) => {
           </div>
         </div>
 
-        {/* Why Choose Us Section */}
-        <div className="why-choose-us">
+        {/* Why Choose Us Section (scoped styles) */}
+        <div className="vmd-why-choose-us">
           <h2>Why Choose Us</h2>
           <div className="why-choose-content">
             <div className="feature-card">
