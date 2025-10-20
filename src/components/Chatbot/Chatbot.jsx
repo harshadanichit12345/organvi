@@ -16,9 +16,7 @@ const Chatbot = () => {
     }
   ]);
   const [inputValue, setInputValue] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [showPhoneInput, setShowPhoneInput] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -214,11 +212,13 @@ const Chatbot = () => {
               <img src={messageIcon} alt="Bot" className="bot-avatar-image" />
             </div>
             <div className="chatbot-info">
-              <h3>Organvi Assistant</h3>
+              <h3>Chat with us</h3>
               <span className="status">Online</span>
             </div>
           </div>
         </div>
+
+        {/* Greeting removed per request */}
 
         <div className="chatbot-messages">
           {messages.map((message) => (
@@ -260,24 +260,6 @@ const Chatbot = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Suggested Questions */}
-        {messages.length === 1 && (
-          <div className="suggested-questions">
-            <p>Try asking:</p>
-            <div className="suggestions">
-              {suggestedQuestions.map((question, index) => (
-                <button
-                  key={index}
-                  className="suggestion-btn"
-                  onClick={() => setInputValue(question)}
-                >
-                  {question}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
         <div className="chatbot-input">
           <input
             ref={inputRef}
@@ -296,6 +278,8 @@ const Chatbot = () => {
             <img src={sendIcon} alt="Send" className="send-button-image" />
           </button>
         </div>
+
+        {/* Instant answers removed per request */}
       </div>
     </div>
   );

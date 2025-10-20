@@ -65,8 +65,8 @@ const Pulses = () => {
     { 
       id: 1,
       name: 'Organic Chana Dal', 
-      price: 95, 
-      originalPrice: 100,
+      price: 75, 
+      originalPrice: 85,
       discount: 5,
       weight: '500g',
       image: chanadalImg,
@@ -87,8 +87,8 @@ const Pulses = () => {
     { 
       id: 3,
       name: 'Organic Moong Dal', 
-      price: 90, 
-      originalPrice: 95,
+      price: 75, 
+      originalPrice: 85,
       discount: 5,
       weight: '500g',
       image: moongdalImg,
@@ -98,8 +98,8 @@ const Pulses = () => {
     { 
       id: 4,
       name: 'Organic Toor Dal', 
-      price: 100, 
-      originalPrice: 105,
+      price: 99, 
+      originalPrice: 109,
       discount: 5,
       weight: '500g',
       image: toordalImg,
@@ -109,8 +109,8 @@ const Pulses = () => {
     { 
       id: 5,
       name: 'Organic Urad Dal', 
-      price: 110, 
-      originalPrice: 115,
+      price: 75, 
+      originalPrice: 85,
       discount: 4,
       weight: '500g',
       image: uraldalImg,
@@ -840,9 +840,7 @@ const Pulses = () => {
               <button className="modal-add-to-cart-btn" onClick={handleModalAddToCart}>
                 {isEditing ? 'REPLACE ITEM' : 'ADD TO CART'}
               </button>
-              <a href="#" className="modal-view-details" onClick={(e) => e.preventDefault()}>
-                View full details →
-              </a>
+             
             </div>
           </div>
         </div>
@@ -856,6 +854,13 @@ const Pulses = () => {
           <div className="cart-modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="cart-header">
               <h2>SHOPPING CART</h2>
+              <button 
+                className="cart-close-btn"
+                onClick={closeCartModal}
+                title="Close"
+              >
+                <img src={closeGif} alt="Close" className="close-gif" />
+              </button>
             </div>
             
 
@@ -893,13 +898,6 @@ const Pulses = () => {
                       </button>
                     </div>
                     <div className="cart-item-actions">
-                      <button 
-                        className="cart-edit-btn"
-                        onClick={() => openEditModal(item)}
-                        title="Edit"
-                      >
-                        <img src={editIcon} alt="Edit" />
-                      </button>
                       <button 
                         className="cart-remove-btn"
                         onClick={() => removeFromCart(item.id)}
@@ -946,7 +944,6 @@ const Pulses = () => {
                     <img src={upiIcon} alt="UPI" />
                   </div>
                 </button>
-                <p className="cart-powered-by">Powered By Shiprocket.</p>
               </div>
             </div>
           </div>

@@ -1,7 +1,6 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';
-import GreenBar from './components/GreenBar/GreenBar';
 import Navbar from './components/Navbar/Navbar';
 import Categories from './components/Categories/Categories';
 import Footer from './components/Footer/Footer';
@@ -26,13 +25,18 @@ import Likeproduct from './components/Like/Likeproduct';
 import SearchPage from './pages/Search/Search';
 import Account from './components/Account/Account';
 import Dashboard from './components/Dashboard/Dashboard';
+import OrderConfirmationPage from './pages/OrderConfirmation/OrderConfirmationPage';
+import OrderTracking from './components/Order/OrderTracking';
+import OrderHistory from './pages/OrderHistory/OrderHistory';
+import OrderSuccess from './pages/OrderSuccess/OrderSuccess';
+import MyOrders from './pages/MyOrders/MyOrders';
+import OrderDetails from './pages/OrderDetails/OrderDetails';
 
 function App() {
   return (
     <UserProvider>
       <Router>
         <div className="App">
-          <GreenBar />
           <Navbar />
           <Categories />
           <main>
@@ -57,6 +61,12 @@ function App() {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/account" element={<Account />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+              <Route path="/order-tracking/:orderId" element={<OrderTracking />} />
+              <Route path="/order-history" element={<OrderHistory />} />
+              <Route path="/payment-success" element={<OrderSuccess />} />
+              <Route path="/account/orders" element={<MyOrders />} />
+              <Route path="/account/orders/:id" element={<OrderDetails />} />
             </Routes>
           </main>
           <Footer />

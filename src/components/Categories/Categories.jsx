@@ -5,14 +5,14 @@ import './Categories.css';
 // Import GIF images from assets
 import dalGif from '../../assets/Dal.gif';
 import almondsGif from '../../assets/almonds-17904960-unscreen.gif';
-import sugarGif from '../../assets/sugar-cubes-18107560-unscreen.gif';
+import bambooGif from '../../assets/bamboo-16390380-unscreen.gif';
 import grindGif from '../../assets/grind-14324580-unscreen.gif';
 
 const Categories = () => {
   const navigate = useNavigate();
   
   // Debug: Log the GIF imports
-  console.log('GIF imports:', { dalGif, almondsGif, sugarGif, grindGif });
+  console.log('GIF imports:', { dalGif, almondsGif, bambooGif, grindGif });
 
   const handleCategoryClick = (categoryId) => {
     if (categoryId === 1) {
@@ -47,7 +47,7 @@ const Categories = () => {
       id: 2,
       name: 'Sweetener',
       icon: <img 
-        src={sugarGif} 
+        src={bambooGif} 
         alt="Sweetener" 
         className="category-gif" 
       />

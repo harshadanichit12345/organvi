@@ -77,14 +77,45 @@ const Carts = () => {
     setShowPayment(true);
   };
 
-  const handlePaymentSuccess = (response) => {
+  const handlePaymentSuccess = (response, orderData) => {
     console.log('Payment successful:', response);
+    
+    // If orderData is provided from PaymentForm, use it; otherwise create a basic one
+    const finalOrderData = orderData || {
+      orderId: `ORD${Date.now()}${Math.floor(Math.random() * 1000)}`,
+      trackingId: `TRK${Date.now()}${Math.floor(Math.random() * 10000)}`,
+      orderDate: new Date(),
+      status: 'pending',
+      paymentId: response.razorpay_payment_id,
+      paymentSignature: response.razorpay_signature,
+      totalAmount: getTotal(),
+      customerDetails: {
+        name: 'Customer Name',
+        email: 'customer@email.com',
+        phone: '9876543210'
+      },
+      shippingAddress: {
+        line1: 'Delivery Address',
+        city: 'City',
+        state: 'State',
+        pincode: '123456'
+      },
+      items: cartItems,
+      paymentMethod: 'razorpay'
+    };
+
+    // Save order to localStorage
+    const existingOrders = JSON.parse(localStorage.getItem('orders')) || [];
+    existingOrders.push(finalOrderData);
+    localStorage.setItem('orders', JSON.stringify(existingOrders));
+
     // Clear cart after successful payment
     setCartItems([]);
     localStorage.removeItem('cart');
     window.dispatchEvent(new CustomEvent('cartUpdated', { detail: 0 }));
-    alert('Payment successful! Your order has been placed.');
-    setShowPayment(false);
+    
+    // Navigate to order success page
+    navigate('/payment-success');
   };
 
   const handlePaymentFailure = (error) => {
@@ -97,6 +128,13 @@ const Carts = () => {
     <div className="cart-page">
       <div className="cart-header">
         <h1>SHOPPING CART</h1>
+        <button 
+          className="cart-close-btn"
+          onClick={() => navigate('/')}
+          title="Close"
+        >
+          <img src={closeGif} alt="Close" className="close-gif" />
+        </button>
       </div>
       {cartItems.length === 0 ? (
         <div className="empty-cart">
@@ -123,13 +161,6 @@ const Carts = () => {
                         <h3 className="cart-product-name">{item.name}</h3>
                         <p className="cart-product-size">Size: {item.weight}</p>
                         <div className="cart-product-actions">
-                          <button 
-                            className="cart-edit-btn"
-                            onClick={() => editItem(item)}
-                            title="Edit"
-                          >
-                            <img src={editIcon} alt="Edit" />
-                          </button>
                           <button 
                             className="cart-delete-btn"
                             onClick={() => removeItem(item.id)}
@@ -205,10 +236,6 @@ const Carts = () => {
                   <img src="/src/assets/rupay.png" alt="RuPay" className="cart-payment-icon" />
                   <img src="/src/assets/visa.png" alt="Visa" className="cart-payment-icon" />
                 </div>
-              </div>
-              <div className="cart-powered-by">
-                <span>Powered By</span>
-                <span className="cart-shiprocket">Shiprocket</span>
               </div>
             </button>
           </div>

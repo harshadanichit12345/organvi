@@ -24,6 +24,7 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, [images.length]);
 
+
   return (
     <section className="hero">
       <div className="hero-image-container">
@@ -42,6 +43,7 @@ const Hero = () => {
           );
         })}
       </div>
+      
     </section>
   );
 };

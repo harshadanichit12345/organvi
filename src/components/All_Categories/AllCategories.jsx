@@ -4,6 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import './AllCategories.css';
 import ViewMoreDetails from '../Pulses/ViewMoreDetails';
 import downIcon from '../../assets/down.png';
+import closeGif from '../../assets/close.gif';
+import binIcon from '../../assets/bin.png';
+import editIcon from '../../assets/editing.png';
+import mastercardIcon from '../../assets/mastercard.png';
+import rupayIcon from '../../assets/rupay.png';
+import upiIcon from '../../assets/upi (1).png';
+import visaIcon from '../../assets/visa.png';
 
 // Import product images
 // Almonds
@@ -118,6 +125,14 @@ const AllCategories = () => {
   const [likedProducts, setLikedProducts] = useState([]);
   const [showViewMore, setShowViewMore] = useState(false);
   const [selectedViewMoreProduct, setSelectedViewMoreProduct] = useState(null);
+  const [showCartModal, setShowCartModal] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedWeight, setSelectedWeight] = useState('500g');
+  const [modalQuantity, setModalQuantity] = useState(1);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingCartItem, setEditingCartItem] = useState(null);
   const [filters, setFilters] = useState({
     priceRange: [0, 1000],
     sortBy: 'name',
@@ -127,6 +142,7 @@ const AllCategories = () => {
     selectedItems: [],
     selectedPackageTypes: []
   });
+  const [searchHighlight, setSearchHighlight] = useState(null);
 
   const categories = [
     {
@@ -164,8 +180,8 @@ const AllCategories = () => {
         { 
           id: 3,
           name: 'Organic Chana Dal', 
-          price: 95, 
-          originalPrice: 100,
+          price: 75, 
+          originalPrice: 85,
           discount: 5,
           weight: '500g',
           image: chanadalImg,
@@ -212,8 +228,8 @@ const AllCategories = () => {
         { 
           id: 7,
           name: 'Organic Jaggery (Type 1)', 
-          price: 80, 
-          originalPrice: 85,
+          price: 70, 
+          originalPrice: 80,
           discount: 6,
           weight: '1kg',
           image: jaggaryImg,
@@ -223,8 +239,8 @@ const AllCategories = () => {
         { 
           id: 8,
           name: 'Organic Jaggery (Type 2)', 
-          price: 85, 
-          originalPrice: 90,
+          price: 70, 
+          originalPrice: 80,
           discount: 6,
           weight: '1kg',
           image: jaggary3Img,
@@ -234,8 +250,8 @@ const AllCategories = () => {
         { 
           id: 9,
           name: 'Organic Jaggery (Type 3)', 
-          price: 90, 
-          originalPrice: 95,
+          price: 70, 
+          originalPrice: 80,
           discount: 5,
           weight: '1kg',
           image: jaggary4Img,
@@ -245,8 +261,8 @@ const AllCategories = () => {
         { 
           id: 10,
           name: 'Organic Jaggery (Type 4)', 
-          price: 95, 
-          originalPrice: 100,
+          price: 70, 
+          originalPrice: 80,
           discount: 5,
           weight: '1kg',
           image: jaggary5Img,
@@ -256,8 +272,8 @@ const AllCategories = () => {
         { 
           id: 11,
           name: 'Organic Jaggery (Type 5)', 
-          price: 100, 
-          originalPrice: 105,
+          price: 70, 
+          originalPrice: 80,
           discount: 5,
           weight: '1kg',
           image: jaggary6Img,
@@ -267,8 +283,8 @@ const AllCategories = () => {
         { 
           id: 12,
           name: 'Organic Jaggery (Type 6)', 
-          price: 105, 
-          originalPrice: 110,
+          price: 70, 
+          originalPrice: 80,
           discount: 5,
           weight: '1kg',
           image: jeggaryImg,
@@ -293,8 +309,8 @@ const AllCategories = () => {
         { 
           id: 14,
           name: 'Organic Turmeric (Type 1)', 
-          price: 120, 
-          originalPrice: 130,
+          price: 95, 
+          originalPrice: 110,
           discount: 8,
           weight: '250g',
           image: termericImg,
@@ -304,8 +320,8 @@ const AllCategories = () => {
         { 
           id: 15,
           name: 'Organic Turmeric (Type 2)', 
-          price: 125, 
-          originalPrice: 135,
+          price: 95, 
+          originalPrice: 110,
           discount: 7,
           weight: '250g',
           image: termeric2Img,
@@ -315,8 +331,8 @@ const AllCategories = () => {
         { 
           id: 16,
           name: 'Organic Turmeric (Type 3)', 
-          price: 130, 
-          originalPrice: 140,
+          price: 95, 
+          originalPrice: 110,
           discount: 7,
           weight: '250g',
           image: termeric3Img,
@@ -326,8 +342,8 @@ const AllCategories = () => {
         { 
           id: 17,
           name: 'Organic Turmeric (Type 4)', 
-          price: 135, 
-          originalPrice: 145,
+          price: 95, 
+          originalPrice: 110,
           discount: 7,
           weight: '250g',
           image: termeric4Img,
@@ -337,8 +353,8 @@ const AllCategories = () => {
         { 
           id: 18,
           name: 'Organic Turmeric (Type 5)', 
-          price: 140, 
-          originalPrice: 150,
+          price: 95, 
+          originalPrice: 110,
           discount: 7,
           weight: '250g',
           image: termeric5Img,
@@ -363,8 +379,8 @@ const AllCategories = () => {
         { 
           id: 20,
           name: 'Organic Moong Dal', 
-          price: 90, 
-          originalPrice: 95,
+          price: 75, 
+          originalPrice: 85,
           discount: 5,
           weight: '500g',
           image: moongdalImg,
@@ -402,8 +418,8 @@ const AllCategories = () => {
         { 
           id: 23,
           name: 'Organic Toor Dal', 
-          price: 100, 
-          originalPrice: 105,
+          price: 99, 
+          originalPrice: 109,
           discount: 5,
           weight: '500g',
           image: toordalImg,
@@ -415,8 +431,8 @@ const AllCategories = () => {
         { 
           id: 24,
           name: 'Organic Urad Dal', 
-          price: 110, 
-          originalPrice: 115,
+          price: 75, 
+          originalPrice: 85,
           discount: 4,
           weight: '500g',
           image: uraldalImg,
@@ -532,31 +548,41 @@ const AllCategories = () => {
     const savedLikes = JSON.parse(localStorage.getItem('wishlist')) || [];
     setLikedProducts(savedLikes);
     
+    // Load cart items from localStorage
+    const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartItems(savedCart);
+    
     // Check for search highlight from navbar
     const searchHighlight = localStorage.getItem('searchHighlight');
     if (searchHighlight) {
       try {
         const highlightData = JSON.parse(searchHighlight);
         console.log('Search highlight received:', highlightData);
+        setSearchHighlight(highlightData.searchQuery);
         
         // Clear the highlight data
         localStorage.removeItem('searchHighlight');
         
-        // Highlight the product after a delay
+        // Highlight matching products after a delay
         setTimeout(() => {
-          const productElement = document.querySelector(`[data-product-id="${highlightData.productId}"]`);
-          if (productElement) {
-            productElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            productElement.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
-            productElement.style.border = '2px solid #4caf50';
-            productElement.style.transform = 'scale(1.02)';
+          const productElements = document.querySelectorAll('.product-card');
+          productElements.forEach(element => {
+            const productName = element.querySelector('.product-name')?.textContent?.toLowerCase() || '';
+            const searchQuery = highlightData.searchQuery.toLowerCase();
             
-            setTimeout(() => {
-              productElement.style.boxShadow = '';
-              productElement.style.border = '';
-              productElement.style.transform = '';
-            }, 3000);
-          }
+            if (productName.includes(searchQuery)) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              element.style.boxShadow = '0 0 20px rgba(76, 175, 80, 0.8)';
+              element.style.border = '2px solid #4caf50';
+              element.style.transform = 'scale(1.02)';
+              
+              setTimeout(() => {
+                element.style.boxShadow = '';
+                element.style.border = '';
+                element.style.transform = '';
+              }, 3000);
+            }
+          });
         }, 1000);
       } catch (error) {
         console.error('Error parsing search highlight:', error);
@@ -632,6 +658,147 @@ const AllCategories = () => {
   const closeViewMore = () => {
     setShowViewMore(false);
     setSelectedViewMoreProduct(null);
+  };
+
+  const openCartModal = () => {
+    setShowCartModal(true);
+  };
+
+  const closeCartModal = () => {
+    setShowCartModal(false);
+  };
+
+  const getCartSubtotal = () => {
+    return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+
+  const updateCartQuantity = (itemId, change) => {
+    const updatedCart = cartItems.map(item => 
+      item.id === itemId 
+        ? { ...item, quantity: Math.max(1, item.quantity + change) }
+        : item
+    );
+    setCartItems(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    
+    // Update cart count in navbar
+    const uniqueItems = updatedCart.length;
+    window.dispatchEvent(new CustomEvent('cartUpdated', { detail: uniqueItems }));
+  };
+
+  const removeFromCartModal = (itemId) => {
+    const updatedCart = cartItems.filter(item => item.id !== itemId);
+    setCartItems(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    
+    // Update cart count in navbar
+    const uniqueItems = updatedCart.length;
+    window.dispatchEvent(new CustomEvent('cartUpdated', { detail: uniqueItems }));
+  };
+
+  // Weight options and pricing
+  const weightOptions = [
+    { value: '500g', label: '500g', multiplier: 1 },
+    { value: '1kg', label: '1 kg', multiplier: 2 }
+  ];
+
+  // Modal functions
+  const openModal = (product) => {
+    setSelectedProduct(product);
+    setSelectedWeight('500g');
+    setModalQuantity(1);
+    setIsEditing(false);
+    setEditingCartItem(null);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedProduct(null);
+    setSelectedWeight('500g');
+    setModalQuantity(1);
+    setIsEditing(false);
+    setEditingCartItem(null);
+  };
+
+  const handleWeightChange = (weight) => {
+    setSelectedWeight(weight);
+  };
+
+  const handleQuantityChange = (change) => {
+    const newQuantity = modalQuantity + change;
+    if (newQuantity >= 1) {
+      setModalQuantity(newQuantity);
+    }
+  };
+
+  const getModalPrice = () => {
+    if (!selectedProduct) return 0;
+    return selectedWeight === '1kg' ? selectedProduct.price * 2 : selectedProduct.price;
+  };
+
+  const getModalOriginalPrice = () => {
+    if (!selectedProduct) return 0;
+    return selectedWeight === '1kg' ? selectedProduct.originalPrice * 2 : selectedProduct.originalPrice;
+  };
+
+  const handleModalAddToCart = () => {
+    if (selectedProduct) {
+      const cartItem = {
+        id: selectedProduct.id,
+        name: selectedProduct.name,
+        price: getModalPrice(),
+        originalPrice: getModalOriginalPrice(),
+        weight: selectedWeight,
+        quantity: modalQuantity,
+        image: selectedProduct.image
+      };
+      
+      if (isEditing && editingCartItem) {
+        // Replace the existing item
+        const updatedCart = cartItems.map(item => 
+          item.id === editingCartItem.id && item.weight === editingCartItem.weight
+            ? { ...cartItem }
+            : item
+        );
+        setCartItems(updatedCart);
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        window.dispatchEvent(new CustomEvent('cartUpdated', { detail: updatedCart }));
+      } else {
+        // Add new item directly to cart
+        console.log('Adding to cart:', cartItem);
+        
+        // Get existing cart from localStorage
+        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Check if item already exists
+        const existingItemIndex = existingCart.findIndex(item => item.id === cartItem.id);
+        
+        if (existingItemIndex === -1) {
+          // Add new item to cart
+          const updatedCart = [...existingCart, cartItem];
+          localStorage.setItem('cart', JSON.stringify(updatedCart));
+          setCartItems(updatedCart);
+        } else {
+          // Update existing item quantity
+          const updatedCart = existingCart.map(item =>
+            item.id === cartItem.id
+              ? { ...item, quantity: item.quantity + cartItem.quantity }
+              : item
+          );
+          localStorage.setItem('cart', JSON.stringify(updatedCart));
+          setCartItems(updatedCart);
+        }
+        
+        // Update cart count in navbar
+        const finalCart = JSON.parse(localStorage.getItem('cart')) || [];
+        const uniqueItems = finalCart.length;
+        window.dispatchEvent(new CustomEvent('cartUpdated', { detail: uniqueItems }));
+      }
+      closeModal();
+      setShowCartModal(true);
+      console.log('Cart modal should be visible now');
+    }
   };
 
   const handleFilterChange = (newFilters) => {
@@ -723,11 +890,12 @@ const AllCategories = () => {
       }));
     }, 100);
     
-    // Show success popup notification
-    setShowNotification(true);
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 3000);
+    // Update local cart state
+    const finalCart = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartItems(finalCart);
+    
+    // Show cart modal instead of notification
+    setShowCartModal(true);
   };
 
   const removeFromCart = (cartKey) => {
@@ -755,23 +923,11 @@ const AllCategories = () => {
     return quantityDisplay[cartKey] || 0;
   };
 
-  // Weight options and pricing
-  const weightOptions = [
-    { value: '1kg', label: '1 kg', multiplier: 1 },
-    { value: '2kg', label: '2 kg', multiplier: 2 },
-    { value: '5kg', label: '5 kg', multiplier: 5 }
-  ];
 
   const getSelectedWeight = (productId) => {
     return selectedWeights[productId] || '1kg';
   };
 
-  const handleWeightChange = (productId, weight) => {
-    setSelectedWeights(prev => ({
-      ...prev,
-      [productId]: weight
-    }));
-  };
 
   const getProductPrice = (product, weight) => {
     const weightOption = weightOptions.find(w => w.value === weight);
@@ -1040,7 +1196,6 @@ const AllCategories = () => {
                           </span>
                         </div>
                         
-                        {/* View More Details Link - positioned above Add to Cart button and right aligned */}
                         <div className="view-details-section">
                           <button 
                             className="view-details-link"
@@ -1053,7 +1208,7 @@ const AllCategories = () => {
                         <div className="product-actions">
                           <button 
                             className="add-btn"
-                            onClick={() => addToCartPage(product, '1kg')}
+                            onClick={() => openModal(product)}
                           >
                             <span>Add To Cart</span>
                           </button>
@@ -1098,12 +1253,212 @@ const AllCategories = () => {
           </div>
         )}
 
+      {/* Product Modal */}
+      {showModal && selectedProduct && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal} title="Close">
+              <img src={closeGif} alt="Close" className="close-icon" />
+            </button>
+            
+            <div className="modal-product-info">
+              <div className="modal-product-image">
+                <img src={selectedProduct.image} alt={selectedProduct.name} />
+              </div>
+              <div className="modal-product-details">
+                <h3 className="modal-product-name">{selectedProduct.name}</h3>
+                <div className="modal-pricing">
+                  <span className="modal-original-price">₹{getModalOriginalPrice().toFixed(2)}</span>
+                  <span className="modal-current-price">₹{getModalPrice().toFixed(2)}</span>
+                  <p className="modal-tax-info">(Inc. of all taxes)</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-size-section">
+              <p className="modal-size-label">Size: {selectedWeight}</p>
+              <div className="modal-weight-options">
+                <button 
+                  className={`modal-weight-btn ${selectedWeight === '500g' ? 'selected' : ''}`}
+                  onClick={() => handleWeightChange('500g')}
+                >
+                  <span className="weight-text">500 g</span>
+                  <div className="weight-pricing">
+                    <span className="weight-original-price">₹{selectedProduct.originalPrice.toFixed(2)}</span>
+                    <span className="weight-current-price">₹{selectedProduct.price.toFixed(2)}</span>
+                  </div>
+                  <div className="discount-badge-modal">{selectedProduct.discount}% OFF</div>
+                </button>
+                
+                <button 
+                  className={`modal-weight-btn ${selectedWeight === '1kg' ? 'selected' : ''}`}
+                  onClick={() => handleWeightChange('1kg')}
+                >
+                  <span className="weight-text">1 kg</span>
+                  <div className="weight-pricing">
+                    <span className="weight-original-price">₹{(selectedProduct.originalPrice * 2).toFixed(2)}</span>
+                    <span className="weight-current-price">₹{(selectedProduct.price * 2).toFixed(2)}</span>
+                  </div>
+                  <div className="discount-badge-modal">{selectedProduct.discount}% OFF</div>
+                </button>
+              </div>
+            </div>
+
+            <div className="modal-quantity-section">
+              <div className="modal-quantity-controls">
+                <button 
+                  className="quantity-btn"
+                  onClick={() => handleQuantityChange(-1)}
+                >
+                  -
+                </button>
+                <span className="quantity-display">{modalQuantity}</span>
+                <button 
+                  className="quantity-btn"
+                  onClick={() => handleQuantityChange(1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div className="modal-actions">
+              <button className="modal-add-to-cart-btn" onClick={handleModalAddToCart}>
+                {isEditing ? 'REPLACE ITEM' : 'ADD TO CART'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* View More Details Component */}
       {showViewMore && selectedViewMoreProduct && (
         <ViewMoreDetails 
           product={selectedViewMoreProduct} 
           onClose={closeViewMore} 
         />
+      )}
+
+      {/* Shopping Cart Modal */}
+      {showCartModal && (
+        <div className="cart-modal-overlay" onClick={closeCartModal}>
+          <div className="cart-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="cart-header">
+              <h2>SHOPPING CART</h2>
+              <button 
+                className="cart-close-btn"
+                onClick={closeCartModal}
+                title="Close"
+              >
+                <img src={closeGif} alt="Close" className="close-gif" />
+              </button>
+            </div>
+            
+            <div className="cart-items">
+              {cartItems.length === 0 ? (
+                <div className="empty-cart">
+                  <p>Your cart is empty</p>
+                </div>
+              ) : (
+                cartItems.map((item) => (
+                <div key={item.id} className="cart-item">
+                  <div className="cart-item-image">
+                    <img src={item.image} alt={item.name} />
+                  </div>
+                  <div className="cart-item-details">
+                    <h3 className="cart-item-name">{item.name}</h3>
+                    <p className="cart-item-weight">{item.weight}</p>
+                    <div className="cart-item-pricing">
+                      <span className="cart-original-price">₹{item.originalPrice.toFixed(2)}</span>
+                      <span className="cart-current-price">₹{item.price.toFixed(2)}</span>
+                    </div>
+                    <div className="cart-quantity-controls">
+                      <button 
+                        className="cart-quantity-btn"
+                        onClick={() => updateCartQuantity(item.id, -1)}
+                      >
+                        -
+                      </button>
+                      <span className="cart-quantity">{item.quantity}</span>
+                      <button 
+                        className="cart-quantity-btn"
+                        onClick={() => updateCartQuantity(item.id, 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <div className="cart-item-actions">
+                      <button 
+                        className="cart-edit-btn"
+                        onClick={() => {
+                          setEditingCartItem(item);
+                          setSelectedProduct({
+                            id: item.id,
+                            name: item.name,
+                            price: item.price / item.quantity,
+                            originalPrice: item.originalPrice / item.quantity,
+                            image: item.image
+                          });
+                          setSelectedWeight(item.weight);
+                          setModalQuantity(item.quantity);
+                          setIsEditing(true);
+                          closeCartModal();
+                          setShowModal(true);
+                        }}
+                        title="Edit"
+                      >
+                        <img src={editIcon} alt="Edit" />
+                      </button>
+                      <button 
+                        className="cart-remove-btn"
+                        onClick={() => removeFromCartModal(item.id)}
+                        title="Remove"
+                      >
+                        <img src={binIcon} alt="Remove" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                ))
+              )}
+            </div>
+
+            <div className="cart-summary">
+              <div className="cart-subtotal">
+                <span>Subtotal:</span>
+                <span>₹{getCartSubtotal().toFixed(2)}</span>
+              </div>
+              <p className="cart-tax-info">Taxes and shipping calculated at checkout.</p>
+              
+              <div className="cart-actions">
+                <button 
+                  className="cart-view-btn"
+                  onClick={() => {
+                    closeCartModal();
+                    navigate('/cart');
+                  }}
+                >
+                  VIEW CART
+                </button>
+                <button 
+                  className="cart-buy-btn"
+                  onClick={() => {
+                    closeCartModal();
+                    navigate('/cart');
+                  }}
+                >
+                  BUY NOW
+                  <div className="payment-icons">
+                    <img src={visaIcon} alt="Visa" />
+                    <img src={mastercardIcon} alt="Mastercard" />
+                    <img src={rupayIcon} alt="RuPay" />
+                    <img src={upiIcon} alt="UPI" />
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

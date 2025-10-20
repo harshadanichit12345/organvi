@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
@@ -17,6 +17,16 @@ const Account = () => {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
   const { loginUser } = useUser();
+
+  // If already logged in, redirect away from login page
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem('userData');
+      if (storedUser) {
+        navigate('/dashboard');
+      }
+    } catch (_) {}
+  }, [navigate]);
 
   const handleRequestOTP = (e) => {
     e.preventDefault();

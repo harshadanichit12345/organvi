@@ -59,8 +59,8 @@ const Sweetener = () => {
     { 
       id: 1,
       name: 'Organic Jaggery Powder', 
-      price: 120, 
-      originalPrice: 130,
+      price: 140, 
+      originalPrice: 155,
       discount: 8,
       weight: '500g',
       image: jaggeryImg,
@@ -70,10 +70,10 @@ const Sweetener = () => {
     { 
       id: 2,
       name: 'Premium Jaggery Cubes', 
-      price: 150, 
-      originalPrice: 160,
+      price: 70, 
+      originalPrice: 80,
       discount: 6,
-      weight: '500g',
+      weight: '250g',
       image: jaggery2Img,
       inStock: true, 
       organic: true 
@@ -81,8 +81,8 @@ const Sweetener = () => {
     { 
       id: 3,
       name: 'Raw Jaggery Block', 
-      price: 180, 
-      originalPrice: 200,
+      price: 70, 
+      originalPrice: 80,
       discount: 10,
       weight: '1kg',
       image: jaggery3Img,
@@ -834,6 +834,13 @@ const Sweetener = () => {
           <div className="cart-modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="cart-header">
               <h2>SHOPPING CART</h2>
+              <button 
+                className="cart-close-btn"
+                onClick={closeCartModal}
+                title="Close"
+              >
+                <img src={closeGif} alt="Close" className="close-gif" />
+              </button>
             </div>
             
 
@@ -871,13 +878,6 @@ const Sweetener = () => {
                       </button>
                     </div>
                     <div className="cart-item-actions">
-                      <button 
-                        className="cart-edit-btn"
-                        onClick={() => openEditModal(item)}
-                        title="Edit"
-                      >
-                        <img src={editIcon} alt="Edit" />
-                      </button>
                       <button 
                         className="cart-remove-btn"
                         onClick={() => removeFromCart(item.id)}
@@ -924,7 +924,6 @@ const Sweetener = () => {
                     <img src={upiIcon} alt="UPI" />
                   </div>
                 </button>
-                <p className="cart-powered-by">Powered By Shiprocket.</p>
               </div>
             </div>
           </div>

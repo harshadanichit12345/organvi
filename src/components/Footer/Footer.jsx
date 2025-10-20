@@ -53,7 +53,7 @@ const Footer = () => {
           <div className="footer-section about-section" style={{overflow: 'visible', height: 'auto'}}>
             <h4 className="footer-title">About Organvi</h4>
             <p className="about-text" style={{display: 'block', visibility: 'visible', opacity: '1', color: 'black', fontSize: '14px', lineHeight: '1.4', margin: '10px 0'}}>
-              Organvi is a fast-growing organic food company dedicated to farming, producing, processing, and packing pure, chemical-free products. Through our "Partnership with Farmer" model, we ensure quality, sustainability, and community growth — so that YOU JUST EAT RIGHT.
+              Organvi is a fast-growing organic food company dedicated to farming, producing, and packing pure, chemical-free products. Through our "Partnership with Farmer" model, we ensure quality and sustainability.
             </p>
             <div className="certification">
               <img src={fssaiLogo} alt="FSSAI Logo" className="fssai-logo" />
@@ -156,6 +156,7 @@ const Footer = () => {
 
         <div className="footer-bottom">
           <p className="copyright">Organvi© Copyright 2025</p>
+          <p className="designer-credit">designed by team intellisys</p>
         </div>
       </div>
 

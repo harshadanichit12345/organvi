@@ -30,23 +30,29 @@
   position: absolute;
   top: -20px;
   right: -20px;
-  background: rgba(0, 0, 0, 0.8);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: none !important;
+  border: none !important;
+  width: auto;
+  height: auto;
   cursor: pointer;
   z-index: 1001;
-  transition: all 0.3s ease;
-  color: white;
-  font-size: 1.2rem;
+  padding: 0;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .close-btn:hover {
-  background: rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+  background: none !important;
+}
+
+.close-cross {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+  line-height: 1;
+  display: block;
+  user-select: none;
 }
 
 .view-more-main {
@@ -192,9 +198,17 @@
   font-size: 2rem;
   font-weight: 800;
   color: #2c3e50;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 0.5rem 0;
   line-height: 1.2;
   text-align: left;
+}
+
+.product-pricing-inline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .product-pricing {
@@ -202,25 +216,25 @@
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-  border-radius: 12px;
-  border: 1px solid #e8f5e8;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  padding: 0 !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .current-price {
-  font-size: 2.2rem;
-  font-weight: 900;
-  color: #e74c3c;
-  text-shadow: 0 2px 4px rgba(231, 76, 60, 0.2);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: black;
+  font-family: inherit;
 }
 
 .original-price {
-  font-size: 1.4rem;
-  color: #999;
+  font-size: 1.2rem;
+  color: #666;
   text-decoration: line-through;
   font-weight: 500;
+  font-family: inherit;
 }
 
 .discount {
@@ -474,14 +488,14 @@
 }
 
 .buy-now-btn {
-  background: linear-gradient(135deg, #8B4513, #A0522D);
-  color: white;
+  background: #111184 !important;
+  color: white !important;
 }
 
 .buy-now-btn:hover {
-  background: linear-gradient(135deg, #A0522D, #8B4513);
+  background: #0A0A6B !important;
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4);
+  box-shadow: 0 8px 25px rgba(17, 17, 132, 0.4);
 }
 
 
@@ -540,7 +554,7 @@
 
 /* Why Choose Us Section */
 .why-choose-us {
-  background: #f8f9fa;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
   padding: 2rem 3rem;
   margin: 0;
 }
@@ -549,7 +563,7 @@
   text-align: center;
   font-size: 1.4rem;
   font-weight: 700;
-  color: #333;
+  color: white;
   margin: 0 0 2rem 0;
 }
 
@@ -562,19 +576,20 @@
 }
 
 .feature-card {
-  background: white;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   padding: 2rem 1.5rem;
   border-radius: 12px;
   text-align: left;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e8f5e8;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: #28a745;
+  border-color: rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
 }
 
 .feature-icon {
@@ -582,20 +597,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #28a745;
+  color: white;
 }
 
 .feature-card h4 {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #333;
+  color: white;
   margin: 0 0 0.8rem 0;
   text-align: center;
 }
 
 .feature-card p {
   font-size: 0.9rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.5;
   margin: 0;
 }
@@ -609,7 +624,7 @@
 
 .feature-card li {
   font-size: 0.9rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.9);
   margin: 0.5rem 0;
   line-height: 1.4;
 }

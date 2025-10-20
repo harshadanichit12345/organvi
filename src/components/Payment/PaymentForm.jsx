@@ -14,11 +14,9 @@ const PaymentForm = ({ cartItems, totalAmount, onPaymentSuccess, onPaymentFailur
   });
   const navigate = useNavigate();
 
-  // Address book
+  // Address book - now loaded from Dashboard Address component
   const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
-  const [showAddressModal, setShowAddressModal] = useState(false);
-  const [editingAddress, setEditingAddress] = useState(null);
 
   // Load addresses from localStorage (Dashboard could also write to this key)
   useEffect(() => {
@@ -48,59 +46,6 @@ const PaymentForm = ({ cartItems, totalAmount, onPaymentSuccess, onPaymentFailur
     }
   }, []);
 
-  // Lock page scroll while address modal is open
-  useEffect(() => {
-    if (showAddressModal) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
-      return () => { document.body.style.overflow = prev; };
-    }
-  }, [showAddressModal]);
-
-  const persistAddresses = (next) => {
-    setAddresses(next);
-    localStorage.setItem('addresses', JSON.stringify(next));
-  };
-
-  const openAddAddress = () => {
-    setEditingAddress({ id: Date.now(), name: '', phone: '', tag: 'HOME', line1: '', landmark: '', city: '', state: '', pincode: '' });
-    setShowAddressModal(true);
-  };
-
-  const openEditAddress = (addr) => {
-    setEditingAddress({ ...addr });
-    setShowAddressModal(true);
-  };
-
-  const saveAddress = () => {
-    if (!editingAddress.name || !editingAddress.phone || !editingAddress.line1 || !editingAddress.city || !editingAddress.pincode) {
-      alert('Please fill all required fields (Name, Phone, Address, City, Pincode).');
-      return;
-    }
-    if (!/^\d{6}$/.test(String(editingAddress.pincode))) {
-      alert('Please enter a valid 6-digit pincode.');
-      return;
-    }
-    const exists = addresses.some(a => a.id === editingAddress.id);
-    let next;
-    if (exists) {
-      next = addresses.map(a => (a.id === editingAddress.id ? editingAddress : a));
-    } else {
-      // Only one address allowed: replace existing if present
-      next = addresses.length > 0 ? [editingAddress] : [editingAddress];
-    }
-    persistAddresses(next);
-    setSelectedAddressId(editingAddress.id);
-    setShowAddressModal(false);
-  };
-
-  const deleteAddress = (id) => {
-    const next = addresses.filter(a => a.id !== id);
-    persistAddresses(next);
-    if (selectedAddressId === id) {
-      setSelectedAddressId(next[0]?.id ?? null);
-    }
-  };
 
   // Load Razorpay script
   const loadRazorpayScript = () => {
@@ -163,10 +108,72 @@ const PaymentForm = ({ cartItems, totalAmount, onPaymentSuccess, onPaymentFailur
         description: 'Organic Products Purchase',
         order_id: order.id,
         image: 'https://your-logo-url.com/logo.png',
-        handler: function (response) {
-          console.log('Payment Success Response:', response);
-          onPaymentSuccess(response);
-        },
+    handler: async function (response) {
+      console.log('Payment Success Response:', response);
+      
+      // Create order object with customer details
+      const orderData = {
+        orderId: `ORD${Date.now()}${Math.floor(Math.random() * 1000)}`,
+        trackingId: `TRK${Date.now()}${Math.floor(Math.random() * 10000)}`,
+        orderDate: new Date(),
+        status: 'pending',
+        paymentId: response.razorpay_payment_id,
+        paymentSignature: response.razorpay_signature,
+        totalAmount: totalAmount,
+        customerDetails: customerDetails,
+        shippingAddress: addresses.find(addr => addr.id === selectedAddressId),
+        items: cartItems,
+        paymentMethod: 'razorpay'
+      };
+
+      // Create Shiprocket shipment
+      try {
+        const selectedAddress = addresses.find(addr => addr.id === selectedAddressId);
+        const shipmentData = {
+          order_id: orderData.orderId,
+          order_date: new Date().toISOString(),
+          pickup_location: "Primary",
+          billing_customer_name: customerDetails.name,
+          billing_customer_email: customerDetails.email,
+          billing_customer_phone: customerDetails.phone,
+          shipping_address: selectedAddress?.line1 || 'Default Address',
+          shipping_city: selectedAddress?.city || 'Mumbai',
+          shipping_state: selectedAddress?.state || 'Maharashtra',
+          shipping_country: 'India',
+          shipping_pincode: selectedAddress?.pincode || '400001',
+          order_items: cartItems.map(item => ({
+            name: item.name,
+            sku: item.id || `SKU${Date.now()}`,
+            units: item.quantity,
+            selling_price: item.price
+          })),
+          payment_method: 'Prepaid'
+        };
+
+        console.log('Creating Shiprocket shipment:', shipmentData);
+        
+        const shipmentResponse = await fetch('http://localhost:5000/create-shipment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(shipmentData)
+        });
+
+        if (shipmentResponse.ok) {
+          const shipmentResult = await shipmentResponse.json();
+          console.log('Shiprocket shipment created:', shipmentResult);
+          orderData.shipmentId = shipmentResult.shipment?.order_id;
+          orderData.shipmentStatus = 'created';
+        } else {
+          console.error('Shiprocket shipment failed:', await shipmentResponse.text());
+        }
+      } catch (error) {
+        console.error('Error creating Shiprocket shipment:', error);
+      }
+
+      onPaymentSuccess(response, orderData);
+    },
         prefill: {
           name: customerDetails.name,
           email: customerDetails.email,
@@ -331,17 +338,22 @@ const PaymentForm = ({ cartItems, totalAmount, onPaymentSuccess, onPaymentFailur
                           </span>
                         </div>
                         <div className="address-actions">
-                          <button type="button" className="address-edit" onClick={() => openEditAddress(addr)}>EDIT</button>
-                          <button type="button" className="address-delete" onClick={() => deleteAddress(addr.id)}>REMOVE</button>
+                          <span className="address-manage-note">Manage addresses in Dashboard</span>
                         </div>
                       </div>
                     </div>
                   ))}
                   {addresses.length === 0 && (
-                    <div className="address-empty">No address found. Add one.</div>
-                  )}
-                  {addresses.length === 0 && (
-                    <button type="button" className="add-address-link" onClick={openAddAddress}>+ Add a new address</button>
+                    <div className="address-empty">
+                      <p>No address found. Please add an address in your Dashboard.</p>
+                      <button 
+                        type="button" 
+                        className="go-to-dashboard-btn"
+                        onClick={() => navigate('/dashboard')}
+                      >
+                        Go to Dashboard to Add Address
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -399,123 +411,6 @@ const PaymentForm = ({ cartItems, totalAmount, onPaymentSuccess, onPaymentFailur
         )}
       </div>
 
-      {/* Address Modal */}
-      {showAddressModal && (
-        <div className="address-modal-overlay">
-          <div className="address-modal">
-            <h3>{editingAddress && addresses.some(a => a.id === editingAddress.id) ? 'Edit Address' : 'Add New Address'}</h3>
-            
-            <div className="address-modal-grid">
-              <div className="form-group">
-                <label>Name *</label>
-                <input
-                  type="text"
-                  value={editingAddress?.name || ''}
-                  onChange={(e) => setEditingAddress(prev => ({ ...prev, name: e.target.value }))}
-                  placeholder="Enter name"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Phone *</label>
-                <input
-                  type="tel"
-                  value={editingAddress?.phone || ''}
-                  onChange={(e) => setEditingAddress(prev => ({ ...prev, phone: e.target.value }))}
-                  placeholder="Enter phone"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Tag</label>
-                <select
-                  value={editingAddress?.tag || 'HOME'}
-                  onChange={(e) => setEditingAddress(prev => ({ ...prev, tag: e.target.value }))}
-                >
-                  <option value="HOME">HOME</option>
-                  <option value="WORK">WORK</option>
-                  <option value="OTHER">OTHER</option>
-                </select>
-              </div>
-              
-              <div className="form-group full">
-                <label>Address Line 1 *</label>
-                <input
-                  type="text"
-                  value={editingAddress?.line1 || ''}
-                  onChange={(e) => setEditingAddress(prev => ({ ...prev, line1: e.target.value }))}
-                  placeholder="Enter address"
-                />
-              </div>
-              
-              {/* Address Line 2 removed as requested */}
-
-              <div className="form-group full">
-                <label>Landmark / Area</label>
-                <input
-                  type="text"
-                  value={editingAddress?.landmark || ''}
-                  onChange={(e) => setEditingAddress(prev => ({ ...prev, landmark: e.target.value }))}
-                  placeholder="Nearby landmark or area"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>City *</label>
-                <input
-                  type="text"
-                  value={editingAddress?.city || ''}
-                  onChange={(e) => setEditingAddress(prev => ({ ...prev, city: e.target.value }))}
-                  placeholder="Enter city"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>State</label>
-                <input
-                  type="text"
-                  value={editingAddress?.state || ''}
-                  onChange={(e) => setEditingAddress(prev => ({ ...prev, state: e.target.value }))}
-                  placeholder="Enter state"
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Pincode *</label>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  pattern="\\d{6}"
-                  maxLength={6}
-                  value={editingAddress?.pincode || ''}
-                  onChange={(e) => {
-                    const digitsOnly = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
-                    setEditingAddress(prev => ({ ...prev, pincode: digitsOnly }));
-                  }}
-                  placeholder="Enter 6-digit pincode"
-                />
-              </div>
-            </div>
-            
-            <div className="address-modal-actions">
-              <button 
-                type="button" 
-                className="address-cancel"
-                onClick={() => setShowAddressModal(false)}
-              >
-                Cancel
-              </button>
-              <button 
-                type="button" 
-                className="address-save"
-                onClick={saveAddress}
-              >
-                Save Address
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

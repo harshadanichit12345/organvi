@@ -43,6 +43,7 @@ const Navbar = () => {
   const [showSearchArea, setShowSearchArea] = useState(false);
   const [locationSearchQuery, setLocationSearchQuery] = useState('');
   const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ const Navbar = () => {
     setShowSearchArea(false);
     setShowLoginModal(false);
     setShowSearchResults(false);
+    setShowMobileSearch(false);
   };
 
   // Handle logout
@@ -182,9 +184,17 @@ const Navbar = () => {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Navigate to search results page or handle search
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      // Navigate to AllCategories page and highlight the searched product
+      navigate('/allcategories');
       setShowSearchResults(false);
+      setShowMobileSearch(false);
+      setSearchQuery(''); // Clear the search query
+      
+      // Store the search query for highlighting on the AllCategories page
+      localStorage.setItem('searchHighlight', JSON.stringify({
+        searchQuery: searchQuery,
+        timestamp: Date.now()
+      }));
     }
   };
 
@@ -273,7 +283,7 @@ const Navbar = () => {
               >
                 <img 
                   src={logo} 
-                  alt="organic tattva" 
+                  alt="organvi" 
                   className="logo-image"
                 />
               </Link>
@@ -339,8 +349,8 @@ const Navbar = () => {
                           
                           // Store the search query for highlighting on the AllCategories page
                           localStorage.setItem('searchHighlight', JSON.stringify({
-                            productId: result.id,
-                            productName: result.name
+                            searchQuery: result.name,
+                            timestamp: Date.now()
                           }));
                         }}
                         style={{
@@ -383,8 +393,17 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Right Side - Three Circular Icons */}
+            {/* Right Side - Icons */}
             <div className="navbar-right">
+              {/* Mobile Search Icon - Only visible on mobile */}
+              <button 
+                className="navbar-icon mobile-search-icon"
+                onClick={() => setShowMobileSearch(!showMobileSearch)}
+                style={{ display: 'none' }} // Hidden by default, shown via CSS on mobile
+              >
+                <Search size={20} />
+              </button>
+
               {/* User Icon */}
               <Link 
                 to="/account" 
@@ -393,9 +412,10 @@ const Navbar = () => {
                   setShowUserDropdown(false);
                   setShowLocationDropdown(false);
                   setShowSearchArea(false);
+                  setShowMobileSearch(false);
                 }}
               >
-                <User size={24} />
+                <User size={20} />
               </Link>
 
               {/* Heart Icon */}
@@ -403,7 +423,7 @@ const Navbar = () => {
                 to="/like" 
                 className="navbar-icon heart-icon"
               >
-                <Heart size={24} />
+                <Heart size={20} />
                 {wishlistCount > 0 && (
                   <span className="icon-badge">
                     {wishlistCount}
@@ -418,7 +438,7 @@ const Navbar = () => {
                   className="navbar-icon cart-icon"
                   title={cartMessage || `Cart (${cartCount} items)`}
                 >
-                  <ShoppingCart size={24} />
+                  <ShoppingCart size={20} />
                   <span className="icon-badge">
                     {cartCount}
                   </span>
@@ -428,47 +448,76 @@ const Navbar = () => {
                     {cartMessage}
                   </div>
                 )}
-                {/* Debug: Always show cart message state */}
-                <div style={{
-                  position: 'absolute',
-                  top: '-100px',
-                  right: '0',
-                  background: 'red',
-                  color: 'white',
-                  padding: '4px 8px',
-                  fontSize: '10px',
-                  borderRadius: '4px',
-                  zIndex: 9999
-                }}>
-                  Cart Message: {cartMessage || 'None'}
-                </div>
-                {/* Test button for development */}
-                <button 
-                  onClick={() => {
-                    console.log('Test button clicked');
-                    setCartMessage('✅ Test message!');
-                  }}
-                  style={{
-                    position: 'absolute',
-                    top: '-80px',
-                    right: '0',
-                    background: 'blue',
-                    color: 'white',
-                    padding: '4px 8px',
-                    fontSize: '10px',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    zIndex: 9999
-                  }}
-                >
-                  Test Message
-                </button>
               </div>
             </div>
           </div>
         </div>
       </header>
+
+      {/* Mobile Search Bar */}
+      {showMobileSearch && (
+        <div className="mobile-search-container">
+          <div className="mobile-search-bar">
+            <form onSubmit={handleSearchSubmit} className="mobile-search-form">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                placeholder="Search the product"
+                className="mobile-search-input"
+                autoFocus
+              />
+              <button
+                type="submit"
+                className="mobile-search-button"
+              >
+                <Search size={18} />
+              </button>
+            </form>
+            
+            {/* Mobile Search Results */}
+            {showSearchResults && searchResults.length > 0 && (
+              <div className="mobile-search-results">
+                <div className="mobile-search-results-header">
+                  <span>{searchResults.length} results found</span>
+                </div>
+                {searchResults.map((result) => (
+                  <div
+                    key={result.id}
+                    className="mobile-search-result-item"
+                    onClick={() => {
+                      navigate('/allcategories');
+                      setShowSearchResults(false);
+                      setSearchQuery('');
+                      setShowMobileSearch(false);
+                      
+                      // Store the search query for highlighting on the AllCategories page
+                      localStorage.setItem('searchHighlight', JSON.stringify({
+                        searchQuery: result.name,
+                        timestamp: Date.now()
+                      }));
+                    }}
+                  >
+                    <img 
+                      src={result.image} 
+                      alt={result.name} 
+                      className="mobile-search-result-image"
+                    />
+                    <div className="mobile-search-result-details">
+                      <span className="mobile-search-result-name">{result.name}</span>
+                      <div className="mobile-search-result-meta">
+                        <span className="mobile-search-result-price">₹{result.price}</span>
+                        <span className="mobile-search-result-weight">{result.weight}</span>
+                        <span className="mobile-search-result-category">{result.category}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Location Dropdown */}
       {showLocationDropdown && (
@@ -536,6 +585,14 @@ const Navbar = () => {
                     >
                       <Grid3X3 size={16} />
                       <span>Dashboard</span>
+                    </Link>
+                    <Link 
+                      to="/account/orders" 
+                      className="dashboard-link"
+                      onClick={() => setShowUserDropdown(false)}
+                    >
+                      <Package size={16} />
+                      <span>My Orders</span>
                     </Link>
                     <button 
                       className="logout-button"

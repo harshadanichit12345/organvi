@@ -3,7 +3,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 1000;
+  z-index: 1090; /* ensure base container is high */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   display: flex;
   flex-direction: column;
@@ -334,11 +334,12 @@
 
 /* Chat Window */
 .chatbot-window {
-  position: absolute;
-  bottom: 80px;
-  right: 0;
-  width: 350px;
-  height: 500px;
+  position: fixed; /* make it independent of ancestors */
+  bottom: 120px; /* space from bottom/FAB */
+  right: 20px;
+  width: 360px; /* explicit width to avoid narrow column */
+  height: auto; /* dynamic height */
+  max-height: calc(100vh - 180px); /* slightly taller while staying below navbar */
   background: white;
   border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
@@ -350,6 +351,7 @@
   visibility: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(74, 124, 89, 0.1);
+  z-index: 1100; /* above page content */
 }
 
 .chatbot-window.open {
@@ -747,10 +749,12 @@
   }
   
   .chatbot-window {
+    position: fixed;
     width: calc(100vw - 24px);
-    max-width: 350px;
-    height: 400px;
-    bottom: 70px;
+    max-width: 360px;
+    height: auto;
+    max-height: calc(100vh - 160px); /* a bit taller on mobile too */
+    bottom: 100px;
     right: 12px;
     left: 12px;
     margin: 0 auto;
@@ -1082,4 +1086,3 @@
     transform: translateY(-5px) scale(1);
   }
 }
-

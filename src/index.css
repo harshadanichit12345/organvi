@@ -1,3 +1,6 @@
+/* Import order management component styles */
+@import './styles/orderComponents.css';
+
 /* Reset and base styles */
 * {
   margin: 0;
@@ -580,3 +583,8 @@ body {
     font-size: 16px; /* Prevents zoom on iOS */
   }
 }
+
+/* Tailwind CSS imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

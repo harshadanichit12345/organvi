@@ -151,15 +151,17 @@
 }
 
 .current-price {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #4caf50;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: black;
+  font-family: inherit;
 }
 
 .original-price {
-  font-size: 1rem;
-  color: #999;
+  font-size: 0.8rem;
+  color: #666;
   text-decoration: line-through;
+  font-family: inherit;
 }
 
 .discount {

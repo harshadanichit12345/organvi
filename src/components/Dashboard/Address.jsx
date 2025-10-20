@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, Plus, Edit, Trash2, X } from 'lucide-react';
 import './Address.css';
 
@@ -19,6 +19,32 @@ const Address = () => {
     isDefault: false
   });
 
+  // Load addresses from localStorage on component mount
+  useEffect(() => {
+    const loadAddresses = () => {
+      try {
+        const savedAddresses = localStorage.getItem('addresses');
+        if (savedAddresses) {
+          const parsedAddresses = JSON.parse(savedAddresses);
+          setAddresses(Array.isArray(parsedAddresses) ? parsedAddresses : []);
+        }
+      } catch (error) {
+        console.error('Error loading addresses:', error);
+        setAddresses([]);
+      }
+    };
+    loadAddresses();
+  }, []);
+
+  // Save addresses to localStorage whenever addresses change
+  const saveAddressesToStorage = (newAddresses) => {
+    try {
+      localStorage.setItem('addresses', JSON.stringify(newAddresses));
+    } catch (error) {
+      console.error('Error saving addresses:', error);
+    }
+  };
+
   const handleAddAddress = () => {
     setShowAddForm(true);
     setEditingAddress(null);
@@ -37,26 +63,73 @@ const Address = () => {
   };
 
   const handleEditAddress = (address) => {
-    setEditingAddress(address);
-    setFormData(address);
+    // Find the index of the address to edit
+    const addressIndex = addresses.findIndex(addr => addr.id === address.id);
+    setEditingAddress(addressIndex);
+    
+    // Convert address back to form format
+    const nameParts = address.name.split(' ');
+    setFormData({
+      firstName: nameParts[0] || '',
+      lastName: nameParts.slice(1).join(' ') || '',
+      company: '',
+      address: address.line1,
+      apartment: address.line2 || '',
+      city: address.city,
+      country: address.state,
+      postalCode: address.pincode,
+      phone: address.phone,
+      isDefault: false
+    });
     setShowAddForm(true);
   };
 
   const handleDeleteAddress = (index) => {
-    setAddresses(addresses.filter((_, i) => i !== index));
+    const newAddresses = addresses.filter((_, i) => i !== index);
+    setAddresses(newAddresses);
+    saveAddressesToStorage(newAddresses);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (editingAddress) {
-      // Update existing address
-      setAddresses(addresses.map((addr, index) => 
-        index === editingAddress ? formData : addr
-      ));
+    let newAddresses;
+    
+    if (editingAddress !== null) {
+      // Update existing address - convert to PaymentForm format
+      const updatedAddress = {
+        id: addresses[editingAddress].id,
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        phone: formData.phone,
+        tag: 'HOME',
+        line1: formData.address,
+        line2: formData.apartment,
+        landmark: '', // Not used in current Address component
+        city: formData.city,
+        state: formData.country,
+        pincode: formData.postalCode
+      };
+      newAddresses = addresses.map((addr, index) => 
+        index === editingAddress ? updatedAddress : addr
+      );
     } else {
-      // Add new address
-      setAddresses([...addresses, { ...formData, id: Date.now() }]);
+      // Add new address - convert to PaymentForm format
+      const newAddress = {
+        id: Date.now(),
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        phone: formData.phone,
+        tag: 'HOME',
+        line1: formData.address,
+        line2: formData.apartment,
+        landmark: '', // Not used in current Address component
+        city: formData.city,
+        state: formData.country,
+        pincode: formData.postalCode
+      };
+      newAddresses = [...addresses, newAddress];
     }
+    
+    setAddresses(newAddresses);
+    saveAddressesToStorage(newAddresses);
     setShowAddForm(false);
     setEditingAddress(null);
   };
@@ -104,17 +177,16 @@ const Address = () => {
             <div key={address.id || index} className="address-card">
               <div className="address-info">
                 <div className="address-details">
-                  <h4 className="address-name">{address.firstName} {address.lastName}</h4>
-                  {address.company && <p className="address-company">{address.company}</p>}
+                  <h4 className="address-name">{address.name}</h4>
                   <p className="address-phone">{address.phone}</p>
                   <p className="address-text">
-                    {address.address}
-                    {address.apartment && `, ${address.apartment}`}
+                    {address.line1}
+                    {address.line2 && `, ${address.line2}`}
                     <br />
-                    {address.city}, {address.country} - {address.postalCode}
+                    {address.city}, {address.state} - {address.pincode}
                   </p>
-                  {address.isDefault && (
-                    <span className="default-badge">Default Address</span>
+                  {address.tag && (
+                    <span className="default-badge">{address.tag}</span>
                   )}
                 </div>
               </div>
@@ -142,7 +214,7 @@ const Address = () => {
           <div className="address-form-container">
             <div className="form-header">
               <h3 className="form-title">
-                {editingAddress ? 'Edit Address' : 'Add New Address'}
+                {editingAddress !== null ? 'Edit Address' : 'Add New Address'}
               </h3>
               <button className="close-btn" onClick={handleCancel}>×</button>
             </div>
@@ -278,7 +350,7 @@ const Address = () => {
                   Cancel
                 </button>
                 <button type="submit" className="add-address-btn">
-                  Add Address
+                  {editingAddress !== null ? 'Update Address' : 'Add Address'}
                 </button>
               </div>
             </form>

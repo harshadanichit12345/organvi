@@ -1,5 +1,5 @@
 .categories-container {
-  padding: 1rem 0 0 0;
+  padding: 0;
   max-width: 100%;
   margin: 0;
   background: #f8f7f3; /* Light textured off-white background */
@@ -13,7 +13,7 @@
 @media (max-width: 1024px) {
   .categories-row {
     gap: 0.3rem;
-    padding: 0.6rem 0.8rem;
+    padding: 0.1rem 0.8rem;
     justify-content: space-between;
     flex-wrap: nowrap;
     overflow: visible;
@@ -47,7 +47,7 @@
 @media (max-width: 768px) {
   .categories-row {
     gap: 0.2rem;
-    padding: 0.4rem 0.5rem;
+    padding: 0.1rem 0.5rem;
     overflow: visible;
     justify-content: space-between;
     flex-wrap: nowrap;
@@ -81,7 +81,7 @@
 @media (max-width: 480px) {
   .categories-row {
     gap: 0.1rem;
-    padding: 0.3rem 0.3rem;
+    padding: 0.05rem 0.3rem;
     overflow: visible;
     justify-content: space-between;
     flex-wrap: nowrap;
@@ -115,7 +115,7 @@
 @media (max-width: 360px) {
   .categories-row {
     gap: 0.05rem;
-    padding: 0.2rem 0.2rem;
+    padding: 0.02rem 0.2rem;
     overflow: visible;
     justify-content: space-between;
     flex-wrap: nowrap;
@@ -151,10 +151,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
   flex-wrap: nowrap;
   background: #f8f7f3; /* Light textured off-white background */
-  padding: 1rem 1.5rem; /* Reduced top & bottom padding */
+  padding: 0.1rem 1.5rem; /* Minimal top & bottom padding */
   max-width: 100%;
   overflow: visible;
 }
@@ -165,7 +165,7 @@
   align-items: center;
   text-align: center;
   cursor: pointer;
-  padding: 0.3rem;
+  padding: 0.1rem;
   min-width: 0;
   background: transparent;
   transition: all 0.3s ease;
@@ -179,15 +179,15 @@
 }
 
 .category-icon {
-  width: 35px;
-  height: 35px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: transparent;
   border: none;
   border-radius: 0;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.1rem;
   transition: transform 0.3s ease;
 }
 
@@ -196,19 +196,19 @@
 }
 
 .category-image {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   object-fit: contain;
   filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2);
 }
 
 /* GIF image styling with consistent green color */
 .category-gif {
-  width: 50px !important;
-  height: 50px !important;
+  width: 40px !important;
+  height: 40px !important;
   object-fit: contain;
   background: transparent !important;
-  filter: hue-rotate(100deg) saturate(1.5) brightness(1.1) contrast(1.2) !important;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2) !important;
   transition: all 0.3s ease;
   border: none !important;
   outline: none !important;
@@ -216,40 +216,40 @@
 
 .category-item:hover .category-gif {
   transform: scale(1.1);
-  filter: hue-rotate(100deg) saturate(1.5) brightness(1.1) contrast(1.2) !important;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2500%) hue-rotate(100deg) brightness(1.0) contrast(1.4) !important;
 }
 
 /* Additional specific styling to ensure GIF changes are applied */
 .categories-container .category-item .category-icon .category-gif {
   background: transparent !important;
-  filter: hue-rotate(100deg) saturate(1.5) brightness(1.1) contrast(1.2) !important;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2) !important;
   border: none !important;
   outline: none !important;
 }
 
 .categories-container .category-item:hover .category-icon .category-gif {
-  filter: hue-rotate(100deg) saturate(1.5) brightness(1.1) contrast(1.2) !important;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2500%) hue-rotate(100deg) brightness(1.0) contrast(1.4) !important;
 }
 
 /* Force consistent green color on all GIF images */
 .categories-container img.category-gif,
 .categories-container .category-item .category-icon img,
 .categories-container .category-item img {
-  width: 50px !important;
-  height: 50px !important;
-  filter: hue-rotate(100deg) saturate(1.5) brightness(1.1) contrast(1.2) !important;
+  width: 40px !important;
+  height: 40px !important;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2) !important;
   background: transparent !important;
   border: none !important;
   outline: none !important;
 }
 
 .category-name {
-  font-size: 1rem !important; /* much smaller */
+  font-size: 0.8rem !important; /* slightly larger */
   font-weight: 500;
   color: black;
   text-align: center;
   line-height: 1.0;
-  margin-top: 0.1rem;
+  margin-top: 0.05rem;
 }
 
 /* Responsive Design */
@@ -257,7 +257,7 @@
 /* Large Desktop (1200px+) */
 @media (min-width: 1200px) {
   .categories-container {
-    padding: 0.5rem 2rem 0 2rem;
+    padding: 0 2rem;
   }
   
   .categories-row {
@@ -288,14 +288,14 @@
   }
   
   .category-name {
-    font-size: 1rem !important; /* as requested */
+    font-size: 0.8rem !important; /* slightly larger */
   }
 }
 
 /* Tablet styles (768px - 1024px) */
 @media (max-width: 1024px) {
   .categories-container {
-    padding: 0.5rem 1.5rem 0 1.5rem;
+    padding: 0 1.5rem;
   }
   
   .categories-row {
@@ -328,21 +328,21 @@
   }
   
   .category-name {
-    font-size: 1rem !important;
+    font-size: 0.7rem !important;
   }
 }
 
 /* Medium mobile styles (481px - 767px) */
 @media (max-width: 768px) {
   .categories-container {
-    padding: 0.2rem 1rem 0 1rem;
+    padding: 0 1rem;
   }
   
   .categories-row {
     gap: 0.8rem;
     justify-content: space-between;
     flex-wrap: nowrap;
-    padding: 0.5rem 1rem;
+    padding: 0.1rem 1rem;
   }
   
   .category-item {
@@ -370,7 +370,7 @@
   }
   
   .category-name {
-    font-size: 0.7rem !important; /* reduced for mobile */
+    font-size: 0.6rem !important; /* slightly larger for mobile */
     line-height: 1.0;
   }
 }
@@ -378,14 +378,14 @@
 /* Small mobile styles (≤480px) */
 @media (max-width: 480px) {
   .categories-container {
-    padding: 0.1rem 0.5rem 0 0.5rem;
+    padding: 0 0.5rem;
   }
   
   .categories-row {
     gap: 0.5rem;
     flex-wrap: nowrap;
     justify-content: space-between;
-    padding: 0.3rem 0.5rem;
+    padding: 0.05rem 0.5rem;
   }
   
   .category-item {
@@ -413,23 +413,23 @@
   }
   
   .category-name {
-    font-size: 0.6rem !important; /* reduced for small mobile */
+    font-size: 0.5rem !important; /* slightly larger for small mobile */
     line-height: 1.0;
-    margin-top: 0.1rem;
+    margin-top: 0.05rem;
   }
 }
 
 /* Extra small mobile styles (≤360px) */
 @media (max-width: 360px) {
   .categories-container {
-    padding: 0.05rem 0.3rem 0 0.3rem;
+    padding: 0 0.3rem;
   }
   
   .categories-row {
     gap: 0.3rem;
     flex-wrap: nowrap;
     justify-content: space-between;
-    padding: 0.2rem 0.3rem;
+    padding: 0.02rem 0.3rem;
   }
   
   .category-item {
@@ -457,7 +457,7 @@
   }
   
   .category-name {
-    font-size: 0.5rem !important; /* reduced for extra small mobile */
+    font-size: 0.4rem !important; /* slightly larger for extra small mobile */
     line-height: 1.0;
   }
 }

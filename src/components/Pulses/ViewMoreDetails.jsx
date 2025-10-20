@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Home, Leaf, Shield } from 'lucide-react';
 import './ViewMoreDetails.css';
+import closeGif from '../../assets/close.gif';
 
 // Import product images
 import chanadalImg from '../../assets/chanadal.png';
@@ -42,11 +43,47 @@ const ViewMoreDetails = ({ product, onClose }) => {
     question: ''
   });
 
-  const weightOptions = [
-    { value: '500g', label: '500g', multiplier: 1 },
-    { value: '1kg', label: '1kg', multiplier: 2 },
-    { value: '2kg', label: '2kg', multiplier: 4 }
+  // Pricing rules based on provided sheet
+  // Defaults: 500g = base price, 1kg = x2; override per product below
+  let weightOptions = [
+    { value: '500g', label: '500 g', multiplier: 1 },
+    { value: '1kg', label: '1 kg', multiplier: 2 }
   ];
+
+  const lower = (s) => (s || '').toLowerCase();
+  const name = lower(product?.name);
+  if (name.includes('moong whole')) {
+    // 250g 70, 500g 140
+    weightOptions = [
+      { value: '250g', label: '250 g', multiplier: 0.5 },
+      { value: '500g', label: '500 g', multiplier: 1 }
+    ];
+  } else if (name.includes('jaggery') && name.includes('cube')) {
+    // cube 250g 70 (set base as 250g)
+    weightOptions = [
+      { value: '250g', label: '250 g', multiplier: 1 }
+    ];
+  } else if (name.includes('jaggery powder')) {
+    // powder 500g 140
+    weightOptions = [
+      { value: '500g', label: '500 g', multiplier: 1 }
+    ];
+  } else if (name === 'organic jaggery' || name.includes('raw jaggery') || (name.includes('jaggery') && !name.includes('powder') && !name.includes('cube'))) {
+    // jaggery 1kg 70 -> present as only 1kg
+    weightOptions = [
+      { value: '1kg', label: '1 kg', multiplier: 1 }
+    ];
+  } else if (name.includes('turmeric') && name.includes('powder')) {
+    // 200g 95; set base as 200g and hide others
+    weightOptions = [
+      { value: '200g', label: '200 g', multiplier: 0.4 }
+    ];
+  } else if (name.includes('red chilli powder')) {
+    // 500g 200
+    weightOptions = [
+      { value: '500g', label: '500 g', multiplier: 1 }
+    ];
+  }
 
   const [reviews, setReviews] = useState([]);
   const [selectedImage, setSelectedImage] = useState(product.image);
@@ -255,11 +292,12 @@ const ViewMoreDetails = ({ product, onClose }) => {
   return (
     <div className="view-more-overlay" onClick={onClose}>
       <div className="view-more-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-btn" onClick={onClose}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
+        <button 
+          className="close-btn" 
+          onClick={onClose} 
+          title="Close"
+        >
+          <span className="close-cross">×</span>
         </button>
 
         {/* Main Content */}
@@ -291,7 +329,7 @@ const ViewMoreDetails = ({ product, onClose }) => {
           <div className="product-info-section">
             <h1 className="product-title">{product.name}</h1>
             
-            <div className="product-pricing">
+            <div className="product-pricing-inline">
               <span className="current-price">₹{product.price}</span>
               <span className="original-price">₹{product.originalPrice}</span>
               <span className="discount">({product.discount}% Off)</span>
@@ -335,7 +373,10 @@ const ViewMoreDetails = ({ product, onClose }) => {
               <button className="add-to-cart-btn" onClick={handleAddToCart}>
                 Add to Cart - ₹{Math.round(product.price * weightOptions.find(opt => opt.value === selectedWeight).multiplier) * quantity}
               </button>
-              <button className="buy-now-btn">
+              <button className="buy-now-btn" onClick={() => {
+                handleAddToCart();
+                navigate('/cart');
+              }}>
                 BUY NOW
               </button>
             </div>

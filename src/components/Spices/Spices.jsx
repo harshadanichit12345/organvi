@@ -63,7 +63,7 @@ const Spices = () => {
     { 
       id: 1,
       name: 'Organic Red Chilli Powder', 
-      price: 85, 
+      price: 1, 
       originalPrice: 95,
       discount: 11,
       weight: '100g',
@@ -96,8 +96,8 @@ const Spices = () => {
     { 
       id: 4,
       name: 'Organic Turmeric Powder', 
-      price: 75, 
-      originalPrice: 85,
+      price: 95, 
+      originalPrice: 110,
       discount: 12,
       weight: '100g',
       image: termericImg,
@@ -855,9 +855,7 @@ const Spices = () => {
               <button className="modal-add-to-cart-btn" onClick={handleModalAddToCart}>
                 {isEditing ? 'REPLACE ITEM' : 'ADD TO CART'}
               </button>
-              <a href="#" className="modal-view-details" onClick={(e) => e.preventDefault()}>
-                View full details →
-              </a>
+            
             </div>
           </div>
         </div>
@@ -871,6 +869,13 @@ const Spices = () => {
           <div className="cart-modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="cart-header">
               <h2>SHOPPING CART</h2>
+              <button 
+                className="cart-close-btn"
+                onClick={closeCartModal}
+                title="Close"
+              >
+                <img src={closeGif} alt="Close" className="close-gif" />
+              </button>
             </div>
             
 
@@ -908,13 +913,6 @@ const Spices = () => {
                       </button>
                     </div>
                     <div className="cart-item-actions">
-                      <button 
-                        className="cart-edit-btn"
-                        onClick={() => openEditModal(item)}
-                        title="Edit"
-                      >
-                        <img src={editIcon} alt="Edit" />
-                      </button>
                       <button 
                         className="cart-remove-btn"
                         onClick={() => removeFromCart(item.id)}
@@ -961,7 +959,6 @@ const Spices = () => {
                     <img src={upiIcon} alt="UPI" />
                   </div>
                 </button>
-                <p className="cart-powered-by">Powered By Shiprocket.</p>
               </div>
             </div>
           </div>
