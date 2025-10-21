@@ -70,17 +70,17 @@
 
 .newsletter-input {
   flex: 1;
-  padding: 0.3rem 0.5rem;
+  padding: 0.2rem 0.4rem;
   border: 1px solid #e8f5e8;
   border-radius: 4px;
   background: white;
   color: #333;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   outline: none;
   transition: all 0.3s ease;
-  height: 24px !important;
-  min-height: 24px !important;
-  max-height: 24px !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
   box-sizing: border-box !important;
   line-height: 1 !important;
   vertical-align: middle !important;
@@ -95,17 +95,17 @@
   background: #000;
   color: white;
   border: none;
-  padding: 0.3rem 0.5rem;
+  padding: 0.2rem 0.4rem;
   border-radius: 4px;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.3s ease;
-  height: 24px !important;
-  min-height: 24px !important;
-  max-height: 24px !important;
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
   white-space: nowrap;
   display: flex !important;
   align-items: center !important;
@@ -561,9 +561,9 @@
   .newsletter-input {
     flex: 1;
     max-width: 200px;
-    height: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
     font-size: 0.75rem !important;
     padding: 0.4rem 0.5rem !important;
     box-sizing: border-box !important;
@@ -572,9 +572,9 @@
   }
 
   .subscribe-btn {
-    height: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
     font-size: 0.7rem !important;
     padding: 0.4rem 0.6rem !important;
     max-width: 120px;
@@ -681,26 +681,26 @@
   }
 
   .newsletter-input {
-    font-size: 0.7rem !important;
-    padding: 0.4rem 0.5rem !important;
+    font-size: 0.6rem !important;
+    padding: 0.2rem 0.4rem !important;
     flex: 1;
     max-width: 180px;
-    height: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
     box-sizing: border-box !important;
     line-height: 1 !important;
     vertical-align: middle !important;
   }
 
   .subscribe-btn {
-    font-size: 0.65rem !important;
-    padding: 0.4rem 0.6rem !important;
+    font-size: 0.6rem !important;
+    padding: 0.2rem 0.4rem !important;
     max-width: 120px;
     white-space: nowrap;
-    height: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -809,26 +809,26 @@
   }
 
   .newsletter-input {
-    font-size: 0.7rem !important;
-    padding: 0.4rem 0.5rem !important;
+    font-size: 0.6rem !important;
+    padding: 0.2rem 0.4rem !important;
     flex: 1;
     max-width: 180px;
-    height: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
     box-sizing: border-box !important;
     line-height: 1 !important;
     vertical-align: middle !important;
   }
 
   .subscribe-btn {
-    font-size: 0.65rem !important;
-    padding: 0.4rem 0.6rem !important;
+    font-size: 0.6rem !important;
+    padding: 0.2rem 0.4rem !important;
     max-width: 120px;
     white-space: nowrap;
-    height: 26px !important;
-    min-height: 26px !important;
-    max-height: 26px !important;
+    height: 20px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -947,4 +947,88 @@
   cursor: pointer !important;
   transition: all 0.3s ease !important;
   white-space: nowrap !important;
+}
+
+/* DEPLOYMENT-SAFE RULES - Prevent footer positioning and sizing issues */
+.footer-left {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.newsletter-section {
+  width: 100% !important;
+  max-width: 100% !important;
+  text-align: left !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  position: relative !important;
+}
+
+.newsletter-form {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0.2rem !important;
+  margin-bottom: 0.4rem !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  position: relative !important;
+}
+
+.newsletter-input {
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
+  width: auto !important;
+  flex: 1 !important;
+  padding: 0.2rem 0.4rem !important;
+  margin: 0 !important;
+  border: 1px solid #e8f5e8 !important;
+  border-radius: 4px !important;
+  background: white !important;
+  color: #333 !important;
+  font-size: 0.6rem !important;
+  font-weight: normal !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+  display: inline-block !important;
+  position: relative !important;
+}
+
+.subscribe-btn {
+  height: 20px !important;
+  min-height: 20px !important;
+  max-height: 20px !important;
+  width: auto !important;
+  padding: 0.2rem 0.4rem !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #000 !important;
+  color: white !important;
+  font-size: 0.6rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  white-space: nowrap !important;
+  position: relative !important;
+  flex-shrink: 0 !important;
 }
