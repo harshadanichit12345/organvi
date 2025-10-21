@@ -113,11 +113,12 @@
 /* Mobile styles (481px - 767px) */
 @media (max-width: 768px) {
   .hero {
-    margin-top: 0;
+    margin-top: -40px;
     height: 60vh;
     min-height: 60vh;
     padding: 0;
     margin-bottom: 0;
+    overflow: hidden;
   }
   
   .hero-image-container {
@@ -127,11 +128,12 @@
     margin-bottom: 0;
     left: 0;
     top: 0;
+    overflow: hidden;
   }
   
   .hero-image {
-    object-fit: cover;
-    object-position: center;
+    object-fit: contain;
+    object-position: center center;
     width: 100%;
     height: 100%;
     top: 0;
@@ -142,11 +144,12 @@
 /* Small mobile styles (≤480px) */
 @media (max-width: 480px) {
   .hero {
-    margin-top: 0;
+    margin-top: -45px;
     height: 55vh;
     min-height: 55vh;
     padding: 0;
     margin-bottom: 0;
+    overflow: hidden;
   }
   
   .hero-image-container {
@@ -156,11 +159,12 @@
     margin-bottom: 0;
     left: 0;
     top: 0;
+    overflow: hidden;
   }
   
   .hero-image {
-    object-fit: cover;
-    object-position: center;
+    object-fit: contain;
+    object-position: center center;
     width: 100%;
     height: 100%;
     top: 0;
@@ -171,11 +175,12 @@
 /* Extra small mobile styles (≤360px) */
 @media (max-width: 360px) {
   .hero {
-    margin-top: 0;
+    margin-top: -50px;
     height: 50vh;
     min-height: 50vh;
     padding: 0;
     margin-bottom: 0;
+    overflow: hidden;
   }
   
   .hero-image-container {
@@ -185,11 +190,12 @@
     margin-bottom: 0;
     left: 0;
     top: 0;
+    overflow: hidden;
   }
   
   .hero-image {
-    object-fit: cover;
-    object-position: center;
+    object-fit: contain;
+    object-position: center center;
     width: 100%;
     height: 100%;
     top: 0;

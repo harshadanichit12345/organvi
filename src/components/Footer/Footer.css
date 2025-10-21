@@ -90,7 +90,7 @@
   background: #000;
   color: white;
   border: none;
-  padding: 0.25rem 0.5rem;
+  padding: 0.3rem 0.5rem;
   border-radius: 4px;
   font-size: 0.7rem;
   font-weight: 600;
@@ -99,7 +99,13 @@
   cursor: pointer;
   transition: all 0.3s ease;
   height: 24px !important;
+  min-height: 24px !important;
+  max-height: 24px !important;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .subscribe-btn:hover {
@@ -149,6 +155,10 @@
   color: #2c3e50;
   font-weight: 600;
   font-size: 1.1rem;
+}
+
+.footer-section:has(.contact-info) h4 {
+  font-weight: 600;
 }
 
 .footer-section ul {
@@ -209,7 +219,7 @@
 .contact-info {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.3rem !important;
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
@@ -232,6 +242,22 @@
   box-shadow: none !important;
 }
 
+.contact-item:first-child {
+  margin-bottom: 0 !important;
+}
+
+.contact-item:not(:first-child) {
+  margin-top: -0.2rem !important;
+}
+
+.contact-item:last-child {
+  flex-wrap: nowrap;
+}
+
+.contact-item:last-child .contact-value {
+  white-space: nowrap;
+}
+
 .contact-icon {
   width: 28px !important;
   height: 28px !important;
@@ -249,6 +275,15 @@
   padding: 0.1rem 0;
   line-height: 1.3;
   font-family: inherit; /* Same font family as footer links */
+  font-weight: normal;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.contact-item:first-child .contact-value {
+  font-family: inherit !important;
+  font-weight: normal !important;
+  line-height: 1.3 !important;
 }
 
 .footer-bottom {
@@ -407,6 +442,11 @@
   .footer-right {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+    padding: 0 2rem;
+  }
+  
+  .footer-section:has(.contact-info) {
+    grid-column: 1 / -1;
   }
 
   .footer-left {
@@ -445,10 +485,16 @@
 
   .subscribe-btn {
     height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
     font-size: 0.7rem !important;
     padding: 0.4rem 0.6rem !important;
     max-width: 120px;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
   .payment-methods {
@@ -463,10 +509,18 @@
   .footer-section {
     text-align: center;
   }
+  
+  .footer-section:not(:has(.contact-info)) {
+    text-align: left;
+  }
 
   .footer-section h4 {
     font-size: 1rem;
     margin-bottom: 0.8rem;
+  }
+  
+  .footer-section:has(.contact-info) h4 {
+    font-weight: 600;
   }
 
   .footer-section a,
@@ -481,6 +535,13 @@
 
   .contact-value {
     font-size: 0.85rem;
+    font-family: inherit;
+    font-weight: normal;
+  }
+  
+  .contact-item {
+    justify-content: flex-start;
+    text-align: left;
   }
 }
 
@@ -501,8 +562,13 @@
   }
 
   .footer-right {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+    padding: 0 1.5rem;
+  }
+  
+  .footer-section:has(.contact-info) {
+    grid-column: 1 / -1;
   }
 
   .footer-logo {
@@ -521,6 +587,7 @@
     align-items: center;
     justify-content: center;
     max-width: 100%;
+    padding-bottom: 1rem;
   }
 
   .newsletter-input {
@@ -537,6 +604,12 @@
     max-width: 120px;
     white-space: nowrap;
     height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
   .payment-methods {
@@ -552,10 +625,18 @@
   .footer-section {
     text-align: center;
   }
+  
+  .footer-section:not(:has(.contact-info)) {
+    text-align: left;
+  }
 
   .footer-section h4 {
     font-size: 0.9rem;
     margin-bottom: 0.6rem;
+  }
+  
+  .footer-section:has(.contact-info) h4 {
+    font-weight: 600;
   }
 
   .footer-section a,
@@ -574,6 +655,13 @@
 
   .contact-value {
     font-size: 0.8rem;
+    font-family: inherit;
+    font-weight: normal;
+  }
+  
+  .contact-item {
+    justify-content: flex-start;
+    text-align: left;
   }
 
   .footer-bottom {
@@ -594,6 +682,16 @@
 
   .footer-content {
     gap: 0.8rem;
+  }
+  
+  .footer-right {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+    padding: 0 1rem;
+  }
+  
+  .footer-section:has(.contact-info) {
+    grid-column: 1 / -1;
   }
 
   .footer-logo {
@@ -627,6 +725,12 @@
     max-width: 120px;
     white-space: nowrap;
     height: 26px !important;
+    min-height: 26px !important;
+    max-height: 26px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
   .payment-methods {
@@ -639,9 +743,21 @@
     padding: 0.1rem 0.2rem;
   }
 
+  .footer-section {
+    text-align: center;
+  }
+  
+  .footer-section:not(:has(.contact-info)) {
+    text-align: left;
+  }
+
   .footer-section h4 {
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
+  }
+  
+  .footer-section:has(.contact-info) h4 {
+    font-weight: 600;
   }
 
   .footer-section a,
@@ -660,6 +776,13 @@
 
   .contact-value {
     font-size: 0.8rem; /* Matches mobile footer links */
+    font-family: inherit;
+    font-weight: normal;
+  }
+  
+  .contact-item {
+    justify-content: flex-start;
+    text-align: left;
   }
 
   .footer-bottom {

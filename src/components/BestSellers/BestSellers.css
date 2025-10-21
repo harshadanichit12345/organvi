@@ -1447,8 +1447,17 @@
 }
 
 @media (max-width: 768px) {
+  .best-sellers {
+    margin-top: -20px;
+  }
+  
   .best-sellers-main {
     padding: 0 1rem;
+  }
+  
+  .best-sellers-header {
+    margin-top: -10px;
+    padding: 1rem 2rem;
   }
   
   .best-sellers-header-content {
@@ -1499,6 +1508,15 @@
 }
 
 @media (max-width: 480px) {
+  .best-sellers {
+    margin-top: -25px;
+  }
+  
+  .best-sellers-header {
+    margin-top: -15px;
+    padding: 0.8rem 1.5rem;
+  }
+  
   .best-sellers-grid {
     grid-template-columns: 1fr;
     gap: 1.2rem;

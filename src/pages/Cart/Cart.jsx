@@ -154,7 +154,7 @@ const Carts = () => {
             <tbody>
               {cartItems.map((item) => (
                 <tr key={item.id} className="cart-row">
-                  <td className="cart-product-cell">
+                  <td className="cart-product-cell" data-label="Product">
                     <div className="cart-product-info">
                       <img src={item.image} alt={item.name} className="cart-product-image" />
                       <div className="cart-product-details">
@@ -172,13 +172,13 @@ const Carts = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="cart-price-cell">
+                  <td className="cart-price-cell" data-label="Price">
                     <div className="cart-price-info">
                       <span className="cart-original-price">₹{item.originalPrice.toFixed(2)}</span>
                       <span className="cart-current-price">₹{item.price.toFixed(2)}</span>
                     </div>
                   </td>
-                  <td className="cart-quantity-cell">
+                  <td className="cart-quantity-cell" data-label="Quantity">
                     <div className="cart-quantity-controls">
                       <button 
                         className="cart-quantity-btn"
@@ -195,7 +195,7 @@ const Carts = () => {
                       </button>
                     </div>
                   </td>
-                  <td className="cart-total-cell">
+                  <td className="cart-total-cell" data-label="Total">
                     <span className="cart-item-total">₹{(item.quantity * item.price).toFixed(2)}</span>
                   </td>
                 </tr>

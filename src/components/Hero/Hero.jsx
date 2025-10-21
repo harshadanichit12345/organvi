@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './Hero.css';
-import heroImage from '../../assets/heroimage.jpg';
-import coffeeImage from '../../assets/Coffee.png';
-import coffeeNewImage from '../../assets/Coffee_new.png';
-import hero3Image from '../../assets/hero3.png';
-import hero4Image from '../../assets/hero 4.png';
+import hero8Image from '../../assets/hero8.png';
+import hero9Image from '../../assets/hero9.png';
+import hero10Image from '../../assets/hero10.png';
+import hero11Image from '../../assets/hero11.png';
 
 const Hero = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const images = [coffeeImage, coffeeNewImage, hero3Image, hero4Image, heroImage];
+  const images = [hero8Image, hero9Image, hero10Image, hero11Image];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,7 +37,7 @@ const Hero = () => {
             <img
               key={index}
               src={image}
-              alt={index === 0 ? "Coffee" : index === 1 ? "Coffee New" : index === 2 ? "Hero Product 3" : index === 3 ? "Hero Product 4" : "Organic Products"}
+              alt={index === 0 ? "Hero Product 8" : index === 1 ? "Hero Product 9" : index === 2 ? "Hero Product 10" : "Hero Product 11"}
               className={`hero-image ${isActive ? 'active' : ''} ${shouldSlideOut ? 'slide-out' : ''}`}
             />
           );
