@@ -9,6 +9,9 @@ import mastercardIcon from '../../assets/mastercard.png';
 import rupayIcon from '../../assets/rupay.png';
 import upiIcon from '../../assets/upi (1).png';
 import visaIcon from '../../assets/visa.png';
+import almondImage from '../../assets/almond.png';
+import cashewnutImage from '../../assets/cashewnut.png';
+import jeggaryImage from '../../assets/jeggary.png';
 
 const BestSellers = () => {
   const navigate = useNavigate();
@@ -30,7 +33,7 @@ const BestSellers = () => {
       name: 'Organic Almonds',
       price: 450,
       originalPrice: 500,
-      image: '/src/assets/almond.png',
+      image: almondImage,
       discount: 10,
       inStock: true,
       organic: true,
@@ -41,7 +44,7 @@ const BestSellers = () => {
       name: 'Organic Cashew Nuts',
       price: 380,
       originalPrice: 420,
-      image: '/src/assets/cashewnut.png',
+      image: cashewnutImage,
       discount: 10,
       inStock: true,
       organic: true,
@@ -52,7 +55,7 @@ const BestSellers = () => {
       name: 'Organic Jaggery',
       price: 70,
       originalPrice: 80,
-      image: '/src/assets/jeggary.png',
+      image: jeggaryImage,
       discount: 12,
       inStock: true,
       organic: true,
