@@ -3,5 +3,5 @@ export const allSpicesQuery = `*[_type == "spices"]{
   title,
   description,
   price,
-  "imageUrl": image.asset->
+  "imageUrl": image.asset->url
 }`;
