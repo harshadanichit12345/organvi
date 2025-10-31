@@ -3,24 +3,33 @@ import { useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import './Congratulations.css';
 
-const Congratulations = () => {
+const Congratulations = ({ onDone, durationMs = 2000 }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Navigate to dashboard after 3 seconds
     const timer = setTimeout(() => {
-      navigate('/dashboard');
-    }, 3000);
+      if (typeof onDone === 'function') {
+        onDone();
+      } else {
+        navigate('/dashboard');
+      }
+    }, durationMs);
 
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [onDone, durationMs, navigate]);
 
   return (
     <div className="account-modal-overlay">
       <div className="account-modal-container">
         <div className="congratulations-form">
           {/* Close Button */}
-          <button className="modal-close-btn" onClick={() => navigate('/dashboard')}>
+          <button className="modal-close-btn" onClick={() => {
+            if (typeof onDone === 'function') {
+              onDone();
+            } else {
+              navigate('/dashboard');
+            }
+          }}>
             ×
           </button>
         {/* Congratulations Emoji */}

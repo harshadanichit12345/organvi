@@ -600,6 +600,7 @@
 @media (max-width: 768px) {
   .main-navbar {
     top: 0; /* Position at the very top */
+    margin-top: 0 !important; /* remove any gap above navbar */
   }
   
   .hamburger-menu {
@@ -634,7 +635,7 @@
   }
   
   .logo-image {
-    height: 70px; /* Increased for mobile */
+    height: 48px; /* Reduce to remove space above navbar */
     width: auto;
   }
   
@@ -667,6 +668,7 @@
 @media (max-width: 480px) {
   .main-navbar {
     top: 0; /* Position at the very top */
+    margin-top: 0 !important; /* ensure no top gap on small mobile */
   }
   
   .navbar-container {
@@ -692,7 +694,7 @@
   }
   
   .logo-image {
-    height: 65px; /* Increased for small mobile */
+    height: 44px; /* Reduce to eliminate top spacing on small mobile */
     width: auto;
   }
   

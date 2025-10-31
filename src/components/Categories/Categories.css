@@ -35,6 +35,18 @@
     width: 50px !important;
     height: 50px !important;
   }
+  .categories-container img.category-gif,
+  .categories-container .category-item .category-icon img,
+  .categories-container .category-item img {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  .categories-container img.category-gif,
+  .categories-container .category-item .category-icon img,
+  .categories-container .category-item img {
+    width: 50px !important;
+    height: 50px !important;
+  }
   
   .category-name {
     font-size: 0.6rem;
@@ -204,8 +216,8 @@
 
 /* GIF image styling with consistent green color */
 .category-gif {
-  width: 40px !important;
-  height: 40px !important;
+  width: 44px !important;
+  height: 44px !important;
   object-fit: contain;
   background: transparent !important;
   filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2) !important;
@@ -235,8 +247,8 @@
 .categories-container img.category-gif,
 .categories-container .category-item .category-icon img,
 .categories-container .category-item img {
-  width: 40px !important;
-  height: 40px !important;
+  width: 44px !important;
+  height: 44px !important;
   filter: brightness(0) saturate(100%) invert(20%) sepia(100%) saturate(2000%) hue-rotate(90deg) brightness(0.8) contrast(1.2) !important;
   background: transparent !important;
   border: none !important;
@@ -352,8 +364,8 @@
   }
   
   .category-icon {
-    width: 35px;
-    height: 35px;
+    width: 50px;
+    height: 50px;
     background: transparent;
     border: none;
     border-radius: 0;
@@ -370,8 +382,8 @@
   }
   
   .category-name {
-    font-size: 0.6rem !important; /* slightly larger for mobile */
-    line-height: 1.0;
+    font-size: 0.8rem !important; /* larger text for mobile */
+    line-height: 1.1;
   }
 }
 
@@ -395,8 +407,8 @@
   }
   
   .category-icon {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     background: transparent;
     border: none;
     border-radius: 0;
@@ -413,8 +425,8 @@
   }
   
   .category-name {
-    font-size: 0.5rem !important; /* slightly larger for small mobile */
-    line-height: 1.0;
+    font-size: 0.7rem !important; /* larger text for small mobile */
+    line-height: 1.1;
     margin-top: 0.05rem;
   }
 }
@@ -439,8 +451,8 @@
   }
   
   .category-icon {
-    width: 25px;
-    height: 25px;
+    width: 50px;
+    height: 50px;
     background: transparent;
     border: none;
     border-radius: 0;
@@ -457,7 +469,7 @@
   }
   
   .category-name {
-    font-size: 0.4rem !important; /* slightly larger for extra small mobile */
-    line-height: 1.0;
+    font-size: 0.6rem !important; /* larger text for extra small mobile */
+    line-height: 1.1;
   }
 }
