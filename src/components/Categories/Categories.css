@@ -57,6 +57,11 @@
 
 /* Mobile styles (≤768px) */
 @media (max-width: 768px) {
+  .categories-container {
+    border-top: none; /* remove line between hero and categories on mobile */
+    margin-top: 0;
+    padding-top: 0;
+  }
   .categories-row {
     gap: 0.2rem;
     padding: 0.1rem 0.5rem;
@@ -91,6 +96,11 @@
 
 /* Small mobile styles (≤480px) */
 @media (max-width: 480px) {
+  .categories-container {
+    border-top: none; /* ensure no gap on small mobile */
+    margin-top: 0;
+    padding-top: 0;
+  }
   .categories-row {
     gap: 0.1rem;
     padding: 0.05rem 0.3rem;
@@ -125,6 +135,11 @@
 
 /* Extra small mobile styles (≤360px) */
 @media (max-width: 360px) {
+  .categories-container {
+    border-top: none; /* ensure no gap on extra small mobile */
+    margin-top: 0;
+    padding-top: 0;
+  }
   .categories-row {
     gap: 0.05rem;
     padding: 0.02rem 0.2rem;

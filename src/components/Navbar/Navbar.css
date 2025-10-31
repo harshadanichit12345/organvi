@@ -601,6 +601,7 @@
   .main-navbar {
     top: 0; /* Position at the very top */
     margin-top: 0 !important; /* remove any gap above navbar */
+    padding-top: 0.5rem !important; /* mobile top padding */
   }
   
   .hamburger-menu {
@@ -669,6 +670,7 @@
   .main-navbar {
     top: 0; /* Position at the very top */
     margin-top: 0 !important; /* ensure no top gap on small mobile */
+    padding-top: 0.5rem !important; /* small mobile top padding */
   }
   
   .navbar-container {

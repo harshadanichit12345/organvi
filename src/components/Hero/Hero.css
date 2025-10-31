@@ -115,7 +115,7 @@
 /* Mobile styles (481px - 767px) */
 @media (max-width: 768px) {
   .hero {
-    margin-top: 0 !important;
+    margin-top: -0.5rem !important; /* pull hero up under navbar */
     height: 60vh !important;
     min-height: 60vh !important;
     padding: 0 !important;
@@ -148,7 +148,7 @@
 /* Small mobile styles (≤480px) */
 @media (max-width: 480px) {
   .hero {
-    margin-top: 0 !important;
+    margin-top: -0.5rem !important; /* pull hero up under navbar */
     height: 55vh !important;
     min-height: 55vh !important;
     padding: 0 !important;
@@ -181,7 +181,7 @@
 /* Extra small mobile styles (≤360px) */
 @media (max-width: 360px) {
   .hero {
-    margin-top: 0 !important;
+    margin-top: -0.5rem !important; /* pull hero up under navbar */
     height: 50vh !important;
     min-height: 50vh !important;
     padding: 0 !important;
