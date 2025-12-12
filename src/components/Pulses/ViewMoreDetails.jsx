@@ -16,7 +16,69 @@ import backSideImg from '../../assets/chanadal_backside.jpg';
 
 const ViewMoreDetails = ({ product, onClose }) => {
   const navigate = useNavigate();
-  const [selectedWeight, setSelectedWeight] = useState('500g');
+  
+  // Helper function to get weight options based on product
+  const getWeightOptions = (product) => {
+    if (!product) return [{ value: '500g', label: '500 g', multiplier: 1 }, { value: '1kg', label: '1 kg', multiplier: 2 }];
+    
+    const lower = (s) => (s || '').toLowerCase();
+    const name = lower(product.name);
+    
+    // Pricing rules based on provided sheet
+    // Defaults: 500g = base price, 1kg = x2; override per product below
+    let weightOptions = [
+      { value: '500g', label: '500 g', multiplier: 1 },
+      { value: '1kg', label: '1 kg', multiplier: 2 }
+    ];
+    
+    if (name.includes('moong whole')) {
+      // 250g 70, 500g 140
+      weightOptions = [
+        { value: '250g', label: '250 g', multiplier: 0.5 },
+        { value: '500g', label: '500 g', multiplier: 1 }
+      ];
+    } else if (name.includes('jaggery') && name.includes('cube')) {
+      // cube 250g 70 (set base as 250g)
+      weightOptions = [
+        { value: '250g', label: '250 g', multiplier: 1 }
+      ];
+    } else if (name.includes('jaggery powder')) {
+      // powder 500g 140
+      weightOptions = [
+        { value: '500g', label: '500 g', multiplier: 1 }
+      ];
+    } else if (name === 'organic jaggery' || name.includes('raw jaggery') || (name.includes('jaggery') && !name.includes('powder') && !name.includes('cube'))) {
+      // jaggery 1kg 70 -> present as only 1kg
+      weightOptions = [
+        { value: '1kg', label: '1 kg', multiplier: 1 }
+      ];
+    } else if (name.includes('turmeric') && name.includes('powder')) {
+      // 200g 95; set base as 200g and hide others
+      weightOptions = [
+        { value: '200g', label: '200 g', multiplier: 0.4 }
+      ];
+    } else if (name.includes('red chilli powder')) {
+      // 500g 200
+      weightOptions = [
+        { value: '500g', label: '500 g', multiplier: 1 }
+      ];
+    }
+    
+    return weightOptions;
+  };
+  
+  // Get weight options for current product
+  const weightOptions = getWeightOptions(product);
+  
+  // Initialize selectedWeight based on product's weight or first available option
+  const getInitialWeight = () => {
+    if (product?.weight && weightOptions.some(opt => opt.value === product.weight)) {
+      return product.weight;
+    }
+    return weightOptions[0]?.value || '500g';
+  };
+  
+  const [selectedWeight, setSelectedWeight] = useState(getInitialWeight());
   const [quantity, setQuantity] = useState(1);
   const [openDropdowns, setOpenDropdowns] = useState({});
   const [showWriteReview, setShowWriteReview] = useState(false);
@@ -43,50 +105,20 @@ const ViewMoreDetails = ({ product, onClose }) => {
     question: ''
   });
 
-  // Pricing rules based on provided sheet
-  // Defaults: 500g = base price, 1kg = x2; override per product below
-  let weightOptions = [
-    { value: '500g', label: '500 g', multiplier: 1 },
-    { value: '1kg', label: '1 kg', multiplier: 2 }
-  ];
-
-  const lower = (s) => (s || '').toLowerCase();
-  const name = lower(product?.name);
-  if (name.includes('moong whole')) {
-    // 250g 70, 500g 140
-    weightOptions = [
-      { value: '250g', label: '250 g', multiplier: 0.5 },
-      { value: '500g', label: '500 g', multiplier: 1 }
-    ];
-  } else if (name.includes('jaggery') && name.includes('cube')) {
-    // cube 250g 70 (set base as 250g)
-    weightOptions = [
-      { value: '250g', label: '250 g', multiplier: 1 }
-    ];
-  } else if (name.includes('jaggery powder')) {
-    // powder 500g 140
-    weightOptions = [
-      { value: '500g', label: '500 g', multiplier: 1 }
-    ];
-  } else if (name === 'organic jaggery' || name.includes('raw jaggery') || (name.includes('jaggery') && !name.includes('powder') && !name.includes('cube'))) {
-    // jaggery 1kg 70 -> present as only 1kg
-    weightOptions = [
-      { value: '1kg', label: '1 kg', multiplier: 1 }
-    ];
-  } else if (name.includes('turmeric') && name.includes('powder')) {
-    // 200g 95; set base as 200g and hide others
-    weightOptions = [
-      { value: '200g', label: '200 g', multiplier: 0.4 }
-    ];
-  } else if (name.includes('red chilli powder')) {
-    // 500g 200
-    weightOptions = [
-      { value: '500g', label: '500 g', multiplier: 1 }
-    ];
-  }
-
   const [reviews, setReviews] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(product.image);
+  const [selectedImage, setSelectedImage] = useState(product?.image);
+  
+  // Update selectedWeight when product changes
+  useEffect(() => {
+    if (product) {
+      const newWeightOptions = getWeightOptions(product);
+      const initialWeight = product.weight && newWeightOptions.some(opt => opt.value === product.weight)
+        ? product.weight
+        : newWeightOptions[0]?.value || '500g';
+      setSelectedWeight(initialWeight);
+      setSelectedImage(product.image);
+    }
+  }, [product]);
 
   // Calculate review statistics
   const getReviewStats = () => {

@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 import Address from './Address';
+import ViewMoreDetails from '../Pulses/ViewMoreDetails';
+import '../All_Categories/AllCategories.css';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -26,12 +28,45 @@ const Dashboard = () => {
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [wishlistProducts, setWishlistProducts] = useState([]);
+  const [showViewMore, setShowViewMore] = useState(false);
+  const [selectedViewMoreProduct, setSelectedViewMoreProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedWeight, setSelectedWeight] = useState('500g');
+  const [modalQuantity, setModalQuantity] = useState(1);
   const navigate = useNavigate();
   const { userData, phoneNumber, countryCode, logoutUser } = useUser();
 
   useEffect(() => {
     fetchOrders();
+    fetchWishlist();
   }, []);
+
+  // Listen for wishlist updates
+  useEffect(() => {
+    const handleWishlistUpdated = () => {
+      fetchWishlist();
+    };
+    
+    window.addEventListener('wishlistUpdated', handleWishlistUpdated);
+    window.addEventListener('storage', handleWishlistUpdated);
+    
+    return () => {
+      window.removeEventListener('wishlistUpdated', handleWishlistUpdated);
+      window.removeEventListener('storage', handleWishlistUpdated);
+    };
+  }, []);
+
+  const fetchWishlist = () => {
+    try {
+      const savedWishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+      setWishlistProducts(savedWishlist);
+    } catch (error) {
+      console.error('Error fetching wishlist:', error);
+      setWishlistProducts([]);
+    }
+  };
 
   const fetchOrders = () => {
     try {
@@ -130,6 +165,95 @@ const Dashboard = () => {
     return ['pending', 'confirmed', 'processing'].includes(order.status);
   };
 
+  const removeFromWishlist = (productId) => {
+    const updatedWishlist = wishlistProducts.filter(product => product.id !== productId);
+    setWishlistProducts(updatedWishlist);
+    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+    
+    // Trigger wishlist count update in navbar
+    window.dispatchEvent(new CustomEvent('wishlistUpdated', { detail: updatedWishlist.length }));
+  };
+
+  const openViewMore = (product) => {
+    setSelectedViewMoreProduct(product);
+    setShowViewMore(true);
+  };
+
+  const closeViewMore = () => {
+    setShowViewMore(false);
+    setSelectedViewMoreProduct(null);
+  };
+
+  const openModal = (product) => {
+    setSelectedProduct(product);
+    setSelectedWeight(product.weight || '500g');
+    setModalQuantity(1);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedProduct(null);
+    setSelectedWeight('500g');
+    setModalQuantity(1);
+  };
+
+  const handleWeightChange = (weight) => {
+    setSelectedWeight(weight);
+  };
+
+  const handleQuantityChange = (change) => {
+    const newQuantity = modalQuantity + change;
+    if (newQuantity >= 1) {
+      setModalQuantity(newQuantity);
+    }
+  };
+
+  const getModalPrice = () => {
+    if (!selectedProduct) return 0;
+    return selectedWeight === '1kg' ? selectedProduct.price * 2 : selectedProduct.price;
+  };
+
+  const getModalOriginalPrice = () => {
+    if (!selectedProduct) return 0;
+    return selectedWeight === '1kg' ? selectedProduct.originalPrice * 2 : selectedProduct.originalPrice;
+  };
+
+  const handleModalAddToCart = () => {
+    if (selectedProduct) {
+      const cartItem = {
+        id: `${selectedProduct.id}-${selectedWeight}`,
+        name: selectedProduct.name,
+        price: getModalPrice(),
+        originalPrice: getModalOriginalPrice(),
+        weight: selectedWeight,
+        quantity: modalQuantity,
+        image: selectedProduct.image
+      };
+      
+      const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingItemIndex = existingCart.findIndex(item => item.id === cartItem.id);
+      
+      if (existingItemIndex === -1) {
+        const updatedCart = [...existingCart, cartItem];
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+      } else {
+        const updatedCart = existingCart.map(item =>
+          item.id === cartItem.id
+            ? { ...item, quantity: item.quantity + cartItem.quantity }
+            : item
+        );
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+      }
+      
+      const finalCart = JSON.parse(localStorage.getItem('cart')) || [];
+      const uniqueItems = finalCart.length;
+      window.dispatchEvent(new CustomEvent('cartUpdated', { detail: uniqueItems }));
+      
+      closeModal();
+    }
+  };
+
   const fullName = userData ? `${userData.firstName} ${userData.lastName}` : 'User';
   const email = userData ? userData.email : '';
 
@@ -173,7 +297,7 @@ const Dashboard = () => {
               onClick={() => setActiveSection('wishlist')}
             >
               <Heart size={20} />
-              <span>Wishlist (0)</span>
+              <span>Wishlist ({wishlistProducts.length})</span>
             </button>
             
             <button className="nav-item logout-btn" onClick={handleLogout}>
@@ -323,10 +447,70 @@ const Dashboard = () => {
           {activeSection === 'wishlist' && (
             <div className="wishlist-section">
               <h2 className="section-title">Wishlist</h2>
-              <div className="empty-wishlist">
-                <Heart size={48} className="empty-icon" />
-                <p className="empty-text">Your wishlist is empty</p>
-              </div>
+              {wishlistProducts.length === 0 ? (
+                <div className="empty-wishlist">
+                  <Heart size={48} className="empty-icon" />
+                  <p className="empty-text">Your wishlist is empty</p>
+                  <Link to="/allcategories" className="start-shopping-btn" style={{ marginTop: '1rem', display: 'inline-block' }}>
+                    Browse Products
+                  </Link>
+                </div>
+              ) : (
+                <div className="all-products-grid" style={{ marginTop: '1.5rem' }}>
+                  {wishlistProducts.map((product) => (
+                    <div key={product.id} className="product-card">
+                      <div className="discount-badge">
+                        Save {product.discount || 10}%
+                      </div>
+                      
+                      <button 
+                        className="heart-icon liked"
+                        onClick={() => removeFromWishlist(product.id)}
+                        title="Remove from wishlist"
+                      >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                        </svg>
+                      </button>
+                      
+                      <div className="product-image-container">
+                        <img 
+                          src={product.image} 
+                          alt={product.name}
+                          className="product-image"
+                        />
+                      </div>
+                      
+                      <div className="product-details">
+                        <h3 className="product-name">{product.name}</h3>
+                        
+                        <div className="product-pricing">
+                          <span className="current-price">₹{product.price}</span>
+                          <span className="original-price">₹{product.originalPrice || product.price}</span>
+                        </div>
+                        
+                        <div className="view-details-section">
+                          <button 
+                            className="view-details-link"
+                            onClick={() => openViewMore(product)}
+                          >
+                            View More Details
+                          </button>
+                        </div>
+                        
+                        <div className="product-actions">
+                          <button 
+                            className="add-btn"
+                            onClick={() => openModal(product)}
+                          >
+                            <span>Add To Cart</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -469,6 +653,92 @@ const Dashboard = () => {
       )}
 
       {/* Removed separate Cancel Order Modal */}
+
+      {/* View More Details Modal */}
+      {showViewMore && selectedViewMoreProduct && (
+        <ViewMoreDetails 
+          product={selectedViewMoreProduct} 
+          onClose={closeViewMore} 
+        />
+      )}
+
+      {/* Add to Cart Modal */}
+      {showModal && selectedProduct && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal} title="Close">
+              ×
+            </button>
+            
+            <div className="modal-product-info">
+              <div className="modal-product-image">
+                <img src={selectedProduct.image} alt={selectedProduct.name} />
+              </div>
+              <div className="modal-product-details">
+                <h3 className="modal-product-name">{selectedProduct.name}</h3>
+                <div className="modal-pricing">
+                  <span className="modal-original-price">₹{getModalOriginalPrice().toFixed(2)}</span>
+                  <span className="modal-current-price">₹{getModalPrice().toFixed(2)}</span>
+                  <p className="modal-tax-info">(Inc. of all taxes)</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-size-section">
+              <p className="modal-size-label">Size: {selectedWeight}</p>
+              <div className="modal-weight-options">
+                <button 
+                  className={`modal-weight-btn ${selectedWeight === '500g' ? 'selected' : ''}`}
+                  onClick={() => handleWeightChange('500g')}
+                >
+                  <span className="weight-text">500 g</span>
+                  <div className="weight-pricing">
+                    <span className="weight-original-price">₹{selectedProduct.originalPrice?.toFixed(2) || selectedProduct.price.toFixed(2)}</span>
+                    <span className="weight-current-price">₹{selectedProduct.price.toFixed(2)}</span>
+                  </div>
+                  <div className="discount-badge-modal">{selectedProduct.discount || 10}% OFF</div>
+                </button>
+                
+                <button 
+                  className={`modal-weight-btn ${selectedWeight === '1kg' ? 'selected' : ''}`}
+                  onClick={() => handleWeightChange('1kg')}
+                >
+                  <span className="weight-text">1 kg</span>
+                  <div className="weight-pricing">
+                    <span className="weight-original-price">₹{((selectedProduct.originalPrice || selectedProduct.price) * 2).toFixed(2)}</span>
+                    <span className="weight-current-price">₹{(selectedProduct.price * 2).toFixed(2)}</span>
+                  </div>
+                  <div className="discount-badge-modal">{selectedProduct.discount || 10}% OFF</div>
+                </button>
+              </div>
+            </div>
+
+            <div className="modal-quantity-section">
+              <div className="modal-quantity-controls">
+                <button 
+                  className="quantity-btn"
+                  onClick={() => handleQuantityChange(-1)}
+                >
+                  -
+                </button>
+                <span className="quantity-display">{modalQuantity}</span>
+                <button 
+                  className="quantity-btn"
+                  onClick={() => handleQuantityChange(1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div className="modal-actions">
+              <button className="modal-add-to-cart-btn" onClick={handleModalAddToCart}>
+                ADD TO CART
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -62,12 +62,12 @@
   background: rgba(0, 0, 0, 0.1);
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #666;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -95,6 +95,7 @@
 .registration-header {
   text-align: center;
   margin-bottom: 2.5rem;
+  padding-right: 2.5rem;
 }
 
 .registration-title {
@@ -218,18 +219,23 @@
 
 @media (max-width: 768px) {
   .account-modal-overlay {
-    padding: 1rem;
+    padding: 0.5rem;
   }
   
   .account-modal-container {
-    max-width: 95vw;
-    margin: 0.5rem;
+    max-width: 92vw;
+    width: 92vw;
+    margin: 0;
     max-height: 95vh;
   }
   
   .user-registration-form {
     padding: 2rem 1.5rem;
     max-width: 100%;
+  }
+  
+  .registration-header {
+    padding-right: 2rem;
   }
   
   .registration-title {
@@ -243,9 +249,9 @@
   .modal-close-btn {
     top: 0.75rem;
     right: 0.75rem;
-    width: 35px;
-    height: 35px;
-    font-size: 1.3rem;
+    width: 28px;
+    height: 28px;
+    font-size: 1.1rem;
   }
   
   .registration-form {
@@ -275,13 +281,19 @@
   }
   
   .account-modal-container {
-    max-width: 98vw;
-    margin: 0.25rem;
+    max-width: 90vw;
+    width: 90vw;
+    margin: 0;
     max-height: 98vh;
   }
   
   .user-registration-form {
-    padding: 1.5rem 1rem;
+    padding: 1.75rem 1.25rem;
+  }
+  
+  .registration-header {
+    padding-right: 1.75rem;
+    margin-bottom: 2rem;
   }
   
   .registration-title {
@@ -293,11 +305,11 @@
   }
   
   .modal-close-btn {
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 30px;
-    height: 30px;
-    font-size: 1.2rem;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 26px;
+    height: 26px;
+    font-size: 1rem;
   }
   
   .registration-form {
@@ -329,15 +341,18 @@
 
 @media (max-width: 360px) {
   .account-modal-container {
-    max-width: 100vw;
+    max-width: 92vw;
+    width: 92vw;
     margin: 0;
     max-height: 100vh;
-    border-radius: 0;
   }
   
   .user-registration-form {
-    border-radius: 0;
-    padding: 1.25rem 0.75rem;
+    padding: 1.5rem 1rem;
+  }
+  
+  .registration-header {
+    padding-right: 1.5rem;
   }
   
   .registration-title {
@@ -349,11 +364,11 @@
   }
   
   .modal-close-btn {
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 28px;
-    height: 28px;
-    font-size: 1.1rem;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 24px;
+    height: 24px;
+    font-size: 0.95rem;
   }
   
   .registration-form {
